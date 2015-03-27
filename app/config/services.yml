@@ -1,0 +1,17 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+# Examples of API resource mapping, learn more at
+# https://github.com/dunglas/DunglasJsonLdApiBundle
+    resource.book:
+        parent:    dunglas_json_ld_api.resource
+        arguments: [ AppBundle\Entity\Book ]
+        tags:      [ { name: "json-ld.resource" } ]
+
+    resource.person:
+        parent:    dunglas_json_ld_api.resource
+        arguments: [ AppBundle\Entity\Person ]
+        tags:      [ { name: "json-ld.resource" } ]

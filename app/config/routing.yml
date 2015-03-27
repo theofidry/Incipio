@@ -1,0 +1,11 @@
+api_doc:
+    resource: @DunglasJsonLdApiBundle/Resources/config/routing.xml
+
+api:
+    resource: .
+    type:     json-ld
+    prefix:   /api
+
+NelmioApiDocBundle:
+    resource: @NelmioApiDocBundle/Resources/config/routing.yml
+    prefix:   /api-doc
