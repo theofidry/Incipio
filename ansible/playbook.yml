@@ -3,13 +3,26 @@
   remote_user: root
   vars_files:
     - parameters.yml
+  roles:
+    # Update system
+    - init
 
-tasks:
-    - name: update apt cache
-      apt: update_cache=yes
-    - name: install apache
-      apt: name=apache2 state=present
-    - name: install mysql
-      apt: name=mysql-server state=present
-    - name: install php
-      apt: name=php5 state=present
+    # Install web server
+    - nginx
+
+    # Install PHP server
+    - php5-fpm
+    - php5-cli
+    - php5-common
+
+    # Install PHP tools
+    - composer
+
+    # Install database servers
+    - mysql
+    - redis
+
+    # Install utilities
+#    - curl
+    - git
+#    - wget

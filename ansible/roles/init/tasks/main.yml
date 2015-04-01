@@ -1,5 +1,5 @@
 ---
-  - name: Update apt
+  - name: Update sytem
     sudo: yes
     apt:  update_cache=yes
 
@@ -11,14 +11,6 @@
       - wget
       - build-essential
       - python-software-properties
-
-  - name: Add ppa repository
-    sudo: yes
-    apt_repository: repo=ppa:ondrej/{{ php_ppa }}
-
-  - name: Update apt again
-    sudo: yes
-    apt:  update_cache=yes
 
   - name: Install extra packages
     sudo: yes

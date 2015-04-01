@@ -1,5 +1,5 @@
 ---
-- name: Install redis
+- name: Install redis database
   sudo: yes
   apt:  pkg=redis-server state=latest
 

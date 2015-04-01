@@ -3,10 +3,7 @@
     sudo: yes
     apt:  pkg=nginx state=latest
 
-  - name: Ensure nginx log directory exists
-    file: dest=/var/log/nginx/symfony state=directory
-
-  - name: Change default nginx site
+  - name: Configure nginx vhost
     sudo: yes
     template: src=default.tpl dest=/etc/nginx/sites-available/default
     notify: restart nginx

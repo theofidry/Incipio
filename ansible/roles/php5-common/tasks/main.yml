@@ -14,6 +14,7 @@
   sudo: yes
   shell: echo "\n" | /usr/bin/pecl install {{ item.package }} creates=/usr/lib/php5/20121212/{{ item.name }}.so
   with_items: php_extensions
+  ignore_errors: true
 
 - name: Configure PHP extensions
   sudo: yes
