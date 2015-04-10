@@ -35,6 +35,10 @@
         "hautelook/alice-bundle": "~0.2"
     },
     "scripts": {
+        "doctrine": "composer doctrine:drop && composer doctrine:create && composer doctrine:seed",
+        "doctrine:create": "php app/console doctrine:schema:create",
+        "doctrine:drop": "php app/console doctrine:schema:drop -f",
+        "dcotrine:seed": "php app/console doctrine:fixtures:load -n",
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"
         ],

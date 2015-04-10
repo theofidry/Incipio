@@ -8,10 +8,10 @@ services:
 # https://github.com/dunglas/DunglasJsonLdApiBundle
     resource.book:
         parent:    dunglas_json_ld_api.resource
-        arguments: [ AppBundle\Entity\Book ]
+        arguments: [ ApiBundle\Entity\Book ]
         tags:      [ { name: "json-ld.resource" } ]
 
     resource.person:
         parent:    dunglas_json_ld_api.resource
-        arguments: [ AppBundle\Entity\Person ]
+        arguments: [ ApiBundle\Entity\Person ]
         tags:      [ { name: "json-ld.resource" } ]
