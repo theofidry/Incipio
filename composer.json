@@ -21,7 +21,8 @@
         "dunglas/json-ld-api-bundle": "dev-master",
         "nelmio/cors-bundle": "~1.4",
         "friendsofsymfony/http-cache-bundle": "~1.0",
-        "nelmio/api-doc-bundle": "dev-master"
+        "nelmio/api-doc-bundle": "dev-master",
+        "fabpot/php-cs-fixer": "~1.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
@@ -35,6 +36,7 @@
         "hautelook/alice-bundle": "~0.2"
     },
     "scripts": {
+        "php-cs-fixer": "php vendor/fabpot/php-cs-fixer/php-cs-fixer fix app/ -vvvv && php vendor/fabpot/php-cs-fixer/php-cs-fixer fix src/ -vvvv",
         "doctrine": "composer doctrine:drop && composer doctrine:create && composer doctrine:seed",
         "doctrine:create": "php app/console doctrine:schema:create",
         "doctrine:drop": "php app/console doctrine:schema:drop -f",

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Organization extends Thing
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -26,7 +25,8 @@ class Organization extends Thing
     /**
      * Sets id.
      *
-     * @param  integer $id
+     * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -39,7 +39,7 @@ class Organization extends Thing
     /**
      * Gets id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {

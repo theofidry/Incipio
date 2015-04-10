@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ApiBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Book extends CreativeWork
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -38,7 +37,7 @@ class Book extends CreativeWork
      */
     private $isbn;
     /**
-     * @var integer The number of pages in the book.
+     * @var int The number of pages in the book.
      *
      * @Assert\Type(type="integer")
      * @ORM\Column(type="integer", nullable=true)
@@ -55,7 +54,8 @@ class Book extends CreativeWork
     /**
      * Sets id.
      *
-     * @param  integer $id
+     * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -68,7 +68,7 @@ class Book extends CreativeWork
     /**
      * Gets id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -78,7 +78,8 @@ class Book extends CreativeWork
     /**
      * Adds illustrator.
      *
-     * @param  Person $illustrator
+     * @param Person $illustrator
+     *
      * @return $this
      */
     public function addIllustrator(Person $illustrator)
@@ -91,7 +92,8 @@ class Book extends CreativeWork
     /**
      * Removes illustrator.
      *
-     * @param  Person $illustrator
+     * @param Person $illustrator
+     *
      * @return $this
      */
     public function removeIllustrator(Person $illustrator)
@@ -117,7 +119,8 @@ class Book extends CreativeWork
     /**
      * Sets isbn.
      *
-     * @param  string $isbn
+     * @param string $isbn
+     *
      * @return $this
      */
     public function setIsbn($isbn)
@@ -140,7 +143,8 @@ class Book extends CreativeWork
     /**
      * Sets numberOfPages.
      *
-     * @param  integer $numberOfPages
+     * @param int $numberOfPages
+     *
      * @return $this
      */
     public function setNumberOfPages($numberOfPages)
@@ -153,7 +157,7 @@ class Book extends CreativeWork
     /**
      * Gets numberOfPages.
      *
-     * @return integer
+     * @return int
      */
     public function getNumberOfPages()
     {

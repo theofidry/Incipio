@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ApiBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -51,7 +50,8 @@ abstract class CreativeWork extends Thing
     /**
      * Adds author.
      *
-     * @param  Person $author
+     * @param Person $author
+     *
      * @return $this
      */
     public function addAuthor(Person $author)
@@ -64,7 +64,8 @@ abstract class CreativeWork extends Thing
     /**
      * Removes author.
      *
-     * @param  Person $author
+     * @param Person $author
+     *
      * @return $this
      */
     public function removeAuthor(Person $author)
@@ -90,7 +91,8 @@ abstract class CreativeWork extends Thing
     /**
      * Sets datePublished.
      *
-     * @param  \DateTime $datePublished
+     * @param \DateTime $datePublished
+     *
      * @return $this
      */
     public function setDatePublished(\DateTime $datePublished = null)
@@ -113,7 +115,8 @@ abstract class CreativeWork extends Thing
     /**
      * Sets genre.
      *
-     * @param  string $genre
+     * @param string $genre
+     *
      * @return $this
      */
     public function setGenre($genre)
@@ -136,7 +139,8 @@ abstract class CreativeWork extends Thing
     /**
      * Sets publisher.
      *
-     * @param  Organization $publisher
+     * @param Organization $publisher
+     *
      * @return $this
      */
     public function setPublisher(Organization $publisher = null)

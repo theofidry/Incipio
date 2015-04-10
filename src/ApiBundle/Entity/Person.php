@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Person extends Thing
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -41,7 +40,8 @@ class Person extends Thing
     /**
      * Sets id.
      *
-     * @param  integer $id
+     * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -54,7 +54,7 @@ class Person extends Thing
     /**
      * Gets id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -64,7 +64,8 @@ class Person extends Thing
     /**
      * Sets birthDate.
      *
-     * @param  \DateTime $birthDate
+     * @param \DateTime $birthDate
+     *
      * @return $this
      */
     public function setBirthDate(\DateTime $birthDate = null)
@@ -87,7 +88,8 @@ class Person extends Thing
     /**
      * Sets gender.
      *
-     * @param  string $gender
+     * @param string $gender
+     *
      * @return $this
      */
     public function setGender($gender)

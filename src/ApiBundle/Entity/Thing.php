@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -40,7 +39,8 @@ abstract class Thing
     /**
      * Sets description.
      *
-     * @param  string $description
+     * @param string $description
+     *
      * @return $this
      */
     public function setDescription($description)
@@ -63,7 +63,8 @@ abstract class Thing
     /**
      * Sets name.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -86,7 +87,8 @@ abstract class Thing
     /**
      * Sets url.
      *
-     * @param  string $url
+     * @param string $url
+     *
      * @return $this
      */
     public function setUrl($url)
