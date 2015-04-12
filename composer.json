@@ -22,7 +22,8 @@
         "nelmio/cors-bundle": "~1.4",
         "friendsofsymfony/http-cache-bundle": "~1.0",
         "nelmio/api-doc-bundle": "dev-master",
-        "fabpot/php-cs-fixer": "~1.6"
+        "fabpot/php-cs-fixer": "~1.6",
+        "friendsofsymfony/user-bundle": "~2.0@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

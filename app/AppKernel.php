@@ -8,19 +8,21 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = [
+            new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle(),
-            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-            new Nelmio\CorsBundle\NelmioCorsBundle(),
-            new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
 
             new ApiBundle\ApiBundle(),
+            new ApiBundle\Bundles\UserBundle\UserBundle(),
             new FrontBundle\FrontBundle(),
         ];
 
