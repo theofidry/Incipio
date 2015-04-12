@@ -1,17 +1,20 @@
-# Learn more about services, parameters and containers at
-# http://symfony.com/doc/current/book/service_container.html
 parameters:
 #    parameter_name: value
 
 services:
-# Examples of API resource mapping, learn more at
-# https://github.com/dunglas/DunglasJsonLdApiBundle
-    resource.book:
-        parent:    dunglas_json_ld_api.resource
-        arguments: [ ApiBundle\Entity\Book ]
-        tags:      [ { name: "json-ld.resource" } ]
+    alice.user.processor:
+        class: ApiBundle\Bundles\UserBundle\DataFixtures\ORM\UserProcessor
+        arguments: [@fos_user.user_manager]
+        tags:
+            - { name: alice.processor }
 
-    resource.person:
+    #
+    # Resources
+    #
+    resource.user:
         parent:    dunglas_json_ld_api.resource
-        arguments: [ ApiBundle\Entity\Person ]
-        tags:      [ { name: "json-ld.resource" } ]
+        arguments: [ ApiBundle\Bundles\UserBundle\Entity\User ]
+        calls:
+            - [ "initNormalizationContext", [ { groups: [ user ] } ] ]
+            - [ "initDenormalizationContext", [ { groups: [ user ] } ] ]
+        tags:      [ { name: json-ld.resource } ]

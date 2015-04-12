@@ -1,14 +1,16 @@
 # DunglasJsonLdBundle
 api_doc:
     resource: @DunglasJsonLdApiBundle/Resources/config/routing.xml
+    prefix:   /api
+
 api:
     resource: .
     type:     json-ld
     prefix:   /api
 
-# FOSUserBundle
-fos_user:
-    resource: @FOSUserBundle/Resources/config/routing/all.xml
+## FOSUserBundle
+#fos_user:
+#    resource: @FOSUserBundle/Resources/config/routing/all.xml
 
 # NelmioApiDocBundle
 NelmioApiDocBundle:

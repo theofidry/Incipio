@@ -22,8 +22,10 @@
         "nelmio/cors-bundle": "~1.4",
         "friendsofsymfony/http-cache-bundle": "~1.0",
         "nelmio/api-doc-bundle": "dev-master",
+        "stof/doctrine-extensions-bundle": "~1.1",
         "fabpot/php-cs-fixer": "~1.6",
-        "friendsofsymfony/user-bundle": "~2.0@dev"
+        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "h4cc/alice-fixtures-bundle": "0.5.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
@@ -37,11 +39,12 @@
         "hautelook/alice-bundle": "~0.2"
     },
     "scripts": {
-        "php-cs-fixer": "php vendor/fabpot/php-cs-fixer/php-cs-fixer fix app/ -vvvv && php vendor/fabpot/php-cs-fixer/php-cs-fixer fix src/ -vvvv",
+        "phpcsf": "composer php-cs-fixer",
+        "php-cs-fixer": "php vendor/fabpot/php-cs-fixer/php-cs-fixer fix -vvvv src/",
         "doctrine": "composer doctrine:drop && composer doctrine:create && composer doctrine:seed",
         "doctrine:create": "php app/console doctrine:schema:create",
-        "doctrine:drop": "php app/console doctrine:schema:drop -f",
-        "dcotrine:seed": "php app/console doctrine:fixtures:load -n",
+        "doctrine:drop": "php app/console doctrine:schema:drop --force",
+        "doctrine:seed": "php app/console doctrine:fixtures:load -n",
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"
         ],

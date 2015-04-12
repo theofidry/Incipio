@@ -4,12 +4,11 @@ security:
 
     role_hierarchy:
         ROLE_CA:          ROLE_USER
-        ROLE_ADMIN:       ROLE_CA
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_SUPER_ADMIN:       [ ROLE_CA, ROLE_ALLOWED_TO_SWITCH ]
 
     providers:
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 
     firewalls:
         dev:
@@ -20,18 +19,13 @@ security:
             pattern:  ^/login
             stateless: true
             anonymous: true
-#            form_login:
-#                check_path:               /login
-#                username_parameter:       username
-#                password_parameter:       password
-#                success_handler:          lexik_jwt_authentication.handler.authentication_success
-#                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
-#                require_previous_session: false
+            form_login:
+                check_path:               /login_check
+                username_parameter:       username
+                password_parameter:       password
+                require_previous_session: false
 
         default:
-            form_login:
-                provider: fos_userbundle
-                csrf_provider: form.csrf_provider
             logout:       true
             anonymous:    true
 

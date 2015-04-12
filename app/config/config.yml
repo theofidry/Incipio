@@ -78,6 +78,12 @@ nelmio_cors:
         allow_headers: ["content-type", "authorization"]
         max_age:       3600
 
+# Doctrine Extensions
+stof_doctrine_extensions:
+    orm:
+        default:
+            timestampable: true
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
