@@ -25,17 +25,6 @@ framework:
     fragments:       ~
     http_method_override: false
 
-# Twig Configuration
-twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
-
-# FOSUserBundle configuration
-fos_user:
-    db_driver: orm
-    firewall_name: default
-    user_class: ApiBundle\Bundles\UserBundle\Entity\User
-
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -57,14 +46,6 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
-# Swiftmailer Configuration
-swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: memory }
-
 # DunglasJsonLdApi configuration
 dunglas_json_ld_api:
     title:       "%api_name%"
@@ -72,13 +53,11 @@ dunglas_json_ld_api:
     default:
         order: DESC
 
-# Nelmio CORS
-nelmio_cors:
-    defaults:
-        allow_origin:  ["%cors_allow_origin%"]
-        allow_methods: ["POST", "PUT", "GET", "DELETE", "OPTIONS"]
-        allow_headers: ["content-type", "authorization"]
-        max_age:       3600
+# FOSUserBundle configuration
+fos_user:
+    db_driver: orm
+    firewall_name: default
+    user_class: ApiBundle\Bundles\UserBundle\Entity\User
 
 # Nelmio API Doc
 nelmio_api_doc:
@@ -90,3 +69,24 @@ nelmio_api_doc:
         request_format:
             formats:
                 json:       "application/json"
+
+# Nelmio CORS
+nelmio_cors:
+    defaults:
+        allow_origin:  ["%cors_allow_origin%"]
+        allow_methods: ["POST", "PUT", "GET", "DELETE", "OPTIONS"]
+        allow_headers: ["content-type", "authorization"]
+        max_age:       3600
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"

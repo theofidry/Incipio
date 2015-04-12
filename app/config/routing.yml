@@ -6,11 +6,11 @@ api:
     type:     json-ld
     prefix:   /api
 
+# FOSUserBundle
+fos_user:
+    resource: @FOSUserBundle/Resources/config/routing/all.xml
+
 # NelmioApiDocBundle
 NelmioApiDocBundle:
     resource: @NelmioApiDocBundle/Resources/config/routing.yml
     prefix:   /api-doc
-
-# FOSUserBundle
-fos_user:
-    resource: @FOSUserBundle/Resources/config/routing/all.xml
