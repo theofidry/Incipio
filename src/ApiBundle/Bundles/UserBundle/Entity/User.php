@@ -5,6 +5,7 @@ namespace ApiBundle\Bundles\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -13,6 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
  */
 class User extends BaseUser
 {
@@ -33,7 +36,7 @@ class User extends BaseUser
      * {@inheritdoc}
      *
      * @Assert\NotBlank
-     * @Groups({"test"})
+     * @Groups({"user"})
      */
     protected $username;
 
@@ -44,12 +47,17 @@ class User extends BaseUser
     protected $email;
 
     /**
+     * @Assert\NotBlank
+     * @Groups({"user"})
+     */
+    protected $password;
+
+    /**
      * {@inheritdoc}
      *
      * @Groups({"user"})
      */
     protected $groups;
-
     /**
      * {@inheritdoc}
      *
