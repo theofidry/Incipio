@@ -6,8 +6,11 @@ The purpose of this environment is to ease the development process. We preconfig
 
 ### Requirements
 
+Only works on OSX and Linux. For Windows Ansible is not available so you will have to install everything manually or give a try to this blog post: [www.azavea.com/blogs/labs/2014/10/running-vagrant-with-ansible-provisioning-on-windows](http://www.azavea.com/blogs/labs/2014/10/running-vagrant-with-ansible-provisioning-on-windows/]).
+
 * [Vagrant](http://docs.vagrantup.com/)
 * [Ansible](http://docs.ansible.com/)
+* [VirtualBox](https://www.virtualbox.org/)
 
 # Getting started
 
