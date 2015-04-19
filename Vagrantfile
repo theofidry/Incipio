@@ -12,6 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Use Ansible as its provisioner     
   config.vm.provision :ansible do |ansible|
     ansible.inventory_path = "ansible/inventory/hosts"
+    ansible.limit = "dev"
     ansible.playbook = "ansible/playbook.yml"
     # Enable this line if you wish to debug the provision
     # ansible.verbose = "vvvv"
