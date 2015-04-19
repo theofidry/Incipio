@@ -8,9 +8,26 @@ api:
     type:     json-ld
     prefix:   /api
 
-## FOSUserBundle
-#fos_user:
-#    resource: @FOSUserBundle/Resources/config/routing/all.xml
+#login:
+#    resource: @ApiUserBundle/Controller/SecurityController.php
+#    type:     annotation
+
+# FOSUserBundle
+fos_user_security_login:
+    path:     /login
+    defaults: { _controller: FOSUserBundle:Security:login }
+
+fos_user_security_check:
+    path:     /api/login_check
+    defaults: { _controller: FOSUserBundle:Security:check }
+
+fos_user_security_logout:
+    path:     /logout
+    defaults: { _controller: FOSUserBundle:Security:logout }
+
+front_default:
+    resource: @FrontBundle/Controller/DefaultController.php
+    type:     annotation
 
 # NelmioApiDocBundle
 NelmioApiDocBundle:

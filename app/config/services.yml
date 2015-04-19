@@ -3,8 +3,8 @@ parameters:
 
 services:
     alice.user.processor:
-        class: ApiBundle\Bundles\UserBundle\DataFixtures\ORM\UserProcessor
-        arguments: [@fos_user.user_manager]
+        class:     ApiBundle\Bundles\UserBundle\DataFixtures\ORM\UserProcessor
+        arguments: [ @fos_user.user_manager ]
         tags:
             - { name: alice.processor }
 
@@ -15,6 +15,6 @@ services:
         parent:    dunglas_json_ld_api.resource
         arguments: [ ApiBundle\Bundles\UserBundle\Entity\User ]
         calls:
-            - [ "initNormalizationContext", [ { groups: [ user ] } ] ]
-            - [ "initDenormalizationContext", [ { groups: [ user ] } ] ]
+            - [ initNormalizationContext, [ { groups: [ user ] } ] ]
+            - [ initDenormalizationContext, [ { groups: [ user ] } ] ]
         tags:      [ { name: json-ld.resource } ]

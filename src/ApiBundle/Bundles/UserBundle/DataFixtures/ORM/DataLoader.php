@@ -11,6 +11,9 @@ use Hautelook\AliceBundle\Alice\DataFixtureLoader;
  */
 class DataLoader extends DataFixtureLoader
 {
+    /**
+     * @return string Random Symfony role.
+     */
     public function role()
     {
         $roles = $this->container->get('api.user.roles')->getRoles();
