@@ -59,6 +59,15 @@ hautelook_alice:
     locale:   %locale_full%
     seed:     5123512343123
 
+# HappyRGoogleApiBundle
+happy_r_google_api:
+  application_name:     Incipio
+  oauth2_client_id:     '947095566004-f3sn0oo75e4jjettrmohj6rqlk73ekt8.apps.googleusercontent.com'
+  oauth2_client_secret: '-EerDH6j1emnjvIqWp9wEIVW'
+  oauth2_redirect_uri:  'https://incipio.fr/oauth2callback'
+  developer_key:        'AIzaSyAaCZadtvVInjUaRrU3NCUe12YnlawoXQU'
+  site_name:            incipio.fr
+
 # LewikJWTAuthentificationBundle
 lexik_jwt_authentication:
     private_key_path: %kernel.root_dir%/config/jwt/private.pem

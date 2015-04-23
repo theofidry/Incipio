@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ccef7e7f5c439086d301001af8e85fe3",
+    "hash": "4781a6a39beac2e18f9f412e108d81df",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1330,6 +1330,48 @@
             "time": "2015-02-24 21:41:37"
         },
         {
+            "name": "google/apiclient",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/google-api-php-client.git",
+                "reference": "9c35bbbbaf04a5236d763560dab1e2f6e672a724"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/9c35bbbbaf04a5236d763560dab1e2f6e672a724",
+                "reference": "9c35bbbbaf04a5236d763560dab1e2f6e672a724",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Client library for Google APIs",
+            "homepage": "http://developers.google.com/api-client-library/php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2014-11-25 14:35:03"
+        },
+        {
             "name": "guzzle/guzzle",
             "version": "v3.9.3",
             "source": {
@@ -1423,6 +1465,58 @@
                 "web service"
             ],
             "time": "2015-03-18 18:23:50"
+        },
+        {
+            "name": "happyr/google-api-bundle",
+            "version": "2.1.0",
+            "target-dir": "HappyR/Google/ApiBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Happyr/GoogleApiBundle.git",
+                "reference": "6d7a9a70ae90bab6ddeae0d9a5492f8bd81a142c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Happyr/GoogleApiBundle/zipball/6d7a9a70ae90bab6ddeae0d9a5492f8bd81a142c",
+                "reference": "6d7a9a70ae90bab6ddeae0d9a5492f8bd81a142c",
+                "shasum": ""
+            },
+            "require": {
+                "google/apiclient": "1.*",
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": "2.*",
+                "symfony/yaml": "2.*"
+            },
+            "require-dev": {
+                "mockery/mockery": "*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "HappyR\\Google\\ApiBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias@happyr.com"
+                }
+            ],
+            "description": "A Symfony2 Wrapper for the Google APIs Client Library for PHP",
+            "homepage": "http://developer.happyr.com/symfony2-bundles/google-api-bundle",
+            "keywords": [
+                "google api"
+            ],
+            "time": "2015-01-07 09:23:28"
         },
         {
             "name": "hautelook/alice-bundle",
