@@ -1,11 +1,7 @@
 # DunglasJsonLdBundle
-api_doc:
-    resource: @DunglasJsonLdApiBundle/Resources/config/routing.xml
-    prefix:   /api
-
 api:
     resource: .
-    type:     json-ld
+    type:     api
     prefix:   /api
 
 #login:

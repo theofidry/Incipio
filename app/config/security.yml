@@ -17,7 +17,6 @@ security:
 
         login:
             pattern:   ^/login|^/api/login
-            provider:  fos_userbundle
             stateless: true
             anonymous: true
             form_login:
@@ -31,7 +30,6 @@ security:
 
         api:
             pattern:   ^/api
-            provider:  fos_userbundle
             stateless: true
             anonymous: true
             lexik_jwt:

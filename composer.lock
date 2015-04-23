@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ccef7e7f5c439086d301001af8e85fe3",
+    "hash": "4393a827cb47b30a1fa27c2210b57d5d",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -859,17 +859,17 @@
             "time": "2014-12-16 13:45:01"
         },
         {
-            "name": "dunglas/json-ld-api-bundle",
+            "name": "dunglas/api-bundle",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/theofidry/DunglasJsonLdApiBundle.git",
-                "reference": "ce9f69db4a5f3b5e441e835e718ecabf1e822fd3"
+                "url": "https://github.com/dunglas/DunglasApiBundle.git",
+                "reference": "662cb80b3b81f9a962a73481f1488aae09b91b3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theofidry/DunglasJsonLdApiBundle/zipball/ce9f69db4a5f3b5e441e835e718ecabf1e822fd3",
-                "reference": "ce9f69db4a5f3b5e441e835e718ecabf1e822fd3",
+                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/662cb80b3b81f9a962a73481f1488aae09b91b3f",
+                "reference": "662cb80b3b81f9a962a73481f1488aae09b91b3f",
                 "shasum": ""
             },
             "require": {
@@ -877,10 +877,12 @@
                 "doctrine/inflector": "~1.0",
                 "doctrine/orm": "~2.2,>=2.2.3",
                 "dunglas/php-property-info": "~0.2",
+                "ocramius/proxy-manager": "~1.0",
                 "php": ">=5.5",
                 "phpdocumentor/reflection": "^1.0.7",
                 "symfony/framework-bundle": "~2.6|~3.0",
-                "symfony/serializer": "~3.0|~2.7@dev",
+                "symfony/proxy-manager-bridge": "~2.3",
+                "symfony/serializer": "~3.0|~2.7@beta",
                 "symfony/validator": "~2.5|~3.0"
             },
             "require-dev": {
@@ -889,10 +891,10 @@
                 "behat/mink-browserkit-driver": "~1.1",
                 "behat/mink-extension": "~2.0",
                 "behat/symfony2-extension": "~2.0",
-                "behatch/contexts": "~2.2",
+                "behatch/contexts": "~2.1",
                 "friendsofsymfony/user-bundle": "dev-master",
                 "phpspec/phpspec": "~2.0",
-                "symfony/symfony": "~2.7@dev"
+                "symfony/symfony": "~2.7@beta"
             },
             "suggest": {
                 "friendsofsymfony/user-bundle": "To use the FOSUserBundle bridge."
@@ -905,31 +907,30 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Dunglas\\JsonLdApiBundle\\": ""
+                    "Dunglas\\ApiBundle\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
                     "name": "Kévin Dunglas",
-                    "email": "dunglas@gmail.com"
+                    "email": "dunglas@gmail.com",
+                    "homepage": "http://dunglas.fr"
                 }
             ],
             "description": "JSON-LD / Hydra REST API for Symfony",
-            "homepage": "http://dunglas.fr",
+            "homepage": "http://api-platform.com",
             "keywords": [
-                "API",
                 "Hydra",
-                "JSON",
                 "JSON-LD",
-                "REST"
+                "api",
+                "json",
+                "rest"
             ],
-            "support": {
-                "source": "https://github.com/theofidry/DunglasJsonLdApiBundle/tree/master"
-            },
-            "time": "2015-04-07 07:18:41"
+            "time": "2015-04-26 10:04:17"
         },
         {
             "name": "dunglas/php-property-info",
@@ -2064,6 +2065,69 @@
             "time": "2014-07-23 18:24:17"
         },
         {
+            "name": "ocramius/proxy-manager",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ocramius/ProxyManager.git",
+                "reference": "a80a39fac4fbd771aea7d3871929933a3a1bbf3e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/a80a39fac4fbd771aea7d3871929933a3a1bbf3e",
+                "reference": "a80a39fac4fbd771aea7d3871929933a3a1bbf3e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-code": ">2.2.5,<3.0"
+            },
+            "require-dev": {
+                "ext-phar": "*",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "1.5.*"
+            },
+            "suggest": {
+                "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
+                "zendframework/zend-json": "To have the JsonRpc adapter (Remote Object feature)",
+                "zendframework/zend-soap": "To have the Soap adapter (Remote Object feature)",
+                "zendframework/zend-stdlib": "To use the hydrator proxy",
+                "zendframework/zend-xmlrpc": "To have the XmlRpc adapter (Remote Object feature)"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "ProxyManager\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com",
+                    "homepage": "http://ocramius.github.com/"
+                }
+            ],
+            "description": "A library providing utilities to generate, instantiate and generally operate with Object Proxies",
+            "homepage": "https://github.com/Ocramius/ProxyManager",
+            "keywords": [
+                "aop",
+                "lazy loading",
+                "proxy",
+                "proxy pattern",
+                "service proxies"
+            ],
+            "time": "2014-12-12 10:59:05"
+        },
+        {
             "name": "phpdocumentor/reflection",
             "version": "1.0.7",
             "source": {
@@ -2923,6 +2987,149 @@
                 "templating"
             ],
             "time": "2015-04-19 08:30:27"
+        },
+        {
+            "name": "zendframework/zend-code",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendCode.git",
+                "reference": "cfd5951ff4348e4430850560416c7ddb755f95d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendCode/zipball/cfd5951ff4348e4430850560416c7ddb755f95d3",
+                "reference": "cfd5951ff4348e4430850560416c7ddb755f95d3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23",
+                "zendframework/zend-eventmanager": "self.version"
+            },
+            "require-dev": {
+                "doctrine/common": ">=2.1",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "suggest": {
+                "doctrine/common": "Doctrine\\Common >=2.1 for annotation features",
+                "zendframework/zend-stdlib": "Zend\\Stdlib component"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev",
+                    "dev-develop": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Code\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides facilities to generate arbitrary code using an object oriented interface",
+            "homepage": "https://github.com/zendframework/zf2",
+            "keywords": [
+                "code",
+                "zf2"
+            ],
+            "time": "2015-04-01 17:59:08"
+        },
+        {
+            "name": "zendframework/zend-eventmanager",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendEventManager.git",
+                "reference": "38df5b567d4ff4d22144745c503ba0502d0d5695"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendEventManager/zipball/38df5b567d4ff4d22144745c503ba0502d0d5695",
+                "reference": "38df5b567d4ff4d22144745c503ba0502d0d5695",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev",
+                    "dev-develop": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\EventManager\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zf2",
+            "keywords": [
+                "eventmanager",
+                "zf2"
+            ],
+            "time": "2015-04-01 18:05:26"
+        },
+        {
+            "name": "zendframework/zend-stdlib",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendStdlib.git",
+                "reference": "eab586f4c18af3fa63c977611939f1f4a3cf1030"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/eab586f4c18af3fa63c977611939f1f4a3cf1030",
+                "reference": "eab586f4c18af3fa63c977611939f1f4a3cf1030",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23"
+            },
+            "require-dev": {
+                "zendframework/zend-eventmanager": "self.version",
+                "zendframework/zend-filter": "self.version",
+                "zendframework/zend-serializer": "self.version",
+                "zendframework/zend-servicemanager": "self.version"
+            },
+            "suggest": {
+                "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+                "zendframework/zend-filter": "To support naming strategy hydrator usage",
+                "zendframework/zend-serializer": "Zend\\Serializer component",
+                "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev",
+                    "dev-develop": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Stdlib\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zf2",
+            "keywords": [
+                "stdlib",
+                "zf2"
+            ],
+            "time": "2015-04-01 18:09:29"
         }
     ],
     "packages-dev": [
@@ -3399,16 +3606,16 @@
         },
         {
             "name": "dunglas/php-schema",
-            "version": "v0.4.1",
+            "version": "v0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dunglas/php-schema.git",
-                "reference": "0fa11f101118bfdf7a4f58c277add212bb3c49f9"
+                "reference": "a0ad7b451b3fa8bf33a3b04342ec06f77a6d51e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dunglas/php-schema/zipball/0fa11f101118bfdf7a4f58c277add212bb3c49f9",
-                "reference": "0fa11f101118bfdf7a4f58c277add212bb3c49f9",
+                "url": "https://api.github.com/repos/dunglas/php-schema/zipball/a0ad7b451b3fa8bf33a3b04342ec06f77a6d51e0",
+                "reference": "a0ad7b451b3fa8bf33a3b04342ec06f77a6d51e0",
                 "shasum": ""
             },
             "require": {
@@ -3465,7 +3672,7 @@
                 "semantic",
                 "symfony"
             ],
-            "time": "2015-04-06 20:20:54"
+            "time": "2015-04-22 07:50:07"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -4552,7 +4759,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "symfony/symfony": 10,
-        "dunglas/json-ld-api-bundle": 20,
+        "dunglas/api-bundle": 20,
         "friendsofsymfony/user-bundle": 20,
         "nelmio/api-doc-bundle": 20
     },
