@@ -2,9 +2,10 @@ ApiBundle\Bundles\UserBundle\Entity\User:
     user (template):
         username:      <userName()>
         email:         <email()>
-        roles:         [ <role()> ]
+        roles:         [ <userRole()> ]
         plainPassword: guest
         enabled:       true
+        #mandates:
 
     admin_user:
         username:      admin
@@ -29,7 +30,7 @@ ApiBundle\Bundles\UserBundle\Entity\User:
         roles:         [ ROLE_USER ]
 
     user_{0..50} (extends user):
-        enabled:       true
+        enabled: true
 
     user_{0..10} (extends user):
-        enabled:       false
+        enabled: false

@@ -1,0 +1,8 @@
+ApiBundle\Entity\Job:
+    job (template):
+        title:        <jobTitle()>
+        abbreviation: <jobAbbreviation()>
+        enabled:      <boolean()>
+
+    job_{1..100} (extends job):
+        id: ~

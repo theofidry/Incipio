@@ -1,19 +1,31 @@
 default:
+  calls:
+# Should be enabled once on Symfony 2.7 stable
+#    error_reporting: 16383 # E_ALL & ~E_USER_DREPRECATED
   suites:
     default:
       contexts:
-        - FeatureContext: { doctrine: "@doctrine" }
+        - FeatureContext:
+            doctrine:       @doctrine
+            jwtManager:     @lexik_jwt_authentication.jwt_manager
+            userManager:    @fos_user.user_manager
+            encoderFactory: @security.encoder_factory
         - Behat\MinkExtension\Context\MinkContext
-        - Sanpi\Behatch\Context\RestContext
-        - Sanpi\Behatch\Context\JsonContext
+        - behatch:json
+        - behatch:rest
   extensions:
-    Behat\Symfony2Extension:
-      kernel:
-        env: "test"
-        debug: "true"
     Behat\MinkExtension:
-      base_url: "http://example.com/"
+      base_url: http://localhost:8080/
       sessions:
         default:
           symfony2: ~
+    Behat\Symfony2Extension:
+      kernel:
+        env:   test
+        debug: true
     Sanpi\Behatch\Extension: ~
+    VIPSoft\DoctrineDataFixturesExtension\Extension:
+            lifetime:    feature
+            autoload:    true
+            directories: ~
+            fixtures:    ~

@@ -8,12 +8,15 @@
 	"folders": [
 		{
 			"id": "347479a6-b7c2-22d3-db38-8ba414c77ded",
-			"name": "JSON-LD",
+			"name": "API - JSON-LD/Hydra",
 			"description": "",
 			"write": true,
 			"order": [
+				"a208e382-7a6f-3449-8f0d-13f88beb6678",
+				"0cc156d2-bdbe-9386-3bc7-421806c2058b",
 				"f728640d-cf95-0b8c-7744-da65963544db",
-				"61bb6566-90b7-5487-63d2-677dc12c2560"
+				"61bb6566-90b7-5487-63d2-677dc12c2560",
+				"9388d264-e78e-8ce5-681a-fdef9355d262"
 			],
 			"collection_name": "Incipio",
 			"collection_owner": 0,
@@ -52,8 +55,40 @@
 	"remoteLink": "",
 	"public": false,
 	"write": true,
-	"hasRequests": true,
 	"requests": [
+		{
+			"id": "0cc156d2-bdbe-9386-3bc7-421806c2058b",
+			"headers": "Authorization: Bearer {{token}}\n",
+			"url": "{{host}}/api/contexts/Entrypoint",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [
+				{
+					"key": "username",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1430070437489,
+			"name": "Entrypoint",
+			"description": "",
+			"collectionId": "1ffd0783-1517-5bf3-fa37-a6edccac27d4",
+			"responses": [],
+			"synced": false
+		},
 		{
 			"id": "1b7a4cf9-308d-7fc3-4525-f70c822d814d",
 			"headers": "Authorization: Bearer {{token}}\n",
@@ -234,6 +269,76 @@
 			"responses": [],
 			"synced": false,
 			"rawModeData": "{\n    \"username\": \"john.doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"Azerty5.\"\n}"
+		},
+		{
+			"id": "9388d264-e78e-8ce5-681a-fdef9355d262",
+			"headers": "Authorization: Bearer {{token}}\n",
+			"url": "{{host}}/api-doc",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"collectionId": "1ffd0783-1517-5bf3-fa37-a6edccac27d4",
+			"data": [
+				{
+					"key": "username",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "Documentation",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1430070518760,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "347479a6-b7c2-22d3-db38-8ba414c77ded",
+			"synced": false
+		},
+		{
+			"id": "a208e382-7a6f-3449-8f0d-13f88beb6678",
+			"headers": "Authorization: Bearer {{token}}\n",
+			"url": "{{host}}/api",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"collectionId": "1ffd0783-1517-5bf3-fa37-a6edccac27d4",
+			"data": [
+				{
+					"key": "username",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "API",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1430070487320,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "347479a6-b7c2-22d3-db38-8ba414c77ded",
+			"synced": false
 		},
 		{
 			"id": "bacd8dd5-62ea-a391-0984-5bb8bbae51ff",

@@ -24,7 +24,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('api');
 
-
         return $treeBuilder;
     }
 }

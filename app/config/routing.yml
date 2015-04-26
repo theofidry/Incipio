@@ -21,8 +21,8 @@ fos_user_security_logout:
     path:     /logout
     defaults: { _controller: FOSUserBundle:Security:logout }
 
-front_default:
-    resource: @FrontBundle/Controller/DefaultController.php
+front:
+    resource: @FrontBundle/Controller
     type:     annotation
 
 # NelmioApiDocBundle

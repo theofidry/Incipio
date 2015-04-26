@@ -6,6 +6,16 @@ services:
     #
     # Resources
     #
+    resource.job:
+        parent:    api.resource
+        arguments: [ ApiBundle\Entity\Job ]
+        tags:      [ { name: api.resource } ]
+
+    resource.mandate:
+        parent:    api.resource
+        arguments: [ ApiBundle\Entity\Mandate ]
+        tags:      [ { name: api.resource } ]
+
     resource.user:
         parent:    api.resource
         arguments: [ ApiBundle\Bundles\UserBundle\Entity\User ]
