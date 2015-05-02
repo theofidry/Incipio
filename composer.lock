@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fd39726a9873a0a21d838061388206de",
+    "hash": "91dc10ac752d061783c30ac39c286128",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -864,12 +864,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dunglas/DunglasApiBundle.git",
-                "reference": "5058752276576241b896cc4d9ffd151850c6d812"
+                "reference": "8312c614584707fa2b449b0359803ec18832245a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/5058752276576241b896cc4d9ffd151850c6d812",
-                "reference": "5058752276576241b896cc4d9ffd151850c6d812",
+                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/8312c614584707fa2b449b0359803ec18832245a",
+                "reference": "8312c614584707fa2b449b0359803ec18832245a",
                 "shasum": ""
             },
             "require": {
@@ -930,7 +930,7 @@
                 "json",
                 "rest"
             ],
-            "time": "2015-04-28 21:03:20"
+            "time": "2015-05-02 11:17:57"
         },
         {
             "name": "dunglas/php-property-info",
@@ -1143,12 +1143,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "192c53916942847aee687722af54f431aead0b70"
+                "reference": "7bdbe66c90a27b2f8298230309ad8d0cfec1cb6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/192c53916942847aee687722af54f431aead0b70",
-                "reference": "192c53916942847aee687722af54f431aead0b70",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/7bdbe66c90a27b2f8298230309ad8d0cfec1cb6e",
+                "reference": "7bdbe66c90a27b2f8298230309ad8d0cfec1cb6e",
                 "shasum": ""
             },
             "require": {
@@ -1202,7 +1202,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2015-04-16 23:14:14"
+            "time": "2015-05-01 08:19:36"
         },
         {
             "name": "fzaninotto/faker",
@@ -1893,12 +1893,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "ad70ff96fa1f30b7478a68c06d8524d2d8a14be3"
+                "reference": "f7611613af585ac4c6c2d04eb0d4db0f9d01fee0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/ad70ff96fa1f30b7478a68c06d8524d2d8a14be3",
-                "reference": "ad70ff96fa1f30b7478a68c06d8524d2d8a14be3",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/f7611613af585ac4c6c2d04eb0d4db0f9d01fee0",
+                "reference": "f7611613af585ac4c6c2d04eb0d4db0f9d01fee0",
                 "shasum": ""
             },
             "require": {
@@ -1912,7 +1912,7 @@
                 "jms/serializer-bundle": "<0.11"
             },
             "require-dev": {
-                "dunglas/json-ld-api-bundle": "dev-master",
+                "dunglas/api-bundle": "dev-master",
                 "friendsofsymfony/rest-bundle": "~1.0",
                 "jms/serializer-bundle": ">=0.11",
                 "sensio/framework-extra-bundle": "~3.0",
@@ -1924,7 +1924,7 @@
                 "symfony/yaml": "~2.1"
             },
             "suggest": {
-                "dunglas/json-ld-api-bundle": "For making use of resources definitions of DunglasJsonLdApiBundle.",
+                "dunglas/api-bundle": "For making use of resources definitions of DunglasApiBundle.",
                 "friendsofsymfony/rest-bundle": "For making use of REST information in the doc.",
                 "jms/serializer": "For making use of serializer information in the doc.",
                 "symfony/form": "For using form definitions as input.",
@@ -1962,7 +1962,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2015-04-14 15:21:49"
+            "time": "2015-04-30 07:56:37"
         },
         {
             "name": "nelmio/cors-bundle",
@@ -2368,17 +2368,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v3.0.21",
+            "version": "v3.0.22",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "da23c78093676a823a1ff43a214987ea3fbf83c8"
+                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/da23c78093676a823a1ff43a214987ea3fbf83c8",
-                "reference": "da23c78093676a823a1ff43a214987ea3fbf83c8",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
+                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
                 "shasum": ""
             },
             "require": {
@@ -2424,7 +2424,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-04-10 06:20:46"
+            "time": "2015-05-02 16:23:08"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3503,16 +3503,16 @@
         },
         {
             "name": "behatch/contexts",
-            "version": "2.2",
+            "version": "2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behatch/contexts.git",
-                "reference": "eef7ab39ca896796bf3ba25a0fa5a95f15276eb7"
+                "reference": "67de9a82d08e7355628b8d1a707bddec13f945f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behatch/contexts/zipball/eef7ab39ca896796bf3ba25a0fa5a95f15276eb7",
-                "reference": "eef7ab39ca896796bf3ba25a0fa5a95f15276eb7",
+                "url": "https://api.github.com/repos/Behatch/contexts/zipball/67de9a82d08e7355628b8d1a707bddec13f945f2",
+                "reference": "67de9a82d08e7355628b8d1a707bddec13f945f2",
                 "shasum": ""
             },
             "require": {
@@ -3521,9 +3521,6 @@
                 "behat/mink-extension": "~2.0",
                 "justinrainbow/json-schema": "*",
                 "symfony/property-access": "~2.3"
-            },
-            "replace": {
-                "sanpi/behatch-skeleton": "self.version"
             },
             "require-dev": {
                 "atoum/atoum": "*@dev",
@@ -3548,7 +3545,7 @@
                 "Context",
                 "Symfony2"
             ],
-            "time": "2014-12-29 13:30:52"
+            "time": "2014-09-15 13:48:07"
         },
         {
             "name": "bit3/faker-cli",

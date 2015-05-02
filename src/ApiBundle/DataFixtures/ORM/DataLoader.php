@@ -48,8 +48,8 @@ class DataLoader extends DataFixtureLoader
     {
         return [
             __DIR__.'/job.yml',
-            __DIR__.'/user.yml',
             __DIR__.'/mandate.yml',
+            __DIR__.'/user.yml',
         ];
     }
 

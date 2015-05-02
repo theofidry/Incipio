@@ -3,6 +3,13 @@ ApiBundle\Entity\Job:
         title:        <jobTitle()>
         abbreviation: <jobAbbreviation()>
         enabled:      <boolean()>
+        #user:        Should be kept unset since because is set in the user entity
+        #mandate:     Should be kept unset since because is set in the mandate entity
 
-    job_{1..100} (extends job):
+    job__{1..100} (extends job):
         id: ~
+
+    job_president (extends job):
+        title:        President
+        abbreviation: PR
+        enabled:      true

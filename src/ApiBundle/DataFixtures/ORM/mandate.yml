@@ -2,8 +2,7 @@ ApiBundle\Entity\Mandate:
     mandate (template):
         startAt:          <dateTimeThisDecade()>
         endAt:            30%? <endMandateDateTime($startAt)>
-        jobs (unique):    <numberBetween(0, 12)>x @job*
-        users (unique):   <numberBetween(5, 25)>x @user_*
+        jobs (unique):    <numberBetween(0, 12)>x @job__*
 
     mandate_2005 (extends mandate):
         startAt: <startMandateDateTime(2005)>
@@ -40,3 +39,4 @@ ApiBundle\Entity\Mandate:
 
     mandate_2016 (extends mandate):
         startAt: <startMandateDateTime(2016)>
+        jobs:    [ @job_president ]

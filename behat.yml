@@ -5,14 +5,14 @@ default:
   suites:
     default:
       contexts:
+        - Behat\MinkExtension\Context\MinkContext
+        - behatch:json
+        - behatch:rest
         - FeatureContext:
             doctrine:       @doctrine
             jwtManager:     @lexik_jwt_authentication.jwt_manager
             userManager:    @fos_user.user_manager
             encoderFactory: @security.encoder_factory
-        - Behat\MinkExtension\Context\MinkContext
-        - behatch:json
-        - behatch:rest
   extensions:
     Behat\MinkExtension:
       base_url: http://localhost:8080/

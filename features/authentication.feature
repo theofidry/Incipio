@@ -18,15 +18,15 @@ Feature: Authenticate users
     When I send a "GET" request to "/api/contexts/Entrypoint"
     Then the response status code should be 200
 
-  Scenario: Access to the API without JWT token should be refused.
+#  Scenario: Access to the API without JWT token should be refused.
     #TODO
 
 
   #
   # Front side
   #
-  Scenario: Authenticate via the login page should redirect to the home page.
+#  Scenario: Authenticate via the login page should redirect to the home page.
     #TODO
 
-  Scenario: Access to a page without login first should redirect to the login page.
+#  Scenario: Access to a page without login first should redirect to the login page.
     #TODO

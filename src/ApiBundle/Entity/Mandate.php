@@ -47,29 +47,13 @@ class Mandate
     private $endAt;
 
     /**
-     * @var ArrayCollection List of jobs attached to this mandate.
+     * @var ArrayCollection<Job> List of jobs attached to this mandate.
      *
-     * @ORM\ManyToMany(targetEntity="Job")
-     * @ORM\JoinTable(
-     *  name="mandates_jobs",
-     *  joinColumns={
-     *      @ORM\JoinColumn(name="mandate_id", referencedColumnName="id")
-     *  },
-     *  inverseJoinColumns={
-     *      @ORM\JoinColumn(name="job_id", referencedColumnName="id", unique=false, nullable=false)
-     *  }
-     * )
+     * @ORM\OneToMany(targetEntity="Job", mappedBy="mandate")
+     *
      * TODO: validation: may have no jobs but a job requires at least one mandate
      */
     private $jobs;
-
-    /**
-     * @var ArrayCollection List of users for this mandate.
-     *
-     * @ORM\ManyToMany(targetEntity="ApiBundle\Bundles\UserBundle\Entity\User", mappedBy="mandates")
-     * TODO: validation: may have no user
-     **/
-    private $users;
 
     /**
      * Default constructor.
@@ -77,7 +61,6 @@ class Mandate
     public function __construct()
     {
         $this->jobs  = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     /**
@@ -139,21 +122,24 @@ class Mandate
     }
 
     /**
-     * Adds Job.
+     * Adds Job. Will automatically update job's mandate too.
      *
-     * @param Job $jobs
+     * @param Job $job
      *
      * @return $this
      */
-    public function addJob(Job $jobs)
+    public function addJob(Job $job)
     {
-        $this->jobs[] = $jobs;
+        if (false === $this->jobs->contains($job)) {
+            $this->jobs->add($job);
+        }
+        $job->setMandate($this);
 
         return $this;
     }
 
     /**
-     * Removes job.
+     * Removes job. Will automatically update job's mandate too.
      *
      * @param Job $job
      *
@@ -161,9 +147,9 @@ class Mandate
      */
     public function removeJob(Job $job)
     {
-        $key = array_search($job, $this->jobs->toArray(), true);
-        if (false !== $key) {
-            unset($this->jobs[$key]);
+        if ($this->jobs->contains($job)) {
+            $this->jobs->removeElement($job);
+            $job->setUser(null);
         }
 
         return $this;
@@ -177,49 +163,5 @@ class Mandate
     public function getJobs()
     {
         return $this->jobs;
-    }
-
-    /**
-     * Adds User.
-     *
-     * @param User $user
-     *
-     * @return $this
-     */
-    public function addUser(User $user)
-    {
-        $this->users[] = $user;
-        if (false === $user->getMandates()->contains($this)) {
-            $user->addMandate($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Removes user.
-     *
-     * @param User $user
-     *
-     * @return $this
-     */
-    public function removeUser(User $user)
-    {
-        $key = array_search($user, $this->users->toArray(), true);
-        if (false !== $key) {
-            unset($this->users[$key]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Gets Users.
-     *
-     * @return ArrayCollection<User>
-     */
-    public function getUsers()
-    {
-        return $this->users;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace ApiBundle\Entity;
 
+use ApiBundle\Bundles\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -58,6 +59,22 @@ class Job
      * @Assert\NotNull
      */
     private $enabled = true;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiBundle\Bundles\UserBundle\Entity\User", inversedBy="jobs")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @var Mandate
+     *
+     * @ORM\ManyToOne(targetEntity="Mandate", inversedBy="jobs")
+     * @ORM\JoinColumn(name="mandate_id", referencedColumnName="id")
+     */
+    private $mandate;
 
     /**
      * Get id.
@@ -139,5 +156,53 @@ class Job
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Sets User.
+     *
+     * @param User|null $user
+     *
+     * @return $this
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Gets User.
+     *
+     * @return User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Sets Mandate.
+     *
+     * @param Mandate $mandate
+     *
+     * @return $this
+     */
+    public function setMandate($mandate)
+    {
+        $this->mandate = $mandate;
+
+        return $this;
+    }
+
+    /**
+     * Gets Mandate.
+     *
+     * @return Mandate|null
+     */
+    public function getMandate()
+    {
+        return $this->mandate;
     }
 }

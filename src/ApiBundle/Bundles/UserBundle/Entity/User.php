@@ -2,6 +2,7 @@
 
 namespace ApiBundle\Bundles\UserBundle\Entity;
 
+use ApiBundle\Entity\Job;
 use ApiBundle\Entity\Mandate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,6 +45,8 @@ class User extends BaseUser
      * @Assert\Type("string")
      * @Assert\NotBlank
      * @Groups({"user"})
+     *
+     * @TODO: validation for username!
      */
     protected $username;
 
@@ -74,24 +77,17 @@ class User extends BaseUser
      *
      * @Groups({"user"})
      */
-    protected $groups;
-    /**
-     * {@inheritdoc}
-     *
-     * @Groups({"user"})
-     */
     protected $roles;
 
     /**
-     * @var ArrayCollection<Mandate> List of users for this mandate.
+     * @var ArrayCollection<Job> List of job for this mandate.
      *
-     * @ORM\ManyToMany(targetEntity="ApiBundle\Entity\Mandate", inversedBy="users")
-     * @ORM\JoinTable(name="users_mandates")
+     * @ORM\OneToMany(targetEntity="ApiBundle\Entity\Job", mappedBy="user")
      * @Groups({"user"})
      *
      * @TODO: validation: may have no user
      **/
-    protected $mandates;
+    protected $jobs;
 
     /**
      * {@inheritdoc}
@@ -100,50 +96,50 @@ class User extends BaseUser
     {
         parent::__construct();
 
-        $this->mandates = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
     }
 
     /**
-     * Adds Mandate.
+     * Adds Job. Will automatically update job's user too.
      *
-     * @param Mandate $mandate
+     * @param Job $job
      *
      * @return $this
      */
-    public function addMandate(Mandate $mandate)
+    public function addJob(Job $job)
     {
-        $this->mandates[] = $mandate;
-        if (false === $mandate->getUsers()->contains($this)) {
-            $mandate->addUser($this);
+        if (false === $this->jobs->contains($job)) {
+            $this->jobs->add($job);
+        }
+        $job->setUser($this);
+
+        return $this;
+    }
+
+    /**
+     * Removes job. Will automatically update job's user too.
+     *
+     * @param Job $job
+     *
+     * @return $this
+     */
+    public function removeJob(Job $job)
+    {
+        if ($this->jobs->contains($job)) {
+            $this->jobs->removeElement($job);
+            $job->setUser(null);
         }
 
         return $this;
     }
 
     /**
-     * Removes mandate.
+     * Gets Jobs.
      *
-     * @param Mandate $mandate
-     *
-     * @return $this
+     * @return ArrayCollection<Job>
      */
-    public function removeMandate(Mandate $mandate)
+    public function getJobs()
     {
-        $key = array_search($mandate, $this->mandates->toArray(), true);
-        if (false !== $key) {
-            unset($this->mandates[$key]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Gets mandate.
-     *
-     * @return ArrayCollection<Mandate>
-     */
-    public function getMandates()
-    {
-        return $this->mandates;
+        return $this->jobs;
     }
 }

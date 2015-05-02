@@ -13,6 +13,8 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * Defines application features from the specific context.
+ *
+ * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 class FeatureContext extends RawMinkContext implements Context, SnippetAcceptingContext, KernelAwareContext
 {
@@ -89,11 +91,20 @@ class FeatureContext extends RawMinkContext implements Context, SnippetAccepting
     public function authenticateAs($username)
     {
         $user = $this->userManager->findUserByUsername($username);
-        if (!$user) {
-            throw new \InvalidArgumentException(sprintf('No user with username %s can be found', $username));
+        if (null === $user) {
+            $user = $this->userManager->findUserByEmail($username);
+            if (null === $user) {
+                throw new \InvalidArgumentException(
+                    sprintf('No user with username or email %s can be found', $username)
+                );
+            }
         }
+
         $token = $this->jwtManager->create($user);
-        $client = $this->getSession()->getDriver()->getClient()->setServerParameter('HTTP_AUTHORIZATION', sprintf('Bearer %s', $token));
+        $this->getSession()->getDriver()->setRequestHeader(
+            'HTTP_AUTHORIZATION',
+            sprintf('Bearer %s', $token)
+        );
     }
 
     /**
@@ -107,12 +118,12 @@ class FeatureContext extends RawMinkContext implements Context, SnippetAccepting
     public function thePasswordForUserShouldBe($username, $password)
     {
         $user = $this->userManager->findUserByUsername($username);
-        if (!$user) {
+        if (null === $user) {
             throw new \InvalidArgumentException(sprintf('No user with username %s can be found', $username));
         }
         $encoder = $this->encoderFactory->getEncoder($user);
-        $valid = $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
-        if (!$valid) {
+        $valid   = $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
+        if (false === $valid) {
             throw new \Exception(sprintf('The password for user %s does not match %s', $username, $password));
         }
     }
