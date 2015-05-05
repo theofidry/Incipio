@@ -18,15 +18,22 @@ services:
         class: FrontBundle\Menu\MenuBuilder
         arguments:
             -  @knp_menu.factory
-            -  @security.token_storage
             -  @security.authorization_checker
+            -  @security.token_storage
 
     front.menu.header:
         class:           Knp\Menu\MenuItem
         factory_service: front.menu_builder
         factory_method:  createHeaderMenu
         arguments:       [ @request_stack, @knp_menu.factory ]
-        tags:            [ { name: knp_menu.menu, alias: header } ]
+        tags:            [ { name: knp_menu.menu, alias: header_menu } ]
+
+    front.menu.user:
+        class:           Knp\Menu\MenuItem
+        factory_service: front.menu_builder
+        factory_method:  createUserMenu
+        arguments:       [ @request_stack, @knp_menu.factory ]
+        tags:            [ { name: knp_menu.menu, alias: user_menu } ]
 
     #
     # Resources exposed to the API

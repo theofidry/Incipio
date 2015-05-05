@@ -19,6 +19,7 @@ class DashboardController extends Controller
      * Lists all User entities.
      *
      * @Route("/", name="dashboard")
+     *
      * @Method("GET")
      * @Template("FrontBundle::dashboard.html.twig")
      *

@@ -16,7 +16,8 @@
                 <a class="navbar-brand" href="#">Incipio</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                {{ knp_menu_render('header', {'template': 'FrontBundle:Menu:knp_menu.html.twig'}) }}
+                {{ knp_menu_render('header_menu', {'template': 'FrontBundle:Menu:knp_menu.html.twig'}) }}
+                {{ knp_menu_render('user_menu', {'template': 'FrontBundle:Menu:knp_menu.html.twig'}) }}
             </div>  <!--/.nav-collapse -->
         </div>
     </nav>

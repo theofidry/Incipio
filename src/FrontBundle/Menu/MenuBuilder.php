@@ -31,17 +31,17 @@ class MenuBuilder
 
     /**
      * @param FactoryInterface     $factory
-     * @param TokenStorage         $tokenStorage
      * @param AuthorizationChecker $authorizationChecker
+     * @param TokenStorage         $tokenStorage
      */
     public function __construct(
         FactoryInterface $factory,
-        TokenStorage $tokenStorage,
-        AuthorizationChecker $authorizationChecker)
-    {
-        $this->factory = $factory;
+        AuthorizationChecker $authorizationChecker,
+        TokenStorage $tokenStorage
+    ) {
+        $this->factory              = $factory;
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
+        $this->tokenStorage         = $tokenStorage;
     }
 
     /**
@@ -67,10 +67,14 @@ class MenuBuilder
         // Association Management
         $menu->addChild($this->createAssociationManagementMenu());
 
-//        nav navbar-nav navbar-right
         return $menu;
     }
 
+    /**
+     * Creates the menu for the association management.
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
     private function createAssociationManagementMenu()
     {
         $menu = $this->factory->createItem('association-management');
@@ -89,33 +93,54 @@ class MenuBuilder
         return $menu;
     }
 
-    private function createUserMenu()
+    /**
+     * Creates the menu for the user (name, profile, logout).
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createUserMenu()
     {
-        $menu = $this->factory->createItem('user');
-        $menu->setAttribute('dropdown', true);
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
 
-        if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_ANONYMOUSLY')) {
-            $menu->setLabel('Anonymous User');
+        // User Profile
+        // Check if user is authenticated
+        if (
+            !$this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
+            || !$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')
+        ) {
+            $menu->addChild('users',
+                [
+                    'label' => 'Login',
+                    'route' => 'fos_user_security_login',
+                ]
+            );
 
             return $menu;
         }
 
-        // User is properly authenticated
-        $user = $this->tokenStorage->getToken();
+        // User is authenticated
+        $user = $this->tokenStorage->getToken()->getUser();
 
-        $menu->addChild('profile',
-            [
-                'label' => 'Profil',
-                'route' => 'users',
-            ]
-        );
+        $subMmenu = $this->factory->createItem('user');
+        $subMmenu
+            ->setAttribute('dropdown', true)
+            ->setLabel($user->getUsername())
+            ->addChild('profile',
+                [
+                    'label' => 'Profil',
+                    'route' => 'users',
+                ]
+            )
+            ->addChild('logout',
+                [
+                    'label' => 'Déconnexion',
+                    'route' => 'fos_user_security_logout',
+                ]
+            )
+        ;
 
-        $menu->addChild('logout',
-            [
-                'label' => 'Déconnexion',
-                'route' => 'fos_user_security_logout',
-            ]
-        );
+        $menu->addChild($subMmenu);
 
         return $menu;
     }
