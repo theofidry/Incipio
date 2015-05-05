@@ -41,4 +41,3 @@ ApiBundle\Bundles\UserBundle\Entity\User:
 
     user__{0..10} (extends user):
         enabled: false
-

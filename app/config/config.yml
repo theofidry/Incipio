@@ -59,6 +59,14 @@ hautelook_alice:
     locale:   %locale_full%
     seed:     5123512343123
 
+# KnpMenuBundle
+knp_menu:
+    # use "twig: false" to disable the Twig extension and the TwigRenderer
+    twig:
+        template: knp_menu.html.twig
+    templating: false
+    default_renderer: twig
+
 # LewikJWTAuthentificationBundle
 lexik_jwt_authentication:
     private_key_path: %kernel.root_dir%/config/jwt/private.pem

@@ -7,14 +7,33 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
+    <link rel="stylesheet" href="{{ asset('assets/app.css') }}" />
+
     {# Open Sans font from Google CDN #}
     <link rel="stylesheet"
           type="text/css"
           href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin"/>
 </head>
 <body>
-    {% block header %}{% endblock %}
-    {% block sidebar %}{% endblock %}
-    {% block body %}{% endblock %}
+    <div id="header">
+        {% include 'FrontBundle:partials:header.html.twig' %}
+    </div>
+
+    <div class="container" id="blody">
+
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <h1>Navbar example</h1>
+            <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+            <p>To see the difference between static and fixed top navbars, just scroll.</p>
+            <p>
+                <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+            </p>
+        </div>
+
+    </div> <!-- /container -->
+
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
 </html>

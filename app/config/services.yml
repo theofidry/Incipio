@@ -3,8 +3,33 @@ parameters:
 
 services:
 
+    front.authentication.success_handler:
+        class: FrontBundle\Security\Http\Authentication\AuthenticationSuccessHandler
+        arguments:
+            -  @security.http_utils
+            -  @lexik_jwt_authentication.jwt_manager
+
     #
-    # Resources
+    # KNP Menus
+    #
+    # @see http://symfony.com/doc/master/bundles/KnpMenuBundle/menu_service.html
+    #
+    front.menu_builder:
+        class: FrontBundle\Menu\MenuBuilder
+        arguments:
+            -  @knp_menu.factory
+            -  @security.token_storage
+            -  @security.authorization_checker
+
+    front.menu.header:
+        class:           Knp\Menu\MenuItem
+        factory_service: front.menu_builder
+        factory_method:  createHeaderMenu
+        arguments:       [ @request_stack, @knp_menu.factory ]
+        tags:            [ { name: knp_menu.menu, alias: header } ]
+
+    #
+    # Resources exposed to the API
     #
     resource.job:
         parent:    api.resource
@@ -20,6 +45,6 @@ services:
         parent:    api.resource
         arguments: [ ApiBundle\Bundles\UserBundle\Entity\User ]
         calls:
-            - [ initNormalizationContext, [ { groups: [ user ] } ] ]
-            - [ initDenormalizationContext, [ { groups: [ user ] } ] ]
+            -      [ initNormalizationContext, [ { groups: [ user ] } ] ]
+            -      [ initDenormalizationContext, [ { groups: [ user ] } ] ]
         tags:      [ { name: api.resource } ]

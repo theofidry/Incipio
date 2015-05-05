@@ -39,6 +39,8 @@ class JwtAuthenticationTest extends WebTestCase
             throw new \Exception('Expected token in the response.');
         }
 
+        $client->getContainer()->get('session')->set('_security_main', serialize($token));
+
         $client = static::createClient();
         $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
 
