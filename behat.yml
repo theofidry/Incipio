@@ -2,6 +2,8 @@ default:
   calls:
 # Should be enabled once on Symfony 2.7 stable
 #    error_reporting: 16383 # E_ALL & ~E_USER_DREPRECATED
+  formatters:
+    pretty: true
   suites:
     default:
       contexts:

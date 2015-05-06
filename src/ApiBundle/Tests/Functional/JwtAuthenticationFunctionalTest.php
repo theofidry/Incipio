@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiBundle\Tests;
+namespace ApiBundle\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class JwtAuthenticationTest extends WebTestCase
+class JwtAuthenticationFunctionalTest extends WebTestCase
 {
     /**
      * Create a client with a default Authorization header.
@@ -21,7 +21,7 @@ class JwtAuthenticationTest extends WebTestCase
      *
      * @throws \Exception Thrown if could not get token.
      */
-    protected function createAuthenticatedClient($username = 'user', $password = 'password')
+    private function createAuthenticatedClient($username = 'user', $password = 'password')
     {
         $client = static::createClient();
         $client->setServerParameter('CONTENT_TYPE', 'multipart/form-data');
@@ -35,13 +35,15 @@ class JwtAuthenticationTest extends WebTestCase
         );
 
         $data = json_decode($client->getResponse()->getContent(), true);
+
         if (false === array_key_exists('token', $data)) {
             throw new \Exception('Expected token in the response.');
         }
 
+        $token = $data['token'];
         $client->getContainer()->get('session')->set('_security_main', serialize($token));
 
-        $client = static::createClient();
+        $client = self::createClient();
         $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
 
         return $client;
@@ -56,10 +58,13 @@ class JwtAuthenticationTest extends WebTestCase
     public function testGetPages($user, $page)
     {
         $client = $this->createAuthenticatedClient($user['username'], $user['password']);
-        $crawler = $client->request('GET', $page);
+        $client->request('GET', $page);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
+    /**
+     * @return array List of pages to access with users logins.
+     */
     public function authProvider()
     {
         $users = $this->userProvider();
@@ -106,13 +111,16 @@ class JwtAuthenticationTest extends WebTestCase
     }
 
     /**
-     * @return array List of pages.
+     * @return array List of API pages.
      */
     public function pageProvider()
     {
         return [
             ['/api/'],
             ['/api/contexts/Entrypoint'],
+            ['/api/jobs'],
+            ['/api/mandates'],
+            ['/api/users'],
             ['/api/vocab'],
             ['/api-doc/'],
         ];
