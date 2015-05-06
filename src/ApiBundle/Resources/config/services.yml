@@ -1,0 +1,25 @@
+parameters:
+#    parameter_name: value
+
+services:
+
+    #
+    # Resources exposed to the API
+    #
+    resource.job:
+        parent:    api.resource
+        arguments: [ ApiBundle\Entity\Job ]
+        tags:      [ { name: api.resource } ]
+
+    resource.mandate:
+        parent:    api.resource
+        arguments: [ ApiBundle\Entity\Mandate ]
+        tags:      [ { name: api.resource } ]
+
+    resource.user:
+        parent:    api.resource
+        arguments: [ ApiBundle\Bundle\UserBundle\Entity\User ]
+        calls:
+            -      [ initNormalizationContext, [ { groups: [ user ] } ] ]
+            -      [ initDenormalizationContext, [ { groups: [ user ] } ] ]
+        tags:      [ { name: api.resource } ]
