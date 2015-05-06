@@ -21,7 +21,7 @@ class JwtAuthenticationTest extends WebTestCase
      *
      * @throws \Exception Thrown if could not get token.
      */
-    protected function createAuthenticatedClient($username = 'user', $password = 'password')
+    private function createAuthenticatedClient($username = 'user', $password = 'password')
     {
         $client = static::createClient();
         $client->setServerParameter('CONTENT_TYPE', 'multipart/form-data');
@@ -35,13 +35,16 @@ class JwtAuthenticationTest extends WebTestCase
         );
 
         $data = json_decode($client->getResponse()->getContent(), true);
+        var_dump($data);
+        die;
         if (false === array_key_exists('token', $data)) {
             throw new \Exception('Expected token in the response.');
         }
 
+        $token = $data['token'];
         $client->getContainer()->get('session')->set('_security_main', serialize($token));
 
-        $client = static::createClient();
+        $client = self::createClient();
         $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
 
         return $client;
@@ -60,6 +63,9 @@ class JwtAuthenticationTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
+    /**
+     * @return array List of pages to access with users logins.
+     */
     public function authProvider()
     {
         $users = $this->userProvider();
@@ -106,13 +112,16 @@ class JwtAuthenticationTest extends WebTestCase
     }
 
     /**
-     * @return array List of pages.
+     * @return array List of API pages.
      */
     public function pageProvider()
     {
         return [
             ['/api/'],
             ['/api/contexts/Entrypoint'],
+            ['/api/jobs'],
+            ['/api/mandates'],
+            ['/api/users'],
             ['/api/vocab'],
             ['/api-doc/'],
         ];

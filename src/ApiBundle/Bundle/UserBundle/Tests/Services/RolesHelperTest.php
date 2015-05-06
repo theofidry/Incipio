@@ -35,6 +35,7 @@ class RolesHelperTest extends KernelTestCase
      */
     public function setUp()
     {
+        self::bootKernel();
         $this->service = self::$kernel->getContainer()->get('api.user.roles');
     }
 
