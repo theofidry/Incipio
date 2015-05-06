@@ -1,14 +1,14 @@
 <?php
 
-namespace ApiBundle\Bundles\UserBundle\Tests\Services;
+namespace ApiBundle\Bundle\UserBundle\Tests\Services;
 
-use ApiBundle\Bundles\UserBundle\Services\RolesHelper;
+use ApiBundle\Bundle\UserBundle\Services\RolesHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class RolesHelperTest.
  *
- * @see    ApiBundle\Bundles\UserBundle\Services\RolesHelper
+ * @see    ApiBundle\Bundle\UserBundle\Services\RolesHelper
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */

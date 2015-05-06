@@ -1,4 +1,4 @@
-ApiBundle\Bundles\UserBundle\Entity\User:
+ApiBundle\Bundle\UserBundle\Entity\User:
     user (template):
         username:      <userName()>
         email:         <email()>

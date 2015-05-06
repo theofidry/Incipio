@@ -1,14 +1,14 @@
 <?php
 
-namespace ApiBundle\Bundles\UserBundle\Tests\Faker\Provider;
+namespace ApiBundle\Bundle\UserBundle\Tests\Faker\Provider;
 
-use ApiBundle\Bundles\UserBundle\DataFixtures\Faker\Provider\UserProvider;
+use ApiBundle\Bundle\UserBundle\DataFixtures\Faker\Provider\UserProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class UserProviderTest.
  *
- * @see    ApiBundle\Bundles\UserBundle\Faker\Provider\UserProvider
+ * @see    ApiBundle\Bundle\UserBundle\Faker\Provider\UserProvider
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */

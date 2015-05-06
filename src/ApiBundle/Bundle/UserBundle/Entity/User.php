@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiBundle\Bundles\UserBundle\Entity;
+namespace ApiBundle\Bundle\UserBundle\Entity;
 
 use ApiBundle\Entity\Job;
 use ApiBundle\Entity\Mandate;

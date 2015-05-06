@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiBundle\Bundles\UserBundle\Controller;
+namespace ApiBundle\Bundle\UserBundle\Controller;
 
 /**
  * Class SecurityController.

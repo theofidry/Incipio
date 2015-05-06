@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiBundle\Bundles\UserBundle;
+namespace ApiBundle\Bundle\UserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

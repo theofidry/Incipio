@@ -1,16 +1,17 @@
 <?php
 
-namespace ApiBundle\Bundles\UserBundle\DataFixtures\Faker\Provider;
+namespace ApiBundle\Bundle\UserBundle\DataFixtures\Faker\Provider;
 
-use ApiBundle\Bundles\UserBundle\Services\RolesHelper;
+use ApiBundle\Bundle\UserBundle\Services\RolesHelper;
 use Faker\Generator;
+use Faker\Provider\Base as BaseProvider;
 
 /**
  * Class UserProvider.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class UserProvider extends \Faker\Provider\Base
+class UserProvider extends BaseProvider
 {
     /** @var RolesHelper */
     private $rolesHelper;

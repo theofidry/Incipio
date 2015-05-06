@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiBundle\Bundles\UserBundle\Services;
+namespace ApiBundle\Bundle\UserBundle\Services;
 
 /**
  * Class RolesHelper.

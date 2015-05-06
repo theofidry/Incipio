@@ -57,12 +57,15 @@ class MenuBuilder
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
 
         // Dashboard
-        $menu->addChild('dashboard',
-            [
-                'label' => 'Dashboard',
-                'route'   => 'dashboard',
-            ]
-        );
+        $menu
+            ->addChild('dashboard',
+                [
+                    'label' => 'Dashboard',
+                    'route' => 'dashboard',
+                ]
+            )
+            ->setAttribute('icon', 'fa fa-tachometer')
+        ;
 
         // Association Management
         $menu->addChild($this->createAssociationManagementMenu());
@@ -122,25 +125,19 @@ class MenuBuilder
         // User is authenticated
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $subMmenu = $this->factory->createItem('user');
-        $subMmenu
-            ->setAttribute('dropdown', true)
-            ->setLabel($user->getUsername())
-            ->addChild('profile',
-                [
-                    'label' => 'Profil',
-                    'route' => 'users',
-                ]
-            )
-            ->addChild('logout',
-                [
-                    'label' => 'Déconnexion',
-                    'route' => 'fos_user_security_logout',
-                ]
-            )
-        ;
+        $menu->addChild('profile',
+            [
+                'label' => $user->getUsername(),
+                'route' => 'users',
+            ]
+        );
 
-        $menu->addChild($subMmenu);
+        $menu->addChild('logout',
+            [
+                'label' => '',
+                'route' => 'fos_user_security_logout',
+            ]
+        )->setAttribute('icon', 'fa fa-sign-out');
 
         return $menu;
     }

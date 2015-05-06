@@ -1,0 +1,36 @@
+parameters:
+#    parameter_name: value
+
+services:
+
+    front.authentication.success_handler:
+        class: FrontBundle\Security\Http\Authentication\AuthenticationSuccessHandler
+        arguments:
+            -  @security.http_utils
+            -  @lexik_jwt_authentication.jwt_manager
+
+    #
+    # KNP Menus
+    #
+    # @see http://symfony.com/doc/master/bundles/KnpMenuBundle/menu_service.html
+    #
+    front.menu_builder:
+        class: FrontBundle\Menu\MenuBuilder
+        arguments:
+            -  @knp_menu.factory
+            -  @security.authorization_checker
+            -  @security.token_storage
+
+    front.menu.header:
+        class:           Knp\Menu\MenuItem
+        factory_service: front.menu_builder
+        factory_method:  createHeaderMenu
+        arguments:       [ @request_stack, @knp_menu.factory ]
+        tags:            [ { name: knp_menu.menu, alias: header_menu } ]
+
+    front.menu.user:
+        class:           Knp\Menu\MenuItem
+        factory_service: front.menu_builder
+        factory_method:  createUserMenu
+        arguments:       [ @request_stack, @knp_menu.factory ]
+        tags:            [ { name: knp_menu.menu, alias: user_menu } ]

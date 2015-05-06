@@ -2,7 +2,7 @@
 
 namespace ApiBundle\Entity;
 
-use ApiBundle\Bundles\UserBundle\Entity\User;
+use ApiBundle\Bundle\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -63,7 +63,7 @@ class Job
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="ApiBundle\Bundles\UserBundle\Entity\User", inversedBy="jobs")
+     * @ORM\ManyToOne(targetEntity="ApiBundle\Bundle\UserBundle\Entity\User", inversedBy="jobs")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
