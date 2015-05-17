@@ -8,9 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 /**
  * Class BaseControllerTest.
  *
- * @see FrontBundle\Controller\BaseController
+ * @coversDefaultClass FrontBundle\Controller\BaseController
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class BaseControllerTest extends TestCase
 {
@@ -28,12 +28,11 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Test BaseController::generateUrl().
+     * @covers       ::generateUrl
+     * @dataProvider dataProvider
      *
      * @param string $input    URI or ID to extract.
      * @param string $expected Expected output value.
-     *
-     * @dataProvider dataProvider
      */
     public function testGenerateUrl($input, $expected)
     {

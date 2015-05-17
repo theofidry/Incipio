@@ -7,9 +7,9 @@ use FrontBundle\Twig\FrontExtension;
 /**
  * Class FrontExtensionTest.
  *
- * @see FrontBundle\Twig\FrontExtension
+ * @coversDefaultClass FrontBundle\Twig\FrontExtension
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class FrontExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,6 +28,8 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if the filter is properly returned.
+     *
+     * @covers ::getFilters
      */
     public function testGetFilters()
     {
@@ -39,10 +41,11 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test FrontExtension::uriIdFilter().
      *
+     * @dataProvider uriIdProvider
+     * @covers       ::uriIdFilter
+     *
      * @param string $uri      Input value.
      * @param string $expected Expected output value.
-     *
-     * @dataProvider uriIdProvider
      */
     public function testUriIdFilter($uri, $expected)
     {
@@ -53,10 +56,10 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test FrontExtension::roleFilter().
      *
+     * @dataProvider roleProvider
+     *
      * @param string $role
      * @param string $expected
-     *
-     * @dataProvider roleProvider
      */
     public function testRoleFilter($role, $expected)
     {

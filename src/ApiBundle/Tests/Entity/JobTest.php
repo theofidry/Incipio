@@ -9,16 +9,28 @@ use ApiBundle\Entity\User;
 /**
  * Class JobTest.
  *
- * @see    ApiBundle\Entity\Job
+ * @coversDefaultClass ApiBundle\Entity\Job
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class JobTest extends EntityTestCaseAbstract
 {
     /**
      * {@inheritdoc}
      *
+     * @covers       ::setTitle
+     * @covers       ::getTitle
+     * @covers       ::setAbbreviation
+     * @covers       ::getAbbreviation
+     * @covers       ::setEnabled
+     * @covers       ::getEnabled
+     * @covers       ::setUser
+     * @covers       ::getUser
+     * @covers       ::setMandate
+     * @covers       ::getMandate
      * @dataProvider fluentDataProvider
+     *
+     * TODO: test on real database
      */
     public function testPropertyAccessors(array $data = [])
     {

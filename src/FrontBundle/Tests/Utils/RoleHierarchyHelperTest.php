@@ -7,9 +7,9 @@ use FrontBundle\Utils\RoleHierarchyHelper;
 /**
  * Class RoleHierarchyHelperTest.
  *
- * @see    FrontBundle\Utils\RoleHierarchyHelper
+ * @coversDefaultClass FrontBundle\Utils\RoleHierarchyHelper
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class RoleHierarchyHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,10 +29,11 @@ class RoleHierarchyHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * Test RoleHierarchyHelper::getTopLevelRole().
      *
+     * @dataProvider rolesProvider
+     * @covers       ::getTopLevelRole
+     *
      * @param array       $roles    List of roles.
      * @param string|null $expected Expected value returned by the method.
-     *
-     * @dataProvider rolesProvider
      */
     public function testGetTopLevelRole(array $roles, $expected)
     {

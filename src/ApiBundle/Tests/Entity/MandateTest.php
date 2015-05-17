@@ -8,16 +8,24 @@ use ApiBundle\Entity\Mandate;
 /**
  * Class MandateTest.
  *
- * @see    ApiBundle\Entity\Mandate
+ * @coversDefaultClass ApiBundle\Entity\Mandate
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class MandateTest extends EntityTestCaseAbstract
 {
     /**
      * {@inheritdoc}
      *
+     * @covers       ::setStartAt
+     * @covers       ::getStartAt
+     * @covers       ::setEndAt
+     * @covers       ::getEndAt
+     * @covers       ::addJob
+     * @covers       ::getJobs
      * @dataProvider fluentDataProvider
+     *
+     * TODO: test on real database
      */
     public function testPropertyAccessors(array $data = [])
     {

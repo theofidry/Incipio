@@ -8,9 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * Class ApiClientTest.
  *
- * @see    FrontBundle\Client\ApiClient
+ * @coversDefaultClass FrontBundle\Client\ApiClient
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class ApiClientTest extends KernelTestCase
 {
@@ -28,13 +28,14 @@ class ApiClientTest extends KernelTestCase
         $this->service = self::$kernel->getContainer()->get('api.client');
     }
 
-/**
- * @dataProvider routeProvider
- *
- * @param string $route Input route name.
- * @param string $uri   Route's URI.
- */
-    //TODO: refactor get method and add tests for headers too
+    /**
+     * @dataProvider routeProvider
+     *
+     * @param string $route Input route name.
+     * @param string $uri   Route's URI.
+     *
+     * TODO: refactor get method and add tests for headers too and add @cover annotation
+     */
     public function testUriGenerator($route, $uri)
     {
         $requests = $this->generatedRequests([
@@ -169,7 +170,7 @@ class ApiClientTest extends KernelTestCase
             ],
             [
                 0 => 'nelmio_api_doc_index',
-                1 => '/api-doc/',
+                1 => '/api-doc',
             ],
             [
                 0 => 'fos_user_security_login',

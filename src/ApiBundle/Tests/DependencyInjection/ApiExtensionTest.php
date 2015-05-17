@@ -8,14 +8,16 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 /**
  * Class ApiExtensionTest.
  *
- * @see ApiBundle\DependencyInjection\ApiExtension
+ * @coversDefaultClass ApiBundle\DependencyInjection\ApiExtension
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class ApiExtensionTest extends AbstractExtensionTestCase
 {
     /**
      * Ensure that the Bundle extension load properly.
+     *
+     * @covers ::load
      */
     public function testLoading()
     {

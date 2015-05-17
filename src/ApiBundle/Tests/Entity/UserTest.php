@@ -8,16 +8,31 @@ use ApiBundle\Entity\User;
 /**
  * Class UserTest.
  *
- * @see    ApiBundle\Entity\User
+ * @coversDefaultClass ApiBundle\Entity\User
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class UserTest extends EntityTestCaseAbstract
 {
     /**
      * {@inheritdoc}
      *
+     * @covers       ::setUsername
+     * @covers       ::getUsername
+     * @covers       ::setFullname
+     * @covers       ::setEmail
+     * @covers       ::getEmail
+     * @covers       ::setRoles
+     * @covers       ::getRoles
+     * @covers       ::setPlainPassword
+     * @covers       ::getPlainPassword
+     * @covers       ::setEnabled
+     * @covers       ::isEnabled
+     * @covers       ::addJob
+     * @covers       ::removeJob
      * @dataProvider fluentDataProvider
+     *
+     * TODO: test on real database
      */
     public function testPropertyAccessors(array $data = [])
     {

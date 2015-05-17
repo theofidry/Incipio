@@ -7,9 +7,9 @@ use ApiBundle\DataFixtures\Faker\Provider\JobProvider;
 /**
  * Class JobProviderTest.
  *
- * @see    ApiBundle\DataFixtures\Faker\Provider\JobProvider
+ * @coversDefaultClass ApiBundle\DataFixtures\Faker\Provider\JobProvider
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class JobProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class JobProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @var JobProvider
      */
-    private $provider;
+    protected $provider;
 
     /**
      * {@inheritdoc}
@@ -35,6 +35,9 @@ class JobProviderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the provider's methods.
+     *
+     * @covers ::jobTitle
+     * @covers ::jobAbbreviation
      */
     public function testProvider()
     {

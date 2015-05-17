@@ -7,9 +7,9 @@ use ApiBundle\DataFixtures\Faker\Provider\MandateProvider;
 /**
  * Class JobProviderTest.
  *
- * @see    ApiBundle\DataFixtures\Faker\Provider\MandateProvider
+ * @coversDefaultClass ApiBundle\DataFixtures\Faker\Provider\MandateProvider
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class MandateProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,6 +37,7 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
      * Test MandateProvider::startMandateDateTime() with invalid input.
      * Expect to get a datetime with current year.
      *
+     * @covers       ::startMandateDateTime
      * @dataProvider invalidStartMandateDateTimeInputProvider
      *
      * @param string|int $data Invalid input.
@@ -53,6 +54,8 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * Test MandateProvider::startMandateDateTime() with valid input.
      * Expect to get a datetime with the specified year.
+     *
+     * @covers ::startMandateDateTime
      */
     public function testStartMandateDateTime_withValidData()
     {
@@ -71,6 +74,8 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
      *
      * Note: not tested with invalid input since it has been designed to be used with the result of
      * MandateProvider::startMandateDateTime() as an input!
+     *
+     * @covers ::endMandateDateTime
      */
     public function testEndMandateDateTime()
     {

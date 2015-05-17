@@ -20,6 +20,7 @@ abstract class EntityTestCaseAbstract extends \PHPUnit_Framework_TestCase implem
      * Note: this method looks for hasser, removers and setters. It works on most cases but it still possible to have
      * some edge cases not handled. In this case do overwrite this method.
      *
+     * @coversNothing
      * @dataProvider fluentDataProvider
      */
     public function testFluentImplementation(array $data = [])

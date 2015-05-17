@@ -8,9 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * Class UserProviderTest.
  *
- * @see    ApiBundle\DataFixtures\Faker\Provider\UserProvider
+ * @coversDefaultClass ApiBundle\DataFixtures\Faker\Provider\UserProvider
  *
- * @author Théo FIDRY <theo.fidry@gmail.com>
+ * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class UserProviderTest extends KernelTestCase
 {
@@ -44,6 +44,8 @@ class UserProviderTest extends KernelTestCase
 
     /**
      * Test the provider's methods.
+     *
+     * @covers ::userRole
      */
     public function testProvider()
     {
