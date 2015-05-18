@@ -1,3 +1,7 @@
 api_security_check:
     path:     /login_check
     defaults: { _controller: FOSUserBundle:Security:check }
+
+tempo:
+    resource: @ApiBundle/Controller
+    type:     annotation

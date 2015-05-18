@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Mandate.
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ApiBundle\Entity\MandateRepository")
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
