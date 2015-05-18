@@ -192,8 +192,8 @@ td, th {
 
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('../fonts/bootstrap/glyphicons-halflings-regular.eot');
-  src: url('../fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg'); }
+  src: url('/assets/fonts/bootstrap/glyphicons-halflings-regular.eot');
+  src: url('/assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url('/assets/fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('/assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg'); }
 
 .glyphicon {
   position: relative;
@@ -4908,6 +4908,14 @@ button.close {
 
 table.table-vcentered td {
   vertical-align: middle !important; }
+
+table.table-head-bordered > thead > tr > th, table.table-head-bordered > thead > tr > td {
+  border: 1px solid #ddd;
+  border-bottom-width: 2px; }
+table.table-head-bordered > thead > tr > th:first-child, table.table-head-bordered > thead > tr > td:first-child {
+  border-left: none; }
+table.table-head-bordered > thead > tr > th:last-child, table.table-head-bordered > thead > tr > td:last-child {
+  border-right: none; }
 
 #body {
   margin-top: 50px; }

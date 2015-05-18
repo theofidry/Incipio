@@ -9,33 +9,32 @@
  * file that was distributed with this source code.
  */
 
-namespace FrontBundle\Controller;
+namespace ApiBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class DashboardController.
+ * Class MandateController.
+ *
+ * @Route("/test")
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class DashboardController extends Controller
+class MandateController extends Controller
 {
     /**
-     * Lists all User entities.
-     *
-     * @Route("/", name="dashboard")
+     * @Route("/", name="test")
      *
      * @Method("GET")
-     * @Template("FrontBundle::dashboard.html.twig")
-     *
-     * @return Response
      */
-    public function indexAction()
+    public function currentAction()
     {
-        return [];
+        $test = $this->getDoctrine()->getManager()->getRepository('ApiBundle:Mandate')->findCurrent();
+
+        dump($test);die();
     }
 }

@@ -1,9 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Incipio package.
+ *
+ * (c) Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiBundle\Tests\Entity;
 
 use ApiBundle\Entity\Job;
 use ApiBundle\Entity\Mandate;
+use ApiBundle\Test\Entity\AbstractEntityTestCase;
 
 /**
  * Class MandateTest.
@@ -12,7 +22,7 @@ use ApiBundle\Entity\Mandate;
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
-class MandateTest extends EntityTestCaseAbstract
+class MandateTest extends AbstractEntityTestCase
 {
     /**
      * {@inheritdoc}
