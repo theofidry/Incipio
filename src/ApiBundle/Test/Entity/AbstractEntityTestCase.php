@@ -1,8 +1,17 @@
 <?php
 
-namespace ApiBundle\Tests\Entity;
+/*
+ * This file is part of the Incipio package.
+ *
+ * (c) Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use ApiBundle\Tests\FluentTestCaseInterface;
+namespace ApiBundle\Test\Entity;
+
+use ApiBundle\Test\FluentTestCaseInterface;
 use Symfony\Component\PropertyAccess\StringUtil;
 
 /**
@@ -12,7 +21,7 @@ use Symfony\Component\PropertyAccess\StringUtil;
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-abstract class EntityTestCaseAbstract extends \PHPUnit_Framework_TestCase implements FluentTestCaseInterface
+abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implements FluentTestCaseInterface
 {
     /**
      * {@inheritdoc}
