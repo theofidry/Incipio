@@ -12,6 +12,7 @@
 namespace FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -21,6 +22,29 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class BaseController extends Controller
 {
+    /**
+     * @var \FrontBundle\Client\ApiClient
+     */
+    protected $client;
+
+    /**
+     * @var \Symfony\Component\Serializer\Serializer
+     */
+    protected $serializer;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+
+        if (null !== $container) {
+            $this->client = $container->get('api.client');
+            $this->serializer = $container->get('serializer');
+        }
+    }
+
     /**
      * {@inheritdoc}
      *

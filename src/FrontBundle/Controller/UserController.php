@@ -45,13 +45,11 @@ class UserController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        $client = $this->get('api.client');
-        $serializer = $this->get('serializer');
         $roleHelper = $this->get('front.security.roles.helper');
 
         // Retrieve users
-        $jsonContent = $client->get('users_cget', $request->getSession()->get('api_token'))->send()->getBody(true);
-        $users = $serializer->decode($jsonContent, 'json');
+        $jsonContent = $this->client->get('users_cget', $request->getSession()->get('api_token'))->send()->getBody(true);
+        $users = $this->serializer->decode($jsonContent, 'json');
 
         // Add top level role
         foreach ($users['hydra:member'] as $key => $user) {
