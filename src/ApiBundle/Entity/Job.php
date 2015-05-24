@@ -47,7 +47,7 @@ class Job
      *  min = 2,
      *  max = 100
      * )
-     * @Groups({"user"})
+     * @Groups({"job", "user"})
      */
     private $title;
 
@@ -58,7 +58,7 @@ class Job
      * @ORM\Column(name="abbreviation", type="string", length=255, nullable=true)
      * @Assert\Type("string")
      * @Assert\Length(max = 20)
-     * @Groups({"user"})
+     * @Groups({"job", "user"})
      */
     private $abbreviation;
 
@@ -76,6 +76,7 @@ class Job
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @Groups({"job"})
      */
     private $user;
 
@@ -84,7 +85,7 @@ class Job
      *
      * @ORM\ManyToOne(targetEntity="Mandate", inversedBy="jobs")
      * @ORM\JoinColumn(name="mandate_id", referencedColumnName="id")
-     * @Groups({"user"})
+     * @Groups({"job", "user"})
      */
     private $mandate;
 

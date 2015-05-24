@@ -11,13 +11,15 @@ default:
             paths:    [ %paths.base%/features/api ]
             contexts:
                 - ApiContext:
-                    doctrine:       @doctrine
-                    jwtManager:     @lexik_jwt_authentication.jwt_manager
-                    userManager:    @fos_user.user_manager
-                    encoderFactory: @security.encoder_factory
+                      doctrine:       @doctrine
+                      jwtManager:     @lexik_jwt_authentication.jwt_manager
+                      userManager:    @fos_user.user_manager
+                      encoderFactory: @security.encoder_factory
                 - Behat\MinkExtension\Context\MinkContext
-                - behatch:json
-                - JsonLdContext
+                - JsonContext:
+                      evaluationMode: javascript
+                - JsonLdContext:
+                      evaluationMode: javascript
 
         front_features:
             paths:    [ %paths.base%/features/front ]

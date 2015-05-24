@@ -10,9 +10,14 @@ services:
     #
     # Resources exposed to the API
     #
+    resource.job.search_filter
+
     resource.job:
         parent:    api.resource
         arguments: [ ApiBundle\Entity\Job ]
+        calls:
+            - method:    initNormalizationContext
+              arguments: [ { groups: [ job, user ] } ]
         tags:      [ { name: api.resource } ]
 
     resource.mandate:
@@ -24,6 +29,6 @@ services:
         parent:    api.resource
         arguments: [ ApiBundle\Entity\User ]
         calls:
-            -      [ initNormalizationContext, [ { groups: [ user ] } ] ]
-            -      [ initDenormalizationContext, [ { groups: [ user ] } ] ]
+            - method:    initNormalizationContext
+              arguments: [ { groups: [ user ] } ]
         tags:      [ { name: api.resource } ]

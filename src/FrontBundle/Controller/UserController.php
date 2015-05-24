@@ -101,13 +101,9 @@ class UserController extends BaseController
      */
     public function newAction()
     {
-        $entity = new User();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm();
 
-        return array(
-            'entity' => $entity,
-            'form' => $form->createView(),
-        );
+        return ['form' => $form->createView()];
     }
 
     /**
@@ -158,10 +154,7 @@ class UserController extends BaseController
      */
     public function editAction(Request $request, $id)
     {
-        $client = $this->get('api.client');
-        $serializer = $this->get('serializer');
-
-        $response = $client->get(
+        $response = $this->client->get(
             $this->get('router')->generate('users_get', ['id' => $id]),
             $request->getSession()->get('api_token')
         )->send();
@@ -171,11 +164,11 @@ class UserController extends BaseController
         }
 
         $jsonContent = $response->getBody(true);
-        $user = $serializer->decode($jsonContent, 'json');
+        $user = $this->serializer->decode($jsonContent, 'json');
 
         return [
             'user' => $user,
-            'edit_form' => $this->createEditForm($user)->createView(),
+            'form' => $this->createEditForm($user)->createView(),
         ];
     }
 
@@ -189,30 +182,52 @@ class UserController extends BaseController
      */
     public function updateAction(Request $request, $id)
     {
+        $response = $this->client->get(
+            'users_cget',
+            $request->getSession()->get('api_token'),
+            ['query' => [
+                ''
+                ]
+            ]
+        )->send();
+
+        if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $jsonContent = $response->getBody(true);
+        $user = $this->serializer->decode($jsonContent, 'json');
+
+        dump($user);die();
+        
+//        return [
+//            'user' => $user,
+//            'form' => $this->createEditForm($user)->createView(),
+//        ];
         //TODO
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $entity = $em->getRepository('ApiUserBundle:User')->find($id);
-//
-//        if (!$entity) {
-//            throw $this->createNotFoundException('Unable to find User entity.');
-//        }
-//
-//        $deleteForm = $this->createDeleteForm($id);
-//        $editForm = $this->createEditForm($entity);
-//        $editForm->handleRequest($request);
-//
-//        if ($editForm->isValid()) {
-//            $em->flush();
-//
-//            return $this->redirect($this->generateUrl('users_edit', array('id' => $id)));
-//        }
-//
-//        return array(
-//            'entity' => $entity,
-//            'edit_form' => $editForm->createView(),
-//            'delete_form' => $deleteForm->createView(),
-//        );
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ApiUserBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($entity);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid()) {
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('users_edit', array('id' => $id)));
+        }
+
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        );
     }
 
     /**
@@ -245,20 +260,18 @@ class UserController extends BaseController
     /**
      * Creates a form to create a User entity.
      *
-     * @param User $entity The entity
+     * @param array|null $user The normalized user.
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\Form
      */
-    private function createCreateForm(User $entity)
+    private function createCreateForm(array $user = [])
     {
         $form = $this->createForm(new UserType(),
-            $entity,
-            array(
+            $user,
+            [
                 'action' => $this->generateUrl('users_create'),
                 'method' => 'POST',
-            ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
+            ]);
 
         return $form;
     }
@@ -266,7 +279,7 @@ class UserController extends BaseController
     /**
      * Creates a form to edit a User entity.
      *
-     * @param array $user The user in decoded JSON format.
+     * @param array $user The normalized user.
      *
      * @return \Symfony\Component\Form\Form The form
      */

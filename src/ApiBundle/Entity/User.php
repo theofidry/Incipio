@@ -53,7 +53,7 @@ class User extends BaseUser
      *
      * @Assert\Type("string")
      * @Assert\NotBlank
-     * @Groups({"user"})
+     * @Groups({"job", "user"})
      *
      * @TODO: validation for username!
      */

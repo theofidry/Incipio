@@ -5,7 +5,14 @@ Feature: Jobs management
   A job may be left empty.
   New jobs are created for the current mandate.
 
-#  Scenario: It should be possible to get all the jobs.
+  Background:
+    Given I authenticate myself as admin
+
+  Scenario: It should be possible to get all the jobs.
+    When I send a GET request to "/api/jobs"
+    Then I get a page collection with the context "/api/contexts/Job"
+    And the JSON node "hydra:totalItems" should be higher than 55
+
     #TODO
 
 #  Scenario: It should be possible to get all the enabled jobs.

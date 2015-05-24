@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d60e44d4d1140810d512ef262bf3499",
+    "hash": "9f202f9d22642db808e692f5c74a763e",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -864,12 +864,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dunglas/DunglasApiBundle.git",
-                "reference": "7658b196dc4fe906012a6f4ca70352769ef00d81"
+                "reference": "7284d40261c770b5a960f2f086ce9bcb842593ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/7658b196dc4fe906012a6f4ca70352769ef00d81",
-                "reference": "7658b196dc4fe906012a6f4ca70352769ef00d81",
+                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/7284d40261c770b5a960f2f086ce9bcb842593ec",
+                "reference": "7284d40261c770b5a960f2f086ce9bcb842593ec",
                 "shasum": ""
             },
             "require": {
@@ -891,9 +891,10 @@
                 "behat/mink-browserkit-driver": "~1.1",
                 "behat/mink-extension": "~2.0",
                 "behat/symfony2-extension": "~2.0",
-                "behatch/contexts": "~2.1",
+                "behatch/contexts": "dev-master#eef7ab39ca896796bf3ba25a0fa5a95f15276eb7",
                 "friendsofsymfony/user-bundle": "dev-master",
                 "phpspec/phpspec": "~2.0",
+                "phpunit/phpunit": "~4.6",
                 "symfony/symfony": "~2.7@beta"
             },
             "suggest": {
@@ -930,7 +931,7 @@
                 "json",
                 "rest"
             ],
-            "time": "2015-05-14 21:45:06"
+            "time": "2015-05-22 17:43:22"
         },
         {
             "name": "dunglas/php-property-info",
@@ -2011,12 +2012,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "de31760fd84a45fadbb4fe24db050b5e29ea70d1"
+                "reference": "e505139f98dbf7e86d02596ced18cf6f928d48a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/de31760fd84a45fadbb4fe24db050b5e29ea70d1",
-                "reference": "de31760fd84a45fadbb4fe24db050b5e29ea70d1",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/e505139f98dbf7e86d02596ced18cf6f928d48a3",
+                "reference": "e505139f98dbf7e86d02596ced18cf6f928d48a3",
                 "shasum": ""
             },
             "require": {
@@ -2080,7 +2081,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2015-05-16 17:16:14"
+            "time": "2015-05-22 09:49:13"
         },
         {
             "name": "nelmio/cors-bundle",
@@ -2601,16 +2602,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "cecb1397087dc9c733796eda6e9d121336039cdc"
+                "reference": "cde03c48d490d805ef1349e5108f8b3085981ead"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/cecb1397087dc9c733796eda6e9d121336039cdc",
-                "reference": "cecb1397087dc9c733796eda6e9d121336039cdc",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/cde03c48d490d805ef1349e5108f8b3085981ead",
+                "reference": "cde03c48d490d805ef1349e5108f8b3085981ead",
                 "shasum": ""
             },
             "require": {
@@ -2642,7 +2643,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2015-04-21 07:52:05"
+            "time": "2015-05-22 14:21:04"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -3631,29 +3632,32 @@
         },
         {
             "name": "behatch/contexts",
-            "version": "2.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behatch/contexts.git",
-                "reference": "67de9a82d08e7355628b8d1a707bddec13f945f2"
+                "reference": "eef7ab39ca896796bf3ba25a0fa5a95f15276eb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behatch/contexts/zipball/67de9a82d08e7355628b8d1a707bddec13f945f2",
-                "reference": "67de9a82d08e7355628b8d1a707bddec13f945f2",
+                "url": "https://api.github.com/repos/Behatch/contexts/zipball/3fa54953da9cbb231d15d51fa8b0aa2c2e33530a",
+                "reference": "eef7ab39ca896796bf3ba25a0fa5a95f15276eb7",
                 "shasum": ""
             },
             "require": {
-                "behat/behat": "3.*",
-                "behat/mink": "*",
+                "behat/behat": "~3.0",
                 "behat/mink-extension": "~2.0",
-                "justinrainbow/json-schema": "*",
+                "justinrainbow/json-schema": "~1.4",
+                "php": "~5.4",
                 "symfony/property-access": "~2.3"
             },
+            "replace": {
+                "sanpi/behatch-contexts": "self.version"
+            },
             "require-dev": {
-                "atoum/atoum": "*@dev",
-                "behat/mink-goutte-driver": "*",
-                "behat/mink-selenium2-driver": "*",
+                "atoum/atoum": "dev-master",
+                "behat/mink-goutte-driver": "~1.1",
+                "behat/mink-selenium2-driver": "~1.2",
                 "kherge/box": "~2.0"
             },
             "type": "library",
@@ -3673,7 +3677,7 @@
                 "Context",
                 "Symfony2"
             ],
-            "time": "2014-09-15 13:48:07"
+            "time": "2014-12-29 13:30:52"
         },
         {
             "name": "bit3/faker-cli",
@@ -5276,6 +5280,7 @@
         "friendsofsymfony/user-bundle": 20,
         "nelmio/api-doc-bundle": 20,
         "behat/symfony2-extension": 20,
+        "behatch/contexts": 20,
         "codeclimate/php-test-reporter": 20,
         "symfony/phpunit-bridge": 10,
         "vipsoft/doctrine-data-fixtures-extension": 20
