@@ -8,12 +8,52 @@ services:
         arguments: [ %security.role_hierarchy.roles% ]
 
     #
+    # Native Filters
+    #
+    api.dunglas_filter.where_filter:
+        parent:   api.doctrine.orm.search_filter
+        class:    ApiBundle\Filter\WhereFilter
+        abstract: true
+        public:   false
+        calls:
+            - method:    initParameter
+              arguments: [ where ]
+
+    api.dunglas_filter.order_filter:
+        parent:   api.doctrine.orm.order_filter
+        class:    ApiBundle\Filter\OrderFilter
+        abstract: true
+        public:   false
+        calls:
+            - method:    initParameter
+              arguments: [ order ]
+
+    api.filter.where_filter:
+        parent:   api.dunglas_filter.where_filter
+        class:    ApiBundle\Filter\WhereFilter
+        public:   false
+
+    api.filter.order_filter:
+        parent:   api.dunglas_filter.order_filter
+        class:    ApiBundle\Filter\OrderFilter
+        public:   false
+
+
+    #
     # Resources exposed to the API
     #
-    resource.job.search_filter
+    api.app_resource:
+        parent:   api.resource
+        abstract: true
+        public:   false
+        calls:
+            - method:    addFilter
+              arguments: [ @api.filter.where_filter ]
+            - method:    addFilter
+              arguments: [ @api.filter.order_filter ]
 
     resource.job:
-        parent:    api.resource
+        parent:    api.app_resource
         arguments: [ ApiBundle\Entity\Job ]
         calls:
             - method:    initNormalizationContext
@@ -21,9 +61,17 @@ services:
         tags:      [ { name: api.resource } ]
 
     resource.mandate:
-        parent:    api.resource
+        parent:    api.app_resource
         arguments: [ ApiBundle\Entity\Mandate ]
         tags:      [ { name: api.resource } ]
+
+    resource.user.where_filter:
+        parent:    api.dunglas_filter.where_filter
+        arguments: [ [ 'id', 'username', 'fullname', 'email', 'roles' ] ]
+
+    resource.user.order_filter:
+        parent:    api.dunglas_filter.order_filter
+        arguments: [ [ 'id', 'username', 'fullname', 'email', 'roles' ] ]
 
     resource.user:
         parent:    api.resource
@@ -31,4 +79,8 @@ services:
         calls:
             - method:    initNormalizationContext
               arguments: [ { groups: [ user ] } ]
+            - method:    addFilter
+              arguments: [ @resource.user.where_filter ]
+            - method:    addFilter
+              arguments: [ @resource.user.order_filter ]
         tags:      [ { name: api.resource } ]
