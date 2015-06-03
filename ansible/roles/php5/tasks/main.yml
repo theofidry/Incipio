@@ -6,9 +6,9 @@
 
 - name: Enable PHP packages
   sudo: yes
-  command: /usr/sbin/php5enmod {{ item.name }} creates=/etc/php5/cli/conf.d/20-{{ item.name }}.ini
+  command:    /usr/sbin/php5enmod {{ item.name }} creates=/etc/php5/cli/conf.d/20-{{ item.name }}.ini
   with_items: php_packages
-  notify:  Restart php5-fpm
+  notify:     Restart php5-fpm
 
 - name:  Install PHP extensions
   sudo:  yes

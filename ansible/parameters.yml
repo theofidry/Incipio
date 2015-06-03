@@ -1,5 +1,5 @@
 symfony_src_dir: symfony-app
-symfony_owner: vagrant
+symfony_owner:   vagrant
 
 doc_root: /var/www/symfony-app/web
 
@@ -18,8 +18,8 @@ php_packages:
   - { name: redis, package: php5-redis }
 
 php_extensions:
-  - { name: "jsmin", package: "pecl.php.net/jsmin-beta" }
-  - { name: "xhprof", package: "pecl.php.net/xhprof-beta" }
+  - { name: jsmin, package: pecl.php.net/jsmin-beta }
+  - { name: xhprof, package: pecl.php.net/xhprof-beta }
 
 php_ppa: php5
 
@@ -28,8 +28,8 @@ php_global_settings_override:
 
 # TODO: cf issue https://github.com/knopki/ansible-locale/issues/5
 # Maybe use https://github.com/knopki as module instead of our custom?
-locale: en_US.UTF-8
+locale:          en_US.UTF-8
 locale_language: en
-locale_ctype: en_US.UTF-8
+locale_ctype:    en_US.UTF-8
 
 composer_path: /usr/bin/composer

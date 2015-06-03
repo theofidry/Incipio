@@ -1,6 +1,6 @@
 ---
 - hosts: dev
-  sudo: true
+  sudo:  true
   vars_files:
     - parameters.yml
   roles:

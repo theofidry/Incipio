@@ -2,6 +2,8 @@ This file is temporary and is meant to be merged in the project wiki later on.
 
 For dev-env: mention listing git aliases with `git config --list | grep alias`
 
+For dev: add install vendors + database + fixtures
+
 
 To install front-end dependencies: `npm install`
 
