@@ -1,5 +1,5 @@
 {
-    "name": "CDJE/Incipio",
+    "name": "in6pio/Incipio",
     "description": "ERP for Junior-Entreprises.",
     "license": "MIT",
     "type": "project",
@@ -8,7 +8,7 @@
     },
     "require": {
         "php": ">=5.5.0",
-        "symfony/symfony": "~2.7@beta",
+        "symfony/symfony": "~2.7",
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/orm": "~2.2,>=2.2.3,<2.5",
@@ -20,7 +20,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "knplabs/knp-menu-bundle": "~2",
         "lexik/jwt-authentication-bundle": "~1.0",
-        "nelmio/api-doc-bundle": "dev-master",
+        "nelmio/api-doc-bundle": "~2.9",
         "nelmio/cors-bundle": "~1.4",
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",

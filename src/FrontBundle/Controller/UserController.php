@@ -13,13 +13,12 @@ namespace FrontBundle\Controller;
 
 //TODO: remove reference to User
 use ApiBundle\Entity\User;
-use FrontBundle\Form\UserType;
+use FrontBundle\Form\Type\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class UserController.
