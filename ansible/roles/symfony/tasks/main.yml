@@ -9,6 +9,16 @@
     - path:  /var/www/{{ symfony_src_dir }}/app/logs
       owner: www-data
 
+- name: Initialize optional Symfony JWT public key
+  copy:
+    content: "{{ symfony_jwt_public_key }}"
+    dest:    "{{ symfony_src_dir }}/app/config/jwt/public.pem"
+
+- name: Initialize optional Synfony JWT private key
+  copy:
+    content: "{{ symfony_jwt_private_key }}"
+    dest:    "{{ symfony_src_dir }}/app/config/jwt/private.pem"
+
 # Is disabled at the moment since takes too much time
 #- name:  Install composer dependencies
 #  shell: >
