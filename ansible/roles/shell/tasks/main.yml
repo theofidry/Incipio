@@ -2,6 +2,10 @@
 - name:     Configure vagrant user shell prompt
   template: src=bashrc.j2 dest=/home/vagrant/.bashrc
 
+- name: Install Vim
+  sudo: yes
+  apt:  pkg=vim state=present
+
 - name:     Configure Vim for vagrant user
   template: src=vimrc.j2 dest=/home/vagrant/.vimrc
 
