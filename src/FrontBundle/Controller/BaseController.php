@@ -1,0 +1,77 @@
+<?php
+
+/*
+ * This file is part of the Incipio package.
+ *
+ * (c) Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace FrontBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+/**
+ * Class BaseController.
+ *
+ * @author Théo FIDRY <theo.fidry@gmail.com>
+ */
+class BaseController extends Controller
+{
+    /**
+     * @var \FrontBundle\Client\ApiClient
+     */
+    protected $client;
+
+    /**
+     * @var \Symfony\Component\Serializer\Serializer
+     */
+    protected $serializer;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+
+        if (null !== $container) {
+            $this->client = $container->get('api.client');
+            $this->serializer = $container->get('serializer');
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Note: if `id` parameter is passed and its value is an URI, the ID is automatically extracted from it. This is
+     * done my assuming that the ID is the last member of the URI and that and URI begins by `/`.
+     */
+    public function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    {
+        return parent::generateUrl($route, $this->extractId($parameters), $referenceType);
+    }
+
+    /**
+     * If `id` parameter is passed and its value is an URI, the ID is automatically extracted from it. This is
+     * done my assuming that the ID is the last member of the URI and that and URI begins by `/`.
+     *
+     * If the `id` parameter is not an URI, its value is left unchanged.
+     *
+     * @param array $parameters
+     *
+     * @return array $parameters with the new value for the `id` key.
+     */
+    public function extractId(array $parameters)
+    {
+        if (array_key_exists('id', $parameters) && 0 === strpos($parameters['id'], '/')) {
+            $parameters['id'] = substr(strrchr($parameters['id'], '/'), 1);
+        }
+
+        return $parameters;
+    }
+}

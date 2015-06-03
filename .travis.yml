@@ -11,6 +11,10 @@ matrix:
     - php: hhvm
   fast_finish: true
 
+addons:
+  code_climate:
+    repo_token: e3d0d5841679d4e96bb7fb273be0527a179825601ec4d34e533184fa86a79355
+
 before_script:
   - composer self-update
 
@@ -21,7 +25,10 @@ install:
   - php app/console doctrine:fixtures:load -n --env=test
 
 script:
-  - composer test:security
-  - composer test:phpunit
-  - composer test:behat
+  - php app/console doctrine:schema:validate
+  - composer test
   - composer style:check
+
+after_script:
+  - bin/codacycoverage clover
+  - bin/test-reporter

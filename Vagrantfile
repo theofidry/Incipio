@@ -1,20 +1,23 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+# Vagrantfile API/syntax version.
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Box configuration
   config.vm.box = "jessie"
+  config.vm.box_url = "http://static.gender-api.com/debian-8-jessie-rc2-x64-slim.box"
+  config.vm.box_check_update = true
      
   # Use Ansible as its provisioner     
   config.vm.provision :ansible do |ansible|
     ansible.inventory_path = "ansible/inventory/hosts"
+    ansible.limit = "dev"
     ansible.playbook = "ansible/playbook.yml"
     # Enable this line if you wish to debug the provision
-    # ansible.verbose = "vvvv"
+    #ansible.verbose = "vvvv"
   end
 
   # Create a forwarded port mapping which allows access to a specific port
@@ -32,10 +35,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Disable the default /vagrant share can be done as follows:
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
+  # Provider-specific configuration
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = 2048
+    vb.memory = 2048  # Upgrade memory for package managers
   end
 end

@@ -12,4 +12,4 @@
 - name: Configure users locales
   sudo: yes
   template: src=locales.j2 dest=/etc/default/locale
-  notify: Regenerate locales
+  notify:   Regenerate locales

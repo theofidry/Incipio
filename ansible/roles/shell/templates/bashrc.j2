@@ -107,6 +107,11 @@ if [ -e ~/symfony2-autocomplete.bash ]; then
     . ~/symfony2-autocomplete.bash
 fi
 
+# Git auto-complete script
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
 alias ll='ls -l'
 alias la='ls -a'
 alias lh='ls -lah'
@@ -137,7 +142,7 @@ extract () {
 # edit aliases configuration
 alias config='editor ~/.bashrc'
 alias reload='source ~/.bashrc'
-alias update='sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove && composer self-update'
+alias update='sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove && sudo composer self-update'
 
 # Symfony2
 alias sf='php app/console'
@@ -147,10 +152,10 @@ alias ..='cd ..'
 alias ...='cd ...'
 alias sfcch='sudo chmod -R 777 app/cache app/logs'
 alias sfcc='sudo chmod -R 777 app/cache app/logs && php app/console cache:clear && sudo chmod -R 777 app/cache app/logs'
-alias sfcrm='sudo rm -rf app/cache/* app/logs/* && sudo chmod -R 777 app/cache app/logs'
+alias sfrmc='sudo rm -rf app/cache/* app/logs/* && sudo chmod -R 777 app/cache app/logs'
 alias sft='composer test'
 alias sfdb='composer doctrine'
 alias ngerr='sudo -u www-data tail -f /var/log/nginx/error.log'
 alias ngacc='sudo -u www-data tail -f /var/log/nginx/access.log'
-alias sfdevl='tail -f {{ symfony_src_dir }}/app/logs/dev.log'
-alias sfprodl='tail -f {{ symfony_src_dir }}/app/logs/prod.log'
+alias sfdevl='tail -f /var/www/{{ symfony_src_dir }}/app/logs/dev.log'
+alias sfprodl='tail -f /var/www/{{ symfony_src_dir }}/app/logs/prod.log'

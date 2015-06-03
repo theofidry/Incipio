@@ -4,9 +4,15 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
          backupGlobals="false"
-         colors="true"
          bootstrap="bootstrap.php.cache"
+         colors="true"
 >
+    <logging>
+        <log type="coverage-html" target="../build/reports/phpunit/" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+        <log type="coverage-clover" target="../build/reports/phpunit/clover.xml"/>
+    </logging>
+
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>../src/*/*Bundle/Tests</directory>
@@ -15,22 +21,19 @@
         </testsuite>
     </testsuites>
 
-    <!--
-    <php>
-        <server name="KERNEL_DIR" value="/path/to/your/app/" />
-    </php>
-    -->
-
     <filter>
         <whitelist>
             <directory>../src</directory>
             <exclude>
                 <directory>../src/*Bundle/Resources</directory>
                 <directory>../src/*Bundle/Tests</directory>
+                <directory>../src/*Bundle/DataFixtures/ORM</directory>
                 <directory>../src/*/*Bundle/Resources</directory>
                 <directory>../src/*/*Bundle/Tests</directory>
+                <directory>../src/*/*Bundle/DataFixtures/ORM</directory>
                 <directory>../src/*/Bundle/*Bundle/Resources</directory>
                 <directory>../src/*/Bundle/*Bundle/Tests</directory>
+                <directory>../src/*/Bundle/*Bundle/DataFixtures/ORM</directory>
             </exclude>
         </whitelist>
     </filter>

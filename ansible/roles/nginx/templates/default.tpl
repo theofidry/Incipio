@@ -16,6 +16,7 @@ server {
     location / {
         index       app_dev.php;
         try_files   $uri @rewriteapp;
+        add_header  Cache-Control private; # Disable cache
     }
 
     location @rewriteapp {
