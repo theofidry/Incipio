@@ -60,10 +60,10 @@
         "db:reload": "composer db:update && composer db:seed",
         "db:seed": "php app/console doctrine:fixtures:load -n --ansi",
         "db:update": "php app/console doctrine:schema:update --force --ansi",
-        "dbtest": "composer dbtest:drop && composer dbtest:create && composer dbtest:seed",
-        "dbtest:create": "php app/console doctrine:schema:create --env=test --ansi",
-        "dbtest:drop": "php app/console doctrine:schema:drop --env=test --force --ansi",
-        "dbtest:seed": "php app/console doctrine:fixtures:load --env=test -n --ansi",
+        "db:test": "composer db:test:drop && composer db:test:create && composer db:test:seed",
+        "db:test:create": "php app/console doctrine:schema:create --env=test --ansi",
+        "db:test:drop": "php app/console doctrine:schema:drop --env=test --force --ansi",
+        "db:test:seed": "php app/console doctrine:fixtures:load --env=test -n --ansi",
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"
         ],
