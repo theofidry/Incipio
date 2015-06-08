@@ -19,6 +19,5 @@ app/config/parameters.yml
 #Other
 bin/*
 composer.phar
-composer.lock
 nbproject/*
 src/mgate/UserBundle/DataFixtures/ORM/LoadAdminData.php
