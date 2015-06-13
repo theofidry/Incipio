@@ -70,7 +70,34 @@ class UserController extends BaseController
             $users[$key]['topRole'] = $roleHelper->getTopLevelRole($user['roles']);
         }
 
-        return ['users' => $users];
+        // Retrieve mandates
+        $decodedResponse = $this->serializer->decode(
+            $this->client->get(
+                'mandates_cget',
+                $request->getSession()->get('api_token'),
+                ['query' => 'filter[order][startAt]=desc']
+            )->send()
+                ->getBody(true),
+            'json'
+        );
+        $mandates = $decodedResponse['hydra:member'];
+        while (isset($decodedResponse['hydra:nextPage'])) {
+            $decodedResponse = $this->serializer->decode(
+                $this->client->get(
+                    $decodedResponse['@id'],
+                    $request->getSession()->get('api_token'),
+                    ['query' => $decodedResponse['hydra:nextPage']]
+                )->send()->getBody(true),
+                'json'
+            );
+
+            $mandates = array_merge($mandates, $decodedResponse['hydra:member']);
+        }
+
+        return [
+            'mandates' => $mandates,
+            'users'    => $users
+        ];
     }
 
     /**

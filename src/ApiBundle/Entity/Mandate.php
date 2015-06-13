@@ -14,6 +14,7 @@ namespace ApiBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="ApiBundle\Entity\MandateRepository")
+ * @UniqueEntity("name")
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
@@ -35,17 +37,6 @@ class Mandate
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var \DateTime
-     *
-     * @Iri("https://schema.org/startDate")
-     * @ORM\Column(name="start_at", type="datetime")
-     * @Assert\Date
-     * @Assert\NotNull
-     * @Groups({"user"})
-     */
-    private $startAt;
 
     /**
      * @var \DateTime
@@ -67,6 +58,28 @@ class Mandate
     private $jobs;
 
     /**
+     * @var string
+     *
+     * @Iri("https://schema.org/name")
+     * @ORM\Column(name="name", type="string")
+     * @Assert\Type("string")
+     * @Assert\Length(min="5", max="30")
+     * @Groups({"user"})
+     */
+    private $name;
+
+    /**
+     * @var \DateTime
+     *
+     * @Iri("https://schema.org/startDate")
+     * @ORM\Column(name="start_at", type="datetime")
+     * @Assert\Date
+     * @Assert\NotNull
+     * @Groups({"user"})
+     */
+    private $startAt;
+
+    /**
      * Default constructor.
      */
     public function __construct()
@@ -82,30 +95,6 @@ class Mandate
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set startAt.
-     *
-     * @param \DateTime $startAt
-     *
-     * @return $this
-     */
-    public function setStartAt(\DateTime $startAt)
-    {
-        $this->startAt = $startAt;
-
-        return $this;
-    }
-
-    /**
-     * Get startAt.
-     *
-     * @return \DateTime|null
-     */
-    public function getStartAt()
-    {
-        return $this->startAt;
     }
 
     /**
@@ -174,5 +163,53 @@ class Mandate
     public function getJobs()
     {
         return $this->jobs;
+    }
+
+    /**
+     * Sets Name.
+     *
+     * @param \DateTime $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets Name.
+     *
+     * @return \DateTime|null
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set startAt.
+     *
+     * @param \DateTime $startAt
+     *
+     * @return $this
+     */
+    public function setStartAt(\DateTime $startAt)
+    {
+        $this->startAt = $startAt;
+
+        return $this;
+    }
+
+    /**
+     * Get startAt.
+     *
+     * @return \DateTime|null
+     */
+    public function getStartAt()
+    {
+        return $this->startAt;
     }
 }
