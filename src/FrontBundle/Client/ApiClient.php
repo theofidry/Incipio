@@ -43,12 +43,20 @@ class ApiClient extends Client
     /**
      * Create a GET request for the client.
      *
-     * @param string $name    URI or route name.
+     * @example
+     *  ::get(users, $token, ['query' => 'filter' => 'where' => ['name' => 'john'])
+     *  ::get(users, $token, ['query' => 'filter[where][name]=john'])
+     *  ::get(/users?filter[where][name]=john, $token)
+     *
+     * Will all yield: GET /users?filter[where][name]=john
+     *
+     * @param string $name    URI or route name. Is considered as URI when a `/` is present
      * @param string $token   API token.
      * @param array  $options Options to apply to the request. For BC compatibility, you can also pass a string to tell
      *                        Guzzle to download the body of the response to a particular location. Use the 'body'
      *                        option instead for forward compatibility. If you wish to apply custom headers, place them
      *                        in a `headers` key of the $options.
+     *                        Options can also take query parameters as a string for
      *
      * @return \Guzzle\Http\Message\RequestInterface
      */
@@ -66,6 +74,13 @@ class ApiClient extends Client
 
         // Get URI
         $uri = (false !== strpos($name, '/')) ? $name : $this->router->generate($name);
+
+        // Check for query parameters
+        if (isset($options['query']) && is_string($options['query'])) {
+            $uri .= (false !== strpos($uri, '?'))? '&': '?';
+            $uri .= $options['query'];
+            unset($options['query']);
+        }
 
         return parent::get($uri, $headers, $options);
     }

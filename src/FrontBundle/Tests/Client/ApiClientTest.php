@@ -38,6 +38,30 @@ class ApiClientTest extends KernelTestCase
     }
 
     /**
+     * @covers ::get
+     */
+    public function testGetMethod()
+    {
+        $request = $this->service->get('users_cget', null, ['query' => ['random' => 'test']]);
+        $this->assertEquals(
+            '/api/users?random=test',
+            $request->getPath()
+        );
+
+        $request = $this->service->get('/api/users?lol', null, ['query' => ['random' => 'test']]);
+        $this->assertEquals(
+            '/api/users?lol&random=test',
+            $request->getPath()
+        );
+
+        $request = $this->service->get('/api/users?lol', null, ['query' => 'random=test']);
+        $this->assertEquals(
+            '/api/users?lol&random=test',
+            $request->getPath()
+        );
+    }
+
+    /**
      * @dataProvider routeProvider
      *
      * @param string $route Input route name.
