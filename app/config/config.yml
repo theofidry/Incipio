@@ -50,7 +50,7 @@ doctrine:
         auto_mapping:    true
         naming_strategy: doctrine.orm.naming_strategy.underscore
 
-# DunglasJsonLdApi
+# DunglasApiBundle
 dunglas_api:
     title:           %api_name%
     description:     %api_description%
@@ -81,6 +81,9 @@ lexik_jwt_authentication:
     public_key_path:  %kernel.root_dir%/config/jwt/public.pem
     pass_phrase:      %jwt_pass_phrase%
     token_ttl:        86400
+
+# LoopBackApiBundle
+# Let default configuration
 
 # Nelmio API Doc
 nelmio_api_doc:

@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
             new Dunglas\ApiBundle\DunglasApiBundle(),
+            new Fidry\LoopBackApiBundle\LoopBackApiBundle(),
             new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Hautelook\AliceBundle\HautelookAliceBundle(),
