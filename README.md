@@ -9,7 +9,7 @@ Incipio est un projet qui vise à bâtir un [ERP](http://fr.wikipedia.org/wiki/P
 
 ## Documentation
 
-[Documentation](https://github.com/CDJE/Incipio/wiki)
+[Documentation](https://github.com/in6pio/Incipio/wiki)
 
 # Contributeurs
 
@@ -18,4 +18,4 @@ Incipio est un projet qui vise à bâtir un [ERP](http://fr.wikipedia.org/wiki/P
 
 # Licence
 
-[![License](https://img.shields.io/packagist/l/doctrine/orm.svg?style=flat-square)](https://github.com/CDJE/Incipio/edit/master/LICENSE)
+[![License](https://img.shields.io/badge/Licence-GNU%20AGPL-red.svg?style=flat-square)](LICENSE)
