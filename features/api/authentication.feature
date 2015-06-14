@@ -1,3 +1,4 @@
+@authentication
 Feature: Authenticate users
   The authentication system should work application wide.
   It should be possible to authenticate from the API.

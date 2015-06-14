@@ -1,3 +1,4 @@
+@user
 Feature: User management
   As an administrator, I should be able to manage users.
   As a user, I should be able to access to my profile.
