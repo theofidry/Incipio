@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 <nav class="navbar" role="navigation">
     <div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-suivi">
@@ -40,9 +19,9 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 </nav>
 
 <form id="myForm" method="post" action="{{path('mgateSuivi_etude_suivi_update', {'id': etude.id})}}" {{ form_enctype(formSuivi) }}>
-                
-                
-                
+
+
+
                             <table class="table table-striped">
                                     <tr>
                                         <th>Etat de l'Étude</th>
@@ -71,9 +50,9 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                                         <td>{{lastSuivi.todo | nl2br}}</td>
                                     </tr>
                                     {% endif %}
-                                        
+
                                 </table>
-         
+
 
                                 <table class="table table-striped table-bordered"  onclick="docStateChange();">
                                     <tr>
@@ -142,4 +121,4 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                                     </tr>
                                 </table>
                         {{ form_rest(formSuivi) }}
-                            </form>   
+                            </form>

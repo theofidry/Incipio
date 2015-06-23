@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateTresoBundle::layout.html.twig" %}
 
 {% block title %}
@@ -46,11 +25,11 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         <tr>
             <th>{{ form_label(form.demandeur) }}</th>
             <td>{{ form_widget(form.demandeur) }}</td>
-        </tr>  
+        </tr>
         <tr>
             <th>{{ form_label(form.objet) }}</th>
             <td>{{ form_widget(form.objet) }}</td>
-        </tr>      
+        </tr>
     </table>
     <table class="table table-bordered table-striped" id="details" data-prototype="{{ form_widget(form.details.vars.prototype) | e }}">
         <tr>
@@ -70,7 +49,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                     <tr>
                         <th>{{ form_label(detail.description) }}</th>
                         <td colspan="3">{{ form_widget(detail.description) }}</td>
-                    </tr>                    
+                    </tr>
                     <tr id="prix">
                         <th>{{ form_label(detail.prixHT) }}</th>
                         <td>{{ form_widget(detail.prixHT) }}</td>
@@ -88,8 +67,8 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </tr>
         {% endfor %}
     </table>
-   
-	{{ form_widget(form) }}  
+
+	{{ form_widget(form) }}
 </form>
 {% endblock %}
 
@@ -107,8 +86,8 @@ jQuery(document).ready(function() {
     $("tr#detail").each(function(){
         addDeleteButton(this);
     });
-   
-    
+
+
     $addDetailButton.on('click', function(e) {
         // empêche le lien de créer un « # » dans l'URL
         e.preventDefault();
@@ -117,7 +96,7 @@ jQuery(document).ready(function() {
         addTagForm(collectionHolderDetails, i, 'detail');
         i++;
     });
-    
+
 });
 
 
@@ -129,18 +108,18 @@ function addTagForm(collectionHolder, i, type) {
     // la longueur de la collection courante
     var newForm = prototype.replace(/__name__/g, collectionHolderDetails.children().first().children().length);
     newForm = '<tr id="'+type+i+'"><td></td><td>'+newForm+'</td></tr>';
-    
-    // Affiche le formulaire dans la page dans un li, avant le lien "ajouter un tag"
-    var $newForm = collectionHolder.append(newForm); 
-    addDeleteButton($('#'+type+i));
-    
-}   
 
-      
+    // Affiche le formulaire dans la page dans un li, avant le lien "ajouter un tag"
+    var $newForm = collectionHolder.append(newForm);
+    addDeleteButton($('#'+type+i));
+
+}
+
+
 function addDeleteButton($tag) {
     var $delete = $('<button class="btn" id="myButtonDelete" class="btn">X</button>');
     $($tag).children().first().append($delete);
-      
+
     $delete.on('click', function(e) {
         // prevent the link from creating a "#" on the URL
         e.preventDefault();
@@ -153,8 +132,8 @@ function addDeleteButton($tag) {
             }
         });
    });
-    
-}  
+
+}
 </script>
 
 <script type="text/javascript" charset="utf-8">
@@ -165,7 +144,7 @@ $(document).ready(function() {
             else $(this).closest('.table').find('#prix').toggle();
         }
     );
-    
+
     $('select[id$="_type"]').change(
         function(){
            $(this).closest('.table').find('#km').toggle();

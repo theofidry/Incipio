@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateTresoBundle::layout.html.twig" %}
 
 {% block title %}
@@ -26,7 +5,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 {% endblock %}
 
 
-    
+
 {% block content_bundle %}
     <h3>{{ cotisation.libelle ? "Ajout d'une" :  "Modification d'une" }} Charge  </h3>
     <form method="post" {{ form_enctype(form) }}>
@@ -48,10 +27,10 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <td>{{ form_widget(form.dateDebut) }}</td>
             <th>{{ form_label(form.dateFin) }}</th>
             <td>{{ form_widget(form.dateFin) }}</td>
-        </tr>       
+        </tr>
     </table>
             <input type="submit" class="btn btn-success" value="Enregistrer" />
-    {{ form_rest(form) }} 
+    {{ form_rest(form) }}
     </form>
     {% if cotisation.libelle %}
     <table class="table">
@@ -60,10 +39,10 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </tr>
     </table>
     {% endif %}
-    
+
 {% endblock %}
 
 {% block javascript %}
     {{ parent() }}
-    {{ form_javascript(form) }}     
+    {{ form_javascript(form) }}
 {% endblock %}

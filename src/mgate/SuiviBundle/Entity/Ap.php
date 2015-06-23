@@ -1,33 +1,20 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\SuiviBundle\Entity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * mgate\SuiviBundle\Entity\Ap
+ * mgate\SuiviBundle\Entity\Ap.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -35,72 +22,73 @@ use Doctrine\ORM\Mapping as ORM;
 class Ap extends DocType
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\OneToOne(targetEntity="Etude", inversedBy="ap")
      * @ORM\JoinColumn(nullable=false, onDelete="cascade")
      */
     protected $etude;
-    
+
     /** nombre de developpeur estimé
-     * @var integer $nbrDev
+     * @var int
      *
      * @ORM\Column(name="nbrDev", type="integer", nullable=true)
      */
     private $nbrDev;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="mgate\PersonneBundle\Entity\Personne")
      * @ORM\JoinColumn(nullable=true)
      */
     protected $contactMgate;
-    
+
     /**
-     * @var boolean $deonto
+     * @var bool
      *
      * @ORM\Column(name="deonto", type="boolean", nullable=true)
      */
     private $deonto;
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function getReference()
     {
         return $this->etude->getReference().'-AP-'.$this->getVersion();
     }
-        
+
     /**
-     * Set etude
+     * Set etude.
      *
      * @param mgate\SuiviBundle\Entity\Etude $etude
+     *
      * @return Ap
      */
     public function setEtude(\mgate\SuiviBundle\Entity\Etude $etude = null)
     {
         $this->etude = $etude;
-    
+
         return $this;
     }
 
     /**
-     * Get etude
+     * Get etude.
      *
-     * @return mgate\SuiviBundle\Entity\Etude 
+     * @return mgate\SuiviBundle\Entity\Etude
      */
     public function getEtude()
     {
@@ -108,67 +96,74 @@ class Ap extends DocType
     }
 
     /**
-     * Set nbrDev
+     * Set nbrDev.
      *
-     * @param integer $nbrDev
+     * @param int $nbrDev
+     *
      * @return Ap
      */
     public function setNbrDev($nbrDev)
     {
         $this->nbrDev = $nbrDev;
-    
+
         return $this;
     }
 
     /**
-     * Get nbrDev
+     * Get nbrDev.
      *
-     * @return integer 
+     * @return int
      */
     public function getNbrDev()
     {
         return $this->nbrDev;
     }
-    
+
     /**
-     * Set contactMgate
+     * Set contactMgate.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $contactMgate
+     *
      * @return Ap
      */
-    public function setContactMgate(\mgate\PersonneBundle\Entity\Personne $contactMgate = null) {
+    public function setContactMgate(\mgate\PersonneBundle\Entity\Personne $contactMgate = null)
+    {
         $this->contactMgate = $contactMgate;
 
         return $this;
     }
 
     /**
-     * Get contactMgate
+     * Get contactMgate.
      *
      * @return \mgate\PersonneBundle\Entity\Personne
      */
-    public function getContactMgate() {
+    public function getContactMgate()
+    {
         return $this->contactMgate;
     }
-    
+
     /**
-     * Set deonto
+     * Set deonto.
      *
-     * @param boolean $deonto
+     * @param bool $deonto
+     *
      * @return Ap
      */
-    public function setDeonto($deonto) {
+    public function setDeonto($deonto)
+    {
         $this->deonto = $deonto;
 
         return $this;
     }
 
     /**
-     * Get deonto
+     * Get deonto.
      *
-     * @return boolean 
+     * @return bool
      */
-    public function getDeonto() {
+    public function getDeonto()
+    {
         return $this->deonto;
     }
 }

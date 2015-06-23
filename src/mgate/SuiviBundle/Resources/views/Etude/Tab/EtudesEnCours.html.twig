@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% set valide    = asset('img/succes.png') %}
 {% set nonValide = asset('img/cross.png') %}
 {% set enCours   = asset('img/progress.png') %}
@@ -79,7 +58,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             </tr>
  	 </thead>
  	 <tbody>
-        
+
 
         {% for etude in etudesEnCours if not confidentielRefus(etude, app.security)%}
 <tr>
@@ -94,7 +73,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         <br /><br />
         {% include "mgateSuiviBundle:Etude:Buttons/Suiveur.html.twig" with  {'suiveur':  etude.suiveur} %}
     </td>
-    
+
         <td>
              {% for mission in etude.missions %}
                 {% include "mgateSuiviBundle:Etude:Buttons/Intervenant.html.twig" with  {'idEtude':  etude.id, 'intervenant' : mission.intervenant, 'keyMission' : loop.index0 } %}
@@ -115,7 +94,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 <img src="{{ nonValide }}" title="{{ etude.ap is not null ? etude.ap.dateSignature | date("d/m/y")}}" />
         {% endif %}
             </td>
-       
+
             <td>
         {% if getEtatDoc(etude.cc) == 1 %}
                 <img src="{{ enCours }}" title="{{ etude.cc is not null ? etude.cc.dateSignature | date("d/m/y")}}"/>

@@ -1,33 +1,20 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\TresoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use mgate\SuiviBundle\Entity\DocType as DocType;
 
 /**
- * NoteDeFrais
+ * NoteDeFrais.
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"mandat", "numero"})})
  * @ORM\Entity(repositoryClass="mgate\TresoBundle\Entity\NoteDeFraisRepository")
@@ -35,122 +22,126 @@ use mgate\SuiviBundle\Entity\DocType as DocType;
 class NoteDeFrais
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
-     /**
-     * @var \DateTime $date
+
+    /**
+     * @var \DateTime
      *
      * @ORM\Column(name="date", type="date",nullable=false)
      */
     private $date;
-    
+
     /**
-     * @var integer $mandat
+     * @var int
      *
      * @ORM\Column(name="mandat", type="integer", nullable=false)
      */
     private $mandat;
 
     /**
-     * @var integer $num
+     * @var int
      *
      * @ORM\Column(name="numero", type="integer", nullable=false)
      */
     private $numero;
-    
+
     /**
      * @ORM\Column(name="objet", type="text", nullable=false)
+     *
      * @var string
      */
     private $objet;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="NoteDeFraisDetail", mappedBy="noteDeFrais", cascade={"persist", "detach", "remove"}, orphanRemoval=true)
      */
     private $details;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="mgate\PersonneBundle\Entity\Personne")
      * @ORM\JoinColumn(nullable=false)
      */
     protected $demandeur;
 
-
     /**
-     * 
-     * ADDITIONAL GETTERS
+     * ADDITIONAL GETTERS.
      */
-    public function getMontantHT(){
-       $montantHT = 0;
-       foreach ($this->details as $detail){
-            $montantHT += $detail->getMontantHT();           
-       }
-       return $montantHT;
+    public function getMontantHT()
+    {
+        $montantHT = 0;
+        foreach ($this->details as $detail) {
+            $montantHT += $detail->getMontantHT();
+        }
+
+        return $montantHT;
     }
-    
-    public function getMontantTVA(){
+
+    public function getMontantTVA()
+    {
         $TVA = 0;
-        foreach ($this->details as $detail){
+        foreach ($this->details as $detail) {
             $TVA += $detail->getMontantTVA();
-       }
-       return $TVA;
+        }
+
+        return $TVA;
     }
-    
-    public function getMontantTTC(){
+
+    public function getMontantTTC()
+    {
         return $this->getMontantHT() + $this->getMontantTVA();
     }
-    
-    public function getReference(){
+
+    public function getReference()
+    {
         // UNSAFE
         return $this->mandat.'-NF'.$this->getNumero().'-'.$this->getDemandeur()->getMembre()->getIdentifiant();
     }
 
-
     /*
      * STANDARDS GETTERS/SETTERS
      */
-    
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->details = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Set objet
+     * Set objet.
      *
      * @param string $objet
+     *
      * @return NoteDeFrais
      */
     public function setObjet($objet)
     {
         $this->objet = $objet;
-    
+
         return $this;
     }
 
     /**
-     * Get objet
+     * Get objet.
      *
-     * @return string 
+     * @return string
      */
     public function getObjet()
     {
@@ -158,20 +149,21 @@ class NoteDeFrais
     }
 
     /**
-     * Add details
+     * Add details.
      *
      * @param \mgate\TresoBundle\Entity\NoteDeFraisDetail $details
+     *
      * @return NoteDeFrais
      */
     public function addDetail(\mgate\TresoBundle\Entity\NoteDeFraisDetail $details)
     {
         $this->details[] = $details;
-    
+
         return $this;
     }
 
     /**
-     * Remove details
+     * Remove details.
      *
      * @param \mgate\TresoBundle\Entity\NoteDeFraisDetail $details
      */
@@ -182,9 +174,9 @@ class NoteDeFrais
     }
 
     /**
-     * Get details
+     * Get details.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDetails()
     {
@@ -192,22 +184,23 @@ class NoteDeFrais
     }
 
     /**
-     * Set demandeur
+     * Set demandeur.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $demandeur
+     *
      * @return NoteDeFrais
      */
     public function setDemandeur(\mgate\PersonneBundle\Entity\Personne $demandeur = null)
     {
         $this->demandeur = $demandeur;
-    
+
         return $this;
     }
 
     /**
-     * Get demandeur
+     * Get demandeur.
      *
-     * @return \mgate\PersonneBundle\Entity\Personne 
+     * @return \mgate\PersonneBundle\Entity\Personne
      */
     public function getDemandeur()
     {
@@ -215,22 +208,23 @@ class NoteDeFrais
     }
 
     /**
-     * Set mandat
+     * Set mandat.
      *
-     * @param integer $mandat
+     * @param int $mandat
+     *
      * @return NoteDeFrais
      */
     public function setMandat($mandat)
     {
         $this->mandat = $mandat;
-    
+
         return $this;
     }
 
     /**
-     * Get mandat
+     * Get mandat.
      *
-     * @return integer 
+     * @return int
      */
     public function getMandat()
     {
@@ -238,22 +232,23 @@ class NoteDeFrais
     }
 
     /**
-     * Set numero
+     * Set numero.
      *
-     * @param integer $numero
+     * @param int $numero
+     *
      * @return NoteDeFrais
      */
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
-     * Get numero
+     * Get numero.
      *
-     * @return integer 
+     * @return int
      */
     public function getNumero()
     {
@@ -261,22 +256,23 @@ class NoteDeFrais
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
+     *
      * @return NoteDeFrais
      */
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
-     * Get date
+     * Get date.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {

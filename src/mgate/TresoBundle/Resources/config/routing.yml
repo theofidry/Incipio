@@ -1,30 +1,9 @@
-        
-#
-#   This file is part of Incipio.
-#
-#   Incipio is an enterprise resource planning for Junior Enterprise
-#   Copyright (C) 2012-2014 Florian Lefevre.
-#
-#   Incipio is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU Affero General Public License as
-#   published by the Free Software Foundation, either version 3 of the
-#   License, or (at your option) any later version.
-#
-#   Incipio is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU Affero General Public License for more details.
-#
-#   You should have received a copy of the GNU Affero General Public License
-#   along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#
-
 mgate_treso_urssaf:
     pattern:  /urssaf
     defaults: { _controller: mgateTresoBundle:Urssaf:index }
-    
 
-    
+
+
 ################################################################################
 #                                                                              #
 #                                DECLARATIFS                                   #
@@ -34,11 +13,11 @@ mgate_treso_urssaf:
 mgateTreso_Declaratif_index:
     pattern:  /Declaratifs
     defaults: { _controller: mgateTresoBundle:Declaratif:index }
-    
+
 mgateTreso_Declaratif_TVA:
     pattern:  /Declaratifs/TVA
     defaults: { _controller: mgateTresoBundle:Declaratif:TVA }
-    
+
 mgateTreso_Declaratif_BRC:
     pattern:  /Declaratifs/BRC
     defaults: { _controller: mgateTresoBundle:Declaratif:BRC }
@@ -52,23 +31,23 @@ mgateTreso_Declaratif_BRC:
 mgateTreso_Facture_index:
     pattern:  /Factures
     defaults: { _controller: mgateTresoBundle:Facture:index }
-    
+
 mgateTreso_Facture_voir:
     pattern:  /Facture/{id}
     defaults: { _controller: mgateTresoBundle:Facture:voir }
     requirements:
         id: \d+
-    
+
 mgateTreso_Facture_ajouter:
     pattern:  /Facture/Ajouter/{etude_id}
     defaults: { _controller: mgateTresoBundle:Facture:modifier,  id:-1 , etude_id:-1 }
-    
+
 mgateTreso_Facture_modifier:
     pattern:  /Facture/Modifier/{id}/{etude_id}
     defaults: { _controller: mgateTresoBundle:Facture:modifier, etude_id:-1 }
     requirements:
         id: \d+
-    
+
 mgateTreso_Facture_supprimer:
     pattern:  /Facture/Supprimer/{id}
     defaults: { _controller: mgateTresoBundle:Facture:supprimer }
@@ -84,23 +63,23 @@ mgateTreso_Facture_supprimer:
 mgateTreso_NoteDeFrais_index:
     pattern:  /NoteDeFrais
     defaults: { _controller: mgateTresoBundle:NoteDeFrais:index }
-    
+
 mgateTreso_NoteDeFrais_voir:
     pattern:  /NoteDeFrais/{id}
     defaults: { _controller: mgateTresoBundle:NoteDeFrais:voir }
     requirements:
         id: \d+
-    
+
 mgateTreso_NoteDeFrais_ajouter:
     pattern:  /NoteDeFrais/Ajouter
     defaults: { _controller: mgateTresoBundle:NoteDeFrais:modifier,  id:-1  }
-    
+
 mgateTreso_NoteDeFrais_modifier:
     pattern:  /NoteDeFrais/Modifier/{id}
     defaults: { _controller: mgateTresoBundle:NoteDeFrais:modifier }
     requirements:
         id: \d+
-    
+
 mgateTreso_NoteDeFrais_supprimer:
     pattern:  /NoteDeFrais/Supprimer/{id}
     defaults: { _controller: mgateTresoBundle:NoteDeFrais:supprimer }
@@ -115,29 +94,29 @@ mgateTreso_NoteDeFrais_supprimer:
 mgateTreso_BV_index:
     pattern:  /BV
     defaults: { _controller: mgateTresoBundle:BV:index }
-    
+
 mgateTreso_BV_voir:
     pattern:  /BV/Voir/{id}
     defaults: { _controller: mgateTresoBundle:BV:voir }
     requirements:
         id: \d+
-        
+
 mgateTreso_BV_ajouter:
     pattern:  /BV/Ajouter
     defaults: { _controller: mgateTresoBundle:BV:modifier,  id:-1  }
-    
+
 mgateTreso_BV_modifier:
     pattern:  /BV/Modifier/{id}
     defaults: { _controller: mgateTresoBundle:BV:modifier }
     requirements:
         id: \d+
-    
+
 mgateTreso_BV_supprimer:
     pattern:  /BV/Supprimer/{id}
     defaults: { _controller: mgateTresoBundle:BV:supprimer }
     requirements:
-        id: \d+    
-        
+        id: \d+
+
 ################################################################################
 ################################################################################
 ################################################################################
@@ -153,27 +132,27 @@ mgateTreso_BV_supprimer:
 #                               COMPTES COMPTA                                 #
 #                                                                              #
 ################################################################################
-    
+
 mgateTreso_Compte_index:
     pattern:  /Comptes
     defaults: { _controller: mgateTresoBundle:Compte:index }
-        
+
 mgateTreso_Compte_ajouter:
     pattern:  /Compte/Ajouter
     defaults: { _controller: mgateTresoBundle:Compte:modifier,  id:-1, etude_id :-1  }
-    
+
 mgateTreso_Compte_modifier:
     pattern:  /Compte/Modifier/{id}
     defaults: { _controller: mgateTresoBundle:Compte:modifier }
     requirements:
         id: \d+
-    
+
 mgateTreso_Compte_supprimer:
     pattern:  /Compte/Supprimer/{id}
     defaults: { _controller: mgateTresoBundle:Compte:supprimer }
     requirements:
-        id: \d+    
-        
+        id: \d+
+
 ################################################################################
 #                                                                              #
 #                                BASE URSSAF                                   #
@@ -182,22 +161,22 @@ mgateTreso_Compte_supprimer:
 mgateTreso_BaseURSSAF_index:
     pattern:  /BasesURSSAF
     defaults: { _controller: mgateTresoBundle:BaseURSSAF:index }
-        
+
 mgateTreso_BaseURSSAF_ajouter:
     pattern:  /BaseURSSAF/Ajouter
     defaults: { _controller: mgateTresoBundle:BaseURSSAF:modifier,  id:-1  }
-    
+
 mgateTreso_BaseURSSAF_modifier:
     pattern:  /BaseURSSAF/Modifier/{id}
     defaults: { _controller: mgateTresoBundle:BaseURSSAF:modifier }
     requirements:
         id: \d+
-    
+
 mgateTreso_BaseURSSAF_supprimer:
     pattern:  /BaseURSSAF/Supprimer/{id}
     defaults: { _controller: mgateTresoBundle:BaseURSSAF:supprimer }
     requirements:
-        id: \d+    
+        id: \d+
 
 
 ################################################################################
@@ -209,19 +188,19 @@ mgateTreso_BaseURSSAF_supprimer:
 mgateTreso_CotisationURSSAF_index:
     pattern:  /CotisationsURSSAF
     defaults: { _controller: mgateTresoBundle:CotisationURSSAF:index }
-        
+
 mgateTreso_CotisationURSSAF_ajouter:
     pattern:  /CotisationURSSAF/Ajouter
     defaults: { _controller: mgateTresoBundle:CotisationURSSAF:modifier,  id:-1  }
-    
+
 mgateTreso_CotisationURSSAF_modifier:
     pattern:  /CotisationURSSAF/Modifier/{id}
     defaults: { _controller: mgateTresoBundle:CotisationURSSAF:modifier }
     requirements:
         id: \d+
-    
+
 mgateTreso_CotisationURSSAF_supprimer:
     pattern:  /CotisationURSSAF/Supprimer/{id}
     defaults: { _controller: mgateTresoBundle:BV:supprimer }
     requirements:
-        id: \d+    
+        id: \d+

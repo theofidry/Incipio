@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateSuiviBundle::layout.html.twig" %}
 
 {% block title %}
@@ -26,11 +5,11 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 {% endblock %}
 
 {% block content_bundle %}
-                
+
     <h2>Modifier l'étude</h2>
-    
+
 <form method="post" {{ form_enctype(form) }}>
-    
+
     {% form_theme form 'mgateSuiviBundle:Form:fields.html.twig' %}
     <table class="table table-bordered table-striped standard">
 		<tr>
@@ -93,7 +72,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </tr>
     </table>
     {{ form_widget(form) }}
-    
+
 	<br>
 	<input type="submit" value="Enregistrer l'étude" class="btn"/>
         <input type="submit" value="Enregistrer l'étude et passer à l'AP" name="ap" id="ap" class="btn"/>
@@ -103,17 +82,17 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     <p>
         <a href="{{ path('mgateSuivi_etude_voir', {'numero': etude.numero}) }}" >Retour à l'article</a>
     </p>
-    
-    
+
+
         <form class="bootbox-confirm" data-content="Êtes-vous sûr de vouloir supprimer définitivement cette étude ?" action="{{ path('mgateSuivi_etude_supprimer', { 'numero': etude.numero }) }}" method="post">
             {{ form_widget(delete_form) }}
                 <button class="btn">Supprimer l'étude</button>
         </form>
 
 {% endblock %}
-   
+
 {% block javascript %}
     {{ parent() }}
     {{ form_javascript(form) }}
-    {% include "mgateSuiviBundle:DocType:selectOrNew.html.twig" with { known: form.knownProspect, knowned: form.prospect, newed: form.newProspect }%} 
+    {% include "mgateSuiviBundle:DocType:selectOrNew.html.twig" with { known: form.knownProspect, knowned: form.prospect, newed: form.newProspect }%}
 {% endblock %}

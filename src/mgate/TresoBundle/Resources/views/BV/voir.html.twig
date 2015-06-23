@@ -1,38 +1,17 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateTresoBundle::layout.html.twig" %}
 
 {% block title %}
 	Gestion des BV - {{ parent() }}
 {% endblock %}
 
-    
+
 {% block content_bundle %}
     <style>
     .money{
         text-align: right;
     }
     </style>
-    
+
     <h3>Bulletin de versement</h3>
     <h4>{{ bv.reference }} &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;&thinsp; {{ bv.dateDemission | date('d/m/Y') }}</h4>
     <table class="table table-bordered table-condensed">
@@ -58,7 +37,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </tr>
 
         <tr><td colspan="2" style="visibility: hidden;"></td></tr>
-        
+
         <tr style="text-align: center;" class="active">
             <th rowspan="2">COTISATIONS SOCIALES</th>
             <th rowspan="2">BASE</th>
@@ -97,54 +76,54 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <th>{{ (bv.tauxPartEtu['baseBrute']*100) | money }}&nbsp;%</th>
             <th>{{ bv.partEtudiant(true)['baseBrute'] | money }}&nbsp;€</th>
         </tr>
-        
+
         <tr><td colspan="2" style="visibility: hidden;"></td></tr>
-        
+
         <tr>
             <th>TOTAL DES COTISATIONS  (part Junior) </th>
             <th class="money">{{ bv.partJunior | money }}&nbsp;€</th>
         </tr>
-        
+
         <tr>
             <th>TOTAL DES COTISATIONS  (part étudiant) </th>
             <th class="money">{{ bv.partEtudiant | money }}&nbsp;€</th>
         </tr>
-        
+
         <tr>
             <th>TOTAL DES COTISATIONS  (part Junior + part étudiant) </th>
             <th class="money">{{ (bv.partJunior + bv.partEtudiant) | money }}&nbsp;€</th>
         </tr>
-        
+
         <tr><td colspan="2" style="visibility: hidden;"></td></tr>
-        
+
         <tr>
             <th>Rémunération Brute</th>
             <th class="money">{{ bv.remunerationBrute | money }}&nbsp;€</th>
         </tr>
-        
+
         <tr>
             <th>Total retenues étudiant </th>
             <th class="money">{{ bv.partEtudiant | money }}&nbsp;€</th>
         </tr>
-        
+
         <tr>
             <th>Montant net </th>
             <th class="money">{{ bv.remunerationNet | money }}&nbsp;€</th>
         </tr>
-        
+
         <tr>
             <th>Montant net imposable (net+C.S.G. Non déd +R.D.S.)</th>
             <th class="money">{{ bv.remunerationNetImposable | money }}&nbsp;€</th>
         </tr>
-        
+
         <tr class="active">
             <th>TOTAL A PAYER :</th>
             <th class="money">{{ bv.remunerationNet | money }}&nbsp;€</th>
         </tr>
-    
-    
+
+
     </table>
-    
+
     <table class="table hidden-print">
         <tr>
             <td style="text-align: left;"><a class="btn btn-success" href="{{ path('mgateTreso_BV_modifier', {'id' : bv.id })}}">Modifier</a></td>

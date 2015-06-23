@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 <style>
 .titre{
     min-width: 250px;
@@ -46,9 +25,9 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         <ul class="nav navbar-nav">
             <li><a href="{{ path('mgateSuivi_ap_rediger', {'id': etude.id}) }}"><span class="glyphicon glyphicon-pencil"></span> Rediger</a></li>
           {% if etude.ap.dateSignature |default('0') %}
-            <li><a href="{{ path('mgate_publi_publiposter', 
-                    { 'templateName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_AVANT_PROJET'), 
-                    'rootName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_ETUDE'), 
+            <li><a href="{{ path('mgate_publi_publiposter',
+                    { 'templateName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_AVANT_PROJET'),
+                    'rootName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_ETUDE'),
                     'rootObject_id' : etude.id}) }}">
                     <span class="glyphicon glyphicon-circle-arrow-down"></span> Generer
                 </a></li>
@@ -93,9 +72,9 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         <ul class="nav navbar-nav">
             <li><a href="{{ path('mgateSuivi_cc_rediger', {'id': etude.id}) }}"><span class="glyphicon glyphicon-pencil"></span> Rediger</a></li>
                     {% if etude.cc.dateSignature |default('0') %}
-            <li><a href="{{ path('mgate_publi_publiposter', 
-                    { 'templateName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_CONVENTION_CLIENT'), 
-                    'rootName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_ETUDE'), 
+            <li><a href="{{ path('mgate_publi_publiposter',
+                    { 'templateName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_CONVENTION_CLIENT'),
+                    'rootName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_ETUDE'),
                     'rootObject_id' : etude.id}) }}">
                     <span class="glyphicon glyphicon-circle-arrow-down"></span> Generer
                 </a></li>
@@ -148,15 +127,15 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                     </td>
                 </tr>
                 <tr>
-                    <td><a href="{{ path('mgate_publi_publiposter', 
-                            { 'templateName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_RECAPITULATIF_MISSION'), 
-                            'rootName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_MISSION'), 
+                    <td><a href="{{ path('mgate_publi_publiposter',
+                            { 'templateName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_RECAPITULATIF_MISSION'),
+                            'rootName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_MISSION'),
                             'rootObject_id' : mission.id}) }}">
                             <span class="glyphicon glyphicon-circle-arrow-down"></span> RM
-                        </a></td> 
-                    <td><a href="{{ path('mgate_publi_publiposter', 
-                            { 'templateName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_DESCRIPTIF_MISSION'), 
-                            'rootName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_MISSION'), 
+                        </a></td>
+                    <td><a href="{{ path('mgate_publi_publiposter',
+                            { 'templateName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_DESCRIPTIF_MISSION'),
+                            'rootName' : constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_MISSION'),
                             'rootObject_id' : mission.id}) }}">
                             <span class="glyphicon glyphicon-circle-arrow-down"></span> DM
                         </a></td>
@@ -213,16 +192,16 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         <tr>
             <th colspan="2">Factures</th>
             <th>Date de signature</th>
-            <th>Montant H.T.</th>            
+            <th>Montant H.T.</th>
         </tr>
         {% for facture in etude.factures %}
         <tr>
             <td>{% if is_granted('ROLE_CA') %}
                 <a title="Modifier" href="{{ path('mgateTreso_Facture_modifier', {'id': facture.id}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
                 &nbsp;&nbsp;&nbsp;
-                <a title="Télécharger" href="{{ path('mgate_publi_publiposter', 
+                <a title="Télécharger" href="{{ path('mgate_publi_publiposter',
                                         { 'templateName' : facture.typeAbbrToString ,
-                                         'rootName' :  constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_FACTURE'), 
+                                         'rootName' :  constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_FACTURE'),
                                          'rootObject_id' : facture.id}) }}#">
                     <span class="glyphicon glyphicon-circle-arrow-down"></span>
                 </a>
@@ -234,8 +213,8 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <td></td>
             <td>{{ facture.montantHT | default(0) }} €</td>
         </tr>
-        {% set montantRestant =  montantRestant - facture.montantHT | default(0) %}        
-        {% endfor %}     
+        {% set montantRestant =  montantRestant - facture.montantHT | default(0) %}
+        {% endfor %}
     </table>
     <table class="table table-bordered">
         <tr>
@@ -248,7 +227,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 </div>
 
 
-            
+
 <nav class="navbar" role="navigation">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-pvs">
@@ -279,8 +258,8 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <td style="width: 100px;">
                 <a title="Modifier" href="{{ path('mgateSuivi_procesverbal_modifier', {'id_pv': pvi.id}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
                 &nbsp;&nbsp;&nbsp;
-                <a title="Télécharger" href="{{ path('mgate_publi_publiposter', 
-                                        { 'templateName' :  constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_PROCES_VERBAL_INTERMEDIAIRE'), 
+                <a title="Télécharger" href="{{ path('mgate_publi_publiposter',
+                                        { 'templateName' :  constant('\\mgate\\PubliBundle\\Controller\\TraitementController::DOCTYPE_PROCES_VERBAL_INTERMEDIAIRE'),
                                         'rootName' :  constant('\\mgate\\PubliBundle\\Controller\\TraitementController::ROOTNAME_ETUDE'),
                                         'rootObject_id' : etude.id }) }}">
                     <span class="glyphicon glyphicon-circle-arrow-down"></span>
@@ -351,5 +330,5 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <td>{% for value in av.clauses %}{{ av.ClausesChoices[value] }}<br />{% endfor %}</td>
         </tr>
     {% endfor %}
-    </table>                      
+    </table>
 </div>

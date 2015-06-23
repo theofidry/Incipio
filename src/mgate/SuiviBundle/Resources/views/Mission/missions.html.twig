@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateSuiviBundle::layout.html.twig" %}
 
 {% block content_bundle %}
@@ -27,7 +6,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 <form name="missionsForm" method="POST" {{ form_enctype(form) }}>
     {# affiche l'unique champ de la tache : description #}
     {#{ form_row(form.description) }#}
-        
+
 <p><br /><input type="submit" value="Ajouter une mission" name="add" class="btn"/> - <input type="submit" value="Enregistrer les missions" class="btn"/></p>
 <input type="hidden" value="" name="idMission" id="idMission"/>
     <u1 class="missions" id="missions" data-prototype="{{ form_widget(form.missions.vars.prototype) | e }}">
@@ -36,7 +15,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         <table>
         <tr>
             <td colspan="4">
-                
+
                 <button class="btn" type="submit" value="Ajouter des JEH" name="addRepartition" onclick="document.forms['missionsForm'].elements['idMission'].value = {{loop.index0}};"><i class="glyphicon glyphicon-plus"></i></button> <h4 style="display: inline;">Répartition des JEH</h4></td>
         </tr>
         {% for repartitionJEH in mission.repartitionsJEH %}
@@ -47,9 +26,9 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <td>{{ form_widget(repartitionJEH.prixJEH) }}</td>
         </tr>
         {% endfor %}
-        
+
         </table>
-                        
+
                 <h4 class="titreMission"></h4>{{ form_widget(mission) }}
             </li><br />
         {% endfor %}
@@ -77,7 +56,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         var isDirty = false;
 
         jQuery(document).ready(function() {
-        
+
             //Verification avant de quitter
             $(':input').change(function(){
                 if(!isDirty){
@@ -92,22 +71,22 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 isDirty = false;
                 return true;
             });
-        
+
             //Rajout des boutons (X, up, down) pour les phases
             $('.repartitions').each(function() {
                 addPhaseBouton($(this));
             });
-        
+
         });
-    
+
         function addPhaseBouton($tagFormLi) {
             var $delete = $('<button class="btn" id="myButtonDelete" class="btn">X</button>');
             $tagFormLi.children().first().append($delete);
-        
+
             $delete.on('click', function(e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
-            
+
                 //CONFIRM confirmation suppression
                 var message = "Êtes vous sûr de vouloir supprimer ces JEH ?";
                 bootbox.confirm(message, function(result) {
@@ -117,13 +96,13 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 });
                });
         }
-        
+
         </script>
 
 
 
 <script type="text/javascript">
-    
+
     // Fenetre resumant
     $.ui.dialog.prototype._oldinit = $.ui.dialog.prototype._init;
     $.ui.dialog.prototype._init = function() {
@@ -141,7 +120,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     };
     $(function() {
         $( "#dialog" ).dialog({
-            position: { 
+            position: {
                   my: 'right center',
                   at: 'right center'
             },
@@ -149,10 +128,10 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             width:  $(window).width() * 0.25
         });
     });
-    
+
     // Recupere le div qui contient la collection de tags
     var collectionHolder = $('.missions');
-    
+
     function updateOrder() {
         $('input.position').each(function(i) {
             $(this).val( i );
@@ -161,17 +140,17 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             $(this).text( 'Mission n°'+(i+1) );
         });
     }
-    
+
     function updatePrix() {
         var prix = 0;
         var mission = 0;
-        
+
         $('input.nbrJEH').each(function(i1) {
             mission=parseInt($(this).val());
-            
+
             $('input.prixJEH').each(function(i2) {
                 if(i1==i2)
-                mission*=parseInt($(this).val());           
+                mission*=parseInt($(this).val());
             });
             if(!isNaN(mission))
                 prix+=mission;
@@ -179,10 +158,10 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
        $('.prix').text( prix );
     }
-    
+
     function updateNbrJEH() {
         var nbrJEH = 0;
-        
+
         $('input.nbrJEH').each(function(i) {
             if(!isNaN(parseInt($(this).val())))
                 nbrJEH+=parseInt($(this).val());
@@ -190,14 +169,14 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
        $('.nbrJEH').text( nbrJEH );
     }
-    
+
     var isDirty = false;
 
     jQuery(document).ready(function() {
-        
+
         updatePrix();
-        updateNbrJEH();     
-        
+        updateNbrJEH();
+
         //Verification avant de quitter
         $(':input').change(function(){
             if(!isDirty){
@@ -212,35 +191,35 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             isDirty = false;
             return true;
         });
-        
+
         //Rajout des boutons (X, up, down) pour les missions
         collectionHolder.find('li').each(function() {
             addMissionBouton($(this));
-        });      
-        
+        });
+
         $('input.nbrJEH').each(function() {
-            $(this).change(function() { 
+            $(this).change(function() {
                 updatePrix();
                 updateNbrJEH();
             });
         });
-        
+
         $('input.prixJEH').each(function() {
-            $(this).change(function() { 
+            $(this).change(function() {
                 updatePrix();
             });
         });
-        
+
        $('#myButtonUpdate').on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
-            
+
             updatePrix();
             updateNbrJEH();
         });
 
     });
-    
+
     function addMissionBouton($tagFormLi) {
         var $delete = $('<button id="myButtonDelete">X</button>');
         $tagFormLi.append($delete);
@@ -248,7 +227,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         $delete.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
-            
+
             //CONFIRM confirmation suppression
             var message = "Êtes vous sûr de vouloir supprimer cet intervenant ?";
             bootbox.confirm(message, function(result) {
@@ -260,9 +239,9 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 }
             });
         });
-        
+
     }
-    
+
 </script>
 <script>
      /* ...known personne... */
@@ -270,15 +249,15 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
  var known = new Array();
  var knowned = new Array();
  var newed = new Array();
- 
+
  {% for mission in form.missions %}
- 
- 
+
+
     toggle[{{ loop.index0 }}] = true;
     known[{{ loop.index0 }}] = $('input#{{ mission.knownIntervenant.vars.id }}');
     knowned[{{ loop.index0 }}] = $('#{{mission.intervenant.vars.id}}').parent('div');
     newed[{{ loop.index0 }}] = $('#{{mission.newIntervenant.vars.id}}').parent('div');
-    
+
     known[{{ loop.index0 }}].prop('checked', true);
 
     known[{{ loop.index0 }}].change(function() {
@@ -298,5 +277,5 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
     }).change();
 {% endfor %}
-</script> 
+</script>
 {% endblock %}

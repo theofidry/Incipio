@@ -1,32 +1,20 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\SuiviBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * mgate\SuiviBundle\Entity\Av
+ * mgate\SuiviBundle\Entity\Av.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -34,62 +22,65 @@ use Doctrine\ORM\Mapping as ORM;
 class Av extends DocType
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Etude", inversedBy="avs", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     protected $etude;
-    
+
     /**
      * @ORM\Column(name="differentielDelai", type="integer", nullable=false,  options={"default"=0})
+     *
      * @var date
      */
     private $differentielDelai;
-    
+
     /**
      * @ORM\Column(name="objet", type="text", nullable=false)
+     *
      * @var string
      */
     private $objet;
-    
+
     /**
-     * @var AvMission $avenantsMissions
+     * @var AvMission
      * @ORM\OneToMany(targetEntity="mgate\SuiviBundle\Entity\AvMission", mappedBy="avenant", cascade={"persist","remove"})
      */
     private $avenantsMissions;
-    
+
     /**
-     * @var array $clauses
+     * @var array
      * @ORM\Column(name="clauses", type="array")
      */
     private $clauses;
-    
+
     /**
      * @var Collection phase differentiel
      * @ORM\OneToMany(targetEntity="mgate\SuiviBundle\Entity\Phase", mappedBy="avenant", cascade={"persist", "remove"})
      */
     private $phases;
-    
-    public static function getClausesChoices(){
+
+    public static function getClausesChoices()
+    {
         return array(1 => 'Avenant de Délai',
             2 => 'Avenant de Méthodologie',
             3 => 'Avenant de Montant',
             4 => 'Avenant de Mission',
-            5 => 'Avenant de Rupture');
-    }  
-    
+            5 => 'Avenant de Rupture', );
+    }
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -97,53 +88,55 @@ class Av extends DocType
     }
 
     /**
-     * Set etude
+     * Set etude.
      *
      * @param mgate\SuiviBundle\Entity\Etude $etude
+     *
      * @return Av
      */
     public function setEtude(\mgate\SuiviBundle\Entity\Etude $etude)
     {
         $this->etude = $etude;
-    
+
         return $this;
     }
 
     /**
-     * Get etude
+     * Get etude.
      *
-     * @return mgate\SuiviBundle\Entity\Etude 
+     * @return mgate\SuiviBundle\Entity\Etude
      */
     public function getEtude()
     {
         return $this->etude;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->avenantsMissions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->phases = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Set differentielDelai
+     * Set differentielDelai.
      *
-     * @param integer $differentielDelai
+     * @param int $differentielDelai
+     *
      * @return Av
      */
     public function setDifferentielDelai($differentielDelai)
     {
         $this->differentielDelai = $differentielDelai;
-    
+
         return $this;
     }
 
     /**
-     * Get differentielDelai
+     * Get differentielDelai.
      *
-     * @return integer 
+     * @return int
      */
     public function getDifferentielDelai()
     {
@@ -151,22 +144,23 @@ class Av extends DocType
     }
 
     /**
-     * Set objet
+     * Set objet.
      *
      * @param string $objet
+     *
      * @return Av
      */
     public function setObjet($objet)
     {
         $this->objet = $objet;
-    
+
         return $this;
     }
 
     /**
-     * Get objet
+     * Get objet.
      *
-     * @return string 
+     * @return string
      */
     public function getObjet()
     {
@@ -174,20 +168,21 @@ class Av extends DocType
     }
 
     /**
-     * Add avenantsMissions
+     * Add avenantsMissions.
      *
      * @param \mgate\SuiviBundle\Entity\AvMission $avenantsMissions
+     *
      * @return Av
      */
     public function addAvenantsMission(\mgate\SuiviBundle\Entity\AvMission $avenantsMissions)
     {
         $this->avenantsMissions[] = $avenantsMissions;
-    
+
         return $this;
     }
 
     /**
-     * Remove avenantsMissions
+     * Remove avenantsMissions.
      *
      * @param \mgate\SuiviBundle\Entity\AvMission $avenantsMissions
      */
@@ -197,9 +192,9 @@ class Av extends DocType
     }
 
     /**
-     * Get avenantsMissions
+     * Get avenantsMissions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAvenantsMissions()
     {
@@ -207,22 +202,23 @@ class Av extends DocType
     }
 
     /**
-     * Set clauses
+     * Set clauses.
      *
      * @param array $clauses
+     *
      * @return Av
      */
     public function setClauses($clauses)
     {
         $this->clauses = $clauses;
-    
+
         return $this;
     }
 
     /**
-     * Get clauses
+     * Get clauses.
      *
-     * @return array 
+     * @return array
      */
     public function getClauses()
     {
@@ -230,20 +226,21 @@ class Av extends DocType
     }
 
     /**
-     * Add phases
+     * Add phases.
      *
      * @param \mgate\SuiviBundle\Entity\Phase $phases
+     *
      * @return Av
      */
     public function addPhase(\mgate\SuiviBundle\Entity\Phase $phases)
     {
         $this->phases[] = $phases;
-    
+
         return $this;
     }
 
     /**
-     * Remove phases
+     * Remove phases.
      *
      * @param \mgate\SuiviBundle\Entity\Phase $phases
      */
@@ -253,9 +250,9 @@ class Av extends DocType
     }
 
     /**
-     * Get phases
+     * Get phases.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPhases()
     {

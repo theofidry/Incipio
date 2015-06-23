@@ -1,41 +1,28 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\PersonneBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Entity\User as BaseUser;
 
 /**
- * mgate\PersonneBundle\Entity\Personne
+ * mgate\PersonneBundle\Entity\Personne.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="mgate\PersonneBundle\Entity\PersonneRepository")
  */
-class Personne {
-
+class Personne
+{
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -44,63 +31,63 @@ class Personne {
     protected $id;
 
     /**
-     * @var string $prenom
+     * @var string
      *
      * @ORM\Column(name="prenom", type="string", length=255)
      */
     private $prenom;
 
     /**
-     * @var string $nom
+     * @var string
      *
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
 
     /**
-     * @var string $sexe
+     * @var string
      *
      * @ORM\Column(name="sexe", type="string", length=255)
      */
     private $sexe;
 
     /**
-     * @var string $mobile
+     * @var string
      *
      * @ORM\Column(name="mobile", type="string", length=255, nullable=true)
      */
     private $mobile;
 
     /**
-     * @var string $fix
+     * @var string
      *
      * @ORM\Column(name="fix", type="string", length=255, nullable=true)
      */
     private $fix;
 
     /**
-     * @var string $adresse
+     * @var string
      *
      * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
      */
     private $adresse;
 
     /**
-     * @var string $email
+     * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
-    
+
     /**
-     * @var bool $emailEstValide
-     * 
+     * @var bool
+     *
      * @ORM\Column(name="emailestvalide", type="boolean", nullable=false, options={"default" = true})
      */
     private $emailEstValide;
-    
+
     /**
-     * @var bool $estAbonneNewsletter
+     * @var bool
      * @ORM\Column(name="estabonnenewsletter", type="boolean", nullable=false, options={"default" = true})
      */
     private $estAbonneNewsletter;
@@ -122,276 +109,312 @@ class Personne {
      * @ORM\JoinColumn(nullable=true)
      */
     private $membre;
-    
+
     // pour afficher Prénom Nom
     // Merci de ne pas supprimer
-    public function getPrenomNom() {
-        return $this->prenom . ' ' . $this->nom;
+    public function getPrenomNom()
+    {
+        return $this->prenom.' '.$this->nom;
     }
 
-    public function getNomFormel() {
-        return $this->sexe . ' ' . mb_strtoupper($this->nom, 'UTF-8') . ' ' . $this->prenom;
+    public function getNomFormel()
+    {
+        return $this->sexe.' '.mb_strtoupper($this->nom, 'UTF-8').' '.$this->prenom;
     }
 
-    public function getPoste() {
-        if ($this->getEmploye())
+    public function getPoste()
+    {
+        if ($this->getEmploye()) {
             return $this->getEmploye()->getPoste();
-        else if ($this->getMembre()) {  //Renvoi le plus haut poste (par id)
+        } elseif ($this->getMembre()) {  //Renvoi le plus haut poste (par id)
             $mandatValid = null;
             if (count($mandats = $this->getMembre()->getMandats())) {
                 $id = 100;
                 foreach ($mandats as $mandat) {
-                    if ($mandat->getPoste()->getId() < $id)
+                    if ($mandat->getPoste()->getId() < $id) {
                         $mandatValid = $mandat;
+                    }
                     $id = $mandat->getPoste()->getId();
                 }
             }
-            if ($mandatValid)
+            if ($mandatValid) {
                 return $mandatValid->getPoste()->getIntitule();
-            else
-                return "";
+            } else {
+                return '';
+            }
+        } else {
+            return '';
         }
-        else
-            return "";
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set prenom
+     * Set prenom.
      *
      * @param string $prenom
+     *
      * @return Personne
      */
-    public function setPrenom($prenom) {
+    public function setPrenom($prenom)
+    {
         $this->prenom = $prenom;
 
         return $this;
     }
 
     /**
-     * Get prenom
+     * Get prenom.
      *
-     * @return string 
+     * @return string
      */
-    public function getPrenom() {
+    public function getPrenom()
+    {
         return $this->prenom;
     }
 
     /**
-     * Set nom
+     * Set nom.
      *
      * @param string $nom
+     *
      * @return Personne
      */
-    public function setNom($nom) {
+    public function setNom($nom)
+    {
         $this->nom = $nom;
 
         return $this;
     }
 
     /**
-     * Get nom
+     * Get nom.
      *
-     * @return string 
+     * @return string
      */
-    public function getNom() {
+    public function getNom()
+    {
         return $this->nom;
     }
 
     /**
-     * Set sexe
+     * Set sexe.
      *
      * @param string $sexe
+     *
      * @return Personne
      */
-    public function setSexe($sexe) {
+    public function setSexe($sexe)
+    {
         $this->sexe = $sexe;
 
         return $this;
     }
 
     /**
-     * Get sexe
+     * Get sexe.
      *
-     * @return string 
+     * @return string
      */
-    public function getSexe() {
+    public function getSexe()
+    {
         return $this->sexe;
     }
 
     /**
-     * Set mobile
+     * Set mobile.
      *
      * @param string $mobile
+     *
      * @return Personne
      */
-    public function setMobile($mobile) {
+    public function setMobile($mobile)
+    {
         $this->mobile = $mobile;
 
         return $this;
     }
 
     /**
-     * Get mobile
+     * Get mobile.
      *
-     * @return string 
+     * @return string
      */
-    public function getMobile() {
+    public function getMobile()
+    {
         return $this->mobile;
     }
 
     /**
-     * Set fix
+     * Set fix.
      *
      * @param string $fix
+     *
      * @return Personne
      */
-    public function setFix($fix) {
+    public function setFix($fix)
+    {
         $this->fix = $fix;
 
         return $this;
     }
 
     /**
-     * Get fix
+     * Get fix.
      *
-     * @return string 
+     * @return string
      */
-    public function getFix() {
+    public function getFix()
+    {
         return $this->fix;
     }
 
     /**
-     * Set adresse
+     * Set adresse.
      *
      * @param string $adresse
+     *
      * @return Personne
      */
-    public function setAdresse($adresse) {
+    public function setAdresse($adresse)
+    {
         $this->adresse = $adresse;
 
         return $this;
     }
 
     /**
-     * Get adresse
+     * Get adresse.
      *
-     * @return string 
+     * @return string
      */
-    public function getAdresse() {
+    public function getAdresse()
+    {
         return $this->adresse;
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
+     *
      * @return Personne
      */
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
 
         return $this;
     }
 
     /**
-     * Get email
+     * Get email.
      *
-     * @return string 
+     * @return string
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
     /**
-     * Set employe
+     * Set employe.
      *
      * @param \mgate\PersonneBundle\Entity\Employe $employe
+     *
      * @return Personne
      */
-    public function setEmploye(\mgate\PersonneBundle\Entity\Employe $employe = null) {
+    public function setEmploye(\mgate\PersonneBundle\Entity\Employe $employe = null)
+    {
         $this->employe = $employe;
 
         return $this;
     }
 
     /**
-     * Get employe
+     * Get employe.
      *
-     * @return \mgate\PersonneBundle\Entity\Employe 
+     * @return \mgate\PersonneBundle\Entity\Employe
      */
-    public function getEmploye() {
+    public function getEmploye()
+    {
         return $this->employe;
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \mgate\UserBundle\Entity\User $user
+     *
      * @return Personne
      */
-    public function setUser(\mgate\UserBundle\Entity\User $user = null) {
+    public function setUser(\mgate\UserBundle\Entity\User $user = null)
+    {
         $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get user.
      *
-     * @return \mgate\UserBundle\Entity\User 
+     * @return \mgate\UserBundle\Entity\User
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 
     /**
-     * Set membre
+     * Set membre.
      *
      * @param \mgate\PersonneBundle\Entity\Membre $membre
+     *
      * @return Personne
      */
-    public function setMembre(\mgate\PersonneBundle\Entity\Membre $membre = null) {
+    public function setMembre(\mgate\PersonneBundle\Entity\Membre $membre = null)
+    {
         $this->membre = $membre;
 
         return $this;
     }
 
     /**
-     * Get membre
+     * Get membre.
      *
-     * @return \mgate\PersonneBundle\Entity\Membre 
+     * @return \mgate\PersonneBundle\Entity\Membre
      */
-    public function getMembre() {
+    public function getMembre()
+    {
         return $this->membre;
     }
 
-
     /**
-     * Set emailEstValide
+     * Set emailEstValide.
      *
-     * @param boolean $emailEstValide
+     * @param bool $emailEstValide
+     *
      * @return Personne
      */
     public function setEmailEstValide($emailEstValide)
     {
         $this->emailEstValide = $emailEstValide;
-    
+
         return $this;
     }
 
     /**
-     * Get emailEstValide
+     * Get emailEstValide.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getEmailEstValide()
     {
@@ -399,22 +422,23 @@ class Personne {
     }
 
     /**
-     * Set estAbonneNewsletter
+     * Set estAbonneNewsletter.
      *
-     * @param boolean $estAbonneNewsletter
+     * @param bool $estAbonneNewsletter
+     *
      * @return Personne
      */
     public function setEstAbonneNewsletter($estAbonneNewsletter)
     {
         $this->estAbonneNewsletter = $estAbonneNewsletter;
-    
+
         return $this;
     }
 
     /**
-     * Get estAbonneNewsletter
+     * Get estAbonneNewsletter.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getEstAbonneNewsletter()
     {

@@ -1,24 +1,13 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\PubliBundle\Entity;
 
@@ -38,7 +27,7 @@ class Document
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @ORM\OneToOne(targetEntity="RelatedDocument", inversedBy="document", cascade={"all"})
      * @ORM\JoinColumn(nullable=true)
@@ -50,20 +39,20 @@ class Document
      * @Assert\NotBlank
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
-    private $size;  
-    
+    private $size;
+
     /**
-     * @var \DateTime $uptime
+     * @var \DateTime
      *
      * @ORM\Column(name="uptime", type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
     private $uptime;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="mgate\PersonneBundle\Entity\Personne", cascade={"persist"})
      * @ORM\JoinColumn(name="author_personne_id", referencedColumnName="id", nullable=true)
@@ -74,20 +63,18 @@ class Document
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $path;
-    
+
     /**
      * @var UploadedFile
      * @Assert\File(maxSize="6000000")
      */
     private $file;
-    
+
     /**
      * @var string
      * @Assert\NotBlank
      */
     private $subdirectory;
-
-
 
     public function getAbsolutePath()
     {
@@ -117,7 +104,7 @@ class Document
         // when displaying uploaded doc/image in the view.
         return 'documents';
     }
-    
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
@@ -131,24 +118,24 @@ class Document
             $this->size = filesize($this->file);
         }
     }
-    
+
     /**
      * @ORM\PostPersist()
      * @ORM\PostUpdate()
-     */    
+     */
     public function upload()
     {
         if (null === $this->file) {
             return;
         }
-        
+
         // if there is an error when moving the file, an exception will
         // be automatically thrown by move(). This will properly prevent
         // the entity from being persisted to the database on error
         // moving file into /data
         $this->file->move($this->getUploadRootDir(), $this->path);
         // creating symlink to acces file from web/...
-        symlink ( $this->getUploadRootDir().'/'.$this->path, $this->getWebPath());
+        symlink($this->getUploadRootDir().'/'.$this->path, $this->getWebPath());
         unset($this->file);
     }
 
@@ -157,37 +144,42 @@ class Document
      */
     public function removeUpload()
     {
-        if($file = $this->getWebPath())
+        if ($file = $this->getWebPath()) {
             unlink($file);
-        if ($file = $this->getAbsolutePath())
+        }
+        if ($file = $this->getAbsolutePath()) {
             unlink($file);
-    }        
-    
+        }
+    }
+
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
-    
+
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Document
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -195,9 +187,9 @@ class Document
     }
 
     /**
-     * Get uptime
+     * Get uptime.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUptime()
     {
@@ -205,35 +197,37 @@ class Document
     }
 
     /**
-     * Set path
+     * Set path.
      *
      * @param string $path
+     *
      * @return Document
      */
     public function setPath($path)
     {
         $this->path = $path;
-    
+
         return $this;
     }
-    
+
     /**
-     * Set path
+     * Set path.
      *
      * @param string $junior['id']
+     *
      * @return Document
      */
     public function setSubdirectory($path)
     {
         $this->subdirectory = $path;
-    
+
         return $this;
     }
 
     /**
-     * Get path
+     * Get path.
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
@@ -241,22 +235,23 @@ class Document
     }
 
     /**
-     * Set relation
+     * Set relation.
      *
      * @param \mgate\PubliBundle\Entity\RelatedDocument $relation
+     *
      * @return Document
      */
     public function setRelation(\mgate\PubliBundle\Entity\RelatedDocument $relation = null)
     {
         $this->relation = $relation;
-    
+
         return $this;
     }
 
     /**
-     * Get relation
+     * Get relation.
      *
-     * @return \mgate\PubliBundle\Entity\RelatedDocument 
+     * @return \mgate\PubliBundle\Entity\RelatedDocument
      */
     public function getRelation()
     {
@@ -264,43 +259,46 @@ class Document
     }
 
     /**
-     * Set author
+     * Set author.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $author
+     *
      * @return Document
      */
     public function setAuthor(\mgate\PersonneBundle\Entity\Personne $author = null)
     {
         $this->author = $author;
-    
+
         return $this;
     }
-    
-    public function getFile(){
+
+    public function getFile()
+    {
         return $this->file;
     }
-    
-    public function setFile($file){
+
+    public function setFile($file)
+    {
         $this->file = $file;
         $this->size = filesize($file);
+
         return $this;
-    }    
+    }
 
     /**
-     * Get author
+     * Get author.
      *
-     * @return \mgate\PersonneBundle\Entity\Personne 
+     * @return \mgate\PersonneBundle\Entity\Personne
      */
     public function getAuthor()
     {
         return $this->author;
     }
 
-
     /**
-     * Get size
+     * Get size.
      *
-     * @return integer 
+     * @return int
      */
     public function getSize()
     {

@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateSuiviBundle::layout.html.twig" %}
 {% block content_bundle %}
 <style>
@@ -42,7 +21,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <div class="row groupes" id="groupes" data-prototype="{{ form_widget(form.groupes.vars.prototype) | e }}">
         {# itere sur chaque tag existant et affiche son unique champ : name #}
         {% for groupe in form.groupes %}
-                    
+
                 <div class="col-md-6">
                     <table class="table table-striped table-bordered">
                         <tr>
@@ -78,7 +57,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     {{ form_javascript(form) }}
 
 <script type="text/javascript">
-    
+
     // Fenetre resumant
     $.ui.dialog.prototype._oldinit = $.ui.dialog.prototype._init;
     $.ui.dialog.prototype._init = function() {
@@ -94,11 +73,11 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         });
         this._oldinit();
     };
-    
-    
+
+
     // Recupere le div qui contient la collection de tags
     var collectionHolder = $('.groupes');
-    
+
     function updateOrder() {
         $('input.numero').each(function(i) {
             $(this).val( i );
@@ -108,14 +87,14 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         });
     }
 
-    
+
     var isDirty = false;
 
     jQuery(document).ready(function() {
-        
+
         updateOrder();
-   
-        
+
+
         //Verification avant de quitter
         $(':input').change(function(){
             if(!isDirty){
@@ -130,12 +109,12 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             isDirty = false;
             return true;
         });
-        
+
         //Rajout des boutons (X, up, down) pour les groupes
         collectionHolder.find('div').each(function() {
             addgroupeBouton($(this));
         });
-        
+
         //Ajouter le drag and drop
         collectionHolder.sortable({
             // limitons les deplacements sur l'axe des ordonnees, ce sera plus propre
@@ -163,16 +142,16 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
             // La fonction appele quand un element change de numero
             // C'est le code vraiment utile, en fait
-            update: function(){             
+            update: function(){
                 updateOrder();
             }
-            
+
         });
-       
+
 
 
     });
-    
+
     function addgroupeBouton($tagFormLi) {
         var $delete = $('<button id="myButtonDelete" class="btn">X</button>');
         var $up = $('<button id="myButtonUp" class="btn">▲</button>');
@@ -184,7 +163,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         $delete.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
-            
+
             //CONFIRM confirmation suppression
             var message = "Êtes vous sûr de vouloir supprimer cette groupe ?";
             bootbox.confirm(message, function(result) {
@@ -195,7 +174,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 }
             });
            });
-        
+
         $up.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
@@ -211,7 +190,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             updateOrder();
         });
     }
-    
+
 </script>
 
 

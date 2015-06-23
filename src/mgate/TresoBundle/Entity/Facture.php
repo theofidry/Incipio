@@ -1,32 +1,20 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\TresoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FV
+ * FV.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="mgate\TresoBundle\Entity\FactureRepository")
@@ -38,145 +26,159 @@ class Facture
     public static $TYPE_VENTE_ACCOMPTE = 3;
     public static $TYPE_VENTE_INTERMEDIAIRE = 4;
     public static $TYPE_VENTE_SOLDE = 5;
-    
+
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="mgate\SuiviBundle\Entity\Etude", inversedBy="factures",  cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     protected $etude;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="mgate\PersonneBundle\Entity\Prospect", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     protected $beneficiaire;
-    
+
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="exercice", type="smallint")
      */
     private $exercice;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="numero", type="smallint")
      */
     private $numero;
 
     /**
-     * @var integer
+     * @var int
      * @abstract 1 is Achat, > 2 is vente
      *
      * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     private $type;
-    
+
     /**
-     * @var \DateTime $dateEmission
+     * @var \DateTime
      *
      * @ORM\Column(name="dateEmission", type="date", nullable=false)
      */
     private $dateEmission;
-    
+
     /**
-     * @var \DateTime $dateVersement
+     * @var \DateTime
      *
      * @ORM\Column(name="dateVersement", type="date", nullable=true)
      */
     private $dateVersement;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="FactureDetail", mappedBy="facture", cascade={"persist", "detach", "remove"}, orphanRemoval=true)
      */
     private $details;
-    
+
     /**
      * @ORM\Column(name="objet", type="text", nullable=false)
+     *
      * @var string
      */
     private $objet;
-    
+
     /**
      * @ORM\OneToOne(targetEntity="FactureDetail", cascade={"persist", "merge", "refresh", "remove"})
      * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
      */
     private $montantADeduire;
-    
-   
+
     /**
-     * ADDITIONNAL
+     * ADDITIONNAL.
      */
-    
+
     /*
      * pour la TVA collectée (factures clients), la date d’exigibilité c’est la date d’encaissement
      * pour la TVA déductible, la date d’exigibilité c’est soit la date de facturation dans le cas de vente de biens soit la date de décaissement dans le cas de services
      * la CNJE simplifie pour les Junior-Entrepreneurs en leur disant de prendre en compte la date de facturation pour toutes les opérations (biens et services)
      */
-    public function getDate(){
+    public function getDate()
+    {
         return $this->type == self::$TYPE_ACHAT ? $this->dateEmission : $this->dateVersement;
     }
-    
-    public function getReference(){
-        return $this->exercice.'-'.($this->type > 1 ? 'FV' : 'FA').'-'. sprintf('%1$02d', $this->numero);
+
+    public function getReference()
+    {
+        return $this->exercice.'-'.($this->type > 1 ? 'FV' : 'FA').'-'.sprintf('%1$02d', $this->numero);
     }
-    
-    public function getMontantHT(){
-       $montantHT = 0;
-       foreach ($this->details as $detail)
+
+    public function getMontantHT()
+    {
+        $montantHT = 0;
+        foreach ($this->details as $detail) {
             $montantHT += $detail->getMontantHT();
-       if($this->montantADeduire)
+        }
+        if ($this->montantADeduire) {
             $montantHT -= $this->montantADeduire->getMontantHT();
-       return $montantHT;
+        }
+
+        return $montantHT;
     }
-    
-    public function getMontantTVA(){
+
+    public function getMontantTVA()
+    {
         $TVA = 0;
-        foreach ($this->details as $detail)
+        foreach ($this->details as $detail) {
             $TVA += $detail->getMontantHT() * $detail->getTauxTVA() / 100;
-        if($this->montantADeduire)
+        }
+        if ($this->montantADeduire) {
             $TVA -= $this->montantADeduire->getTauxTVA() * $this->montantADeduire->getMontantHT() / 100;
-       return $TVA;
+        }
+
+        return $TVA;
     }
-    
-    public function getMontantTTC(){
+
+    public function getMontantTTC()
+    {
         return $this->getMontantHT() + $this->getMontantTVA();
     }
-    
-    public function getTypeAbbrToString(){
+
+    public function getTypeAbbrToString()
+    {
         $type = array(
             0 => 'Facture',
             1 => 'Facture',
             2 => 'FV',
             3 => \mgate\PubliBundle\Controller\TraitementController::DOCTYPE_FACTURE_ACOMTE,
             4 => \mgate\PubliBundle\Controller\TraitementController::DOCTYPE_FACTURE_INTERMEDIAIRE,
-            5 => \mgate\PubliBundle\Controller\TraitementController::DOCTYPE_FACTURE_SOLDE);
-        
+            5 => \mgate\PubliBundle\Controller\TraitementController::DOCTYPE_FACTURE_SOLDE, );
+
         return $type[$this->type];
     }
-    
+
     /**
-     * Get type
+     * Get type.
      *
-     * @return integer 
+     * @return int
      */
     public function getTypeToString()
     {
         $type = $this->getTypeChoices();
+
         return $type[$this->type];
     }
-    
-    public static function getTypeChoices(){
+
+    public static function getTypeChoices()
+    {
         return array(
             self::$TYPE_ACHAT => 'FA - Facture d\'achat',
             self::$TYPE_VENTE => 'FV - Facture de vente',
@@ -184,51 +186,50 @@ class Facture
             self::$TYPE_VENTE_INTERMEDIAIRE => 'FV - Facture intermédiaire',
             self::$TYPE_VENTE_SOLDE => 'FV - Facture de solde',
             );
-    } 
-    
-    
+    }
+
     /**
-     * STANDARDS GETTER / SETTER
+     * STANDARDS GETTER / SETTER.
      */
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
 
-
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->details = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->montantADeduire = new FactureDetail;
+        $this->montantADeduire = new FactureDetail();
         $this->montantADeduire->setMontantHT(0);
     }
-    
+
     /**
-     * Set exercice
+     * Set exercice.
      *
-     * @param integer $exercice
+     * @param int $exercice
+     *
      * @return Facture
      */
     public function setExercice($exercice)
     {
         $this->exercice = $exercice;
-    
+
         return $this;
     }
 
     /**
-     * Get exercice
+     * Get exercice.
      *
-     * @return integer 
+     * @return int
      */
     public function getExercice()
     {
@@ -236,22 +237,23 @@ class Facture
     }
 
     /**
-     * Set numero
+     * Set numero.
      *
-     * @param integer $numero
+     * @param int $numero
+     *
      * @return Facture
      */
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
-     * Get numero
+     * Get numero.
      *
-     * @return integer 
+     * @return int
      */
     public function getNumero()
     {
@@ -259,70 +261,71 @@ class Facture
     }
 
     /**
-     * Set type
+     * Set type.
      *
-     * @param integer $type
+     * @param int $type
+     *
      * @return Facture
      */
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return integer 
+     * @return int
      */
     public function getType()
     {
         return $this->type;
     }
-    
-
 
     /**
-     * Set dateEmission
+     * Set dateEmission.
      *
      * @param \DateTime $dateEmission
+     *
      * @return Facture
      */
     public function setDateEmission($dateEmission)
     {
         $this->dateEmission = $dateEmission;
-    
+
         return $this;
     }
 
     /**
-     * Get dateEmission
+     * Get dateEmission.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateEmission()
     {
         return $this->dateEmission;
     }
-    
+
     /**
-     * Set dateVersement
+     * Set dateVersement.
      *
      * @param \DateTime $dateVersement
+     *
      * @return Facture
      */
     public function setDateVersement($dateVersement)
     {
         $this->dateVersement = $dateVersement;
-    
+
         return $this;
     }
 
     /**
-     * Get dateVersement
+     * Get dateVersement.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateVersement()
     {
@@ -330,20 +333,21 @@ class Facture
     }
 
     /**
-     * Add details
+     * Add details.
      *
      * @param \mgate\TresoBundle\Entity\FactureDetail $details
+     *
      * @return Facture
      */
     public function addDetail(\mgate\TresoBundle\Entity\FactureDetail $details)
     {
         $this->details[] = $details;
-    
+
         return $this;
     }
 
     /**
-     * Remove details
+     * Remove details.
      *
      * @param \mgate\TresoBundle\Entity\FactureDetail $details
      */
@@ -354,80 +358,81 @@ class Facture
     }
 
     /**
-     * Get details
+     * Get details.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDetails()
     {
         return $this->details;
     }
-    
+
     /**
-     * Set objet
+     * Set objet.
      *
      * @param string $objet
+     *
      * @return NoteDeFrais
      */
     public function setObjet($objet)
     {
         $this->objet = $objet;
-    
+
         return $this;
     }
 
     /**
-     * Get objet
+     * Get objet.
      *
-     * @return string 
+     * @return string
      */
     public function getObjet()
     {
         return $this->objet;
     }
-    
+
     /**
-     * Set etude
+     * Set etude.
      *
      * @param \mgate\SuiviBundle\Entity\Etude $etude
+     *
      * @return BV
      */
     public function setEtude(\mgate\SuiviBundle\Entity\Etude $etude = null)
     {
         $this->etude = $etude;
-    
+
         return $this;
     }
 
     /**
-     * Get etude
+     * Get etude.
      *
-     * @return \mgate\SuiviBundle\Entity\Etude 
+     * @return \mgate\SuiviBundle\Entity\Etude
      */
     public function getEtude()
     {
         return $this->etude;
     }
 
-
-
     /**
-     * Set montantADeduire
+     * Set montantADeduire.
      *
      * @param \mgate\TresoBundle\Entity\FactureDetail $montantADeduire
+     *
      * @return Facture
      */
     public function setMontantADeduire(\mgate\TresoBundle\Entity\FactureDetail $montantADeduire = null)
     {
         $this->montantADeduire = $montantADeduire;
-    
+
         return $this;
     }
 
     /**
-     * Get montantADeduire
+     * Get montantADeduire.
      *
-     * @return \mgate\TresoBundle\Entity\FactureDetail 
+     * @return \mgate\TresoBundle\Entity\FactureDetail
      */
     public function getMontantADeduire()
     {
@@ -435,22 +440,23 @@ class Facture
     }
 
     /**
-     * Set beneficiaire
+     * Set beneficiaire.
      *
      * @param \mgate\PersonneBundle\Entity\Prospect $beneficiaire
+     *
      * @return Facture
      */
     public function setBeneficiaire(\mgate\PersonneBundle\Entity\Prospect $beneficiaire)
     {
         $this->beneficiaire = $beneficiaire;
-    
+
         return $this;
     }
 
     /**
-     * Get beneficiaire
+     * Get beneficiaire.
      *
-     * @return \mgate\PersonneBundle\Entity\Prospect 
+     * @return \mgate\PersonneBundle\Entity\Prospect
      */
     public function getBeneficiaire()
     {

@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateTresoBundle::layout.html.twig" %}
 
 {% block title %}
@@ -28,7 +7,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 {% block javascript_quick %}
 {{ parent() }}
 <script src="{{ asset('js/jquery.dataTables.min.js')}}"></script>
-  
+
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         $('#FAtable').dataTable({
@@ -49,12 +28,12 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     <link rel="stylesheet" href="{{ asset('css/datatable.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datatable_page.css') }}">
 {% endblock %}
-    
+
 {% block content_bundle %}
     <ul id="myTab" class="nav nav-tabs">
         <li><a href="{{ path('mgateTreso_Facture_ajouter')}}"> <span class="glyphicon glyphicon-plus"></span> Ajouter une Facture</a></li>
         <li class=""><a href="#FA" data-toggle="tab">Facture d'Achat</a></li>
-        <li class="active"><a href="#FV" data-toggle="tab">Facture de Vente</a></li>        
+        <li class="active"><a href="#FV" data-toggle="tab">Facture de Vente</a></li>
     </ul>
     <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade" id="FA">
@@ -70,7 +49,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                     <th>Statut</th>
                 </tr>
                 </thead>
-                {% for facture in factures if facture.type == 1 %}        
+                {% for facture in factures if facture.type == 1 %}
                 {% set delai = (((facture.dateVersement ? facture.dateVersement |date('U') : 'now' | date('U')) - facture.dateEmission| date('U')) / 86400 ) |round %}
                 <tr class="{{facture.dateVersement ? 'success' : ( delai > 31 ? 'danger' : 'warning')}}">
                     <td>{{ facture.dateEmission | date('d/m/Y')}}</td>
@@ -82,7 +61,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                     <td>{{ facture.dateVersement ? facture.dateVersement |date('d/m/Y') : 'Impayée' }}</td>
                 </tr>
                 {% endfor %}
-            </table>                
+            </table>
         </div>
         <div class="tab-pane fade active in" id="FV">
             <table class="display dataTable table table-bordered table-striped" id="FVtable">
@@ -99,7 +78,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 </tr>
                 </thead>
                 {% set totalDelai = 0 %}
-                {% for facture in factures if facture.type > 1 %}        
+                {% for facture in factures if facture.type > 1 %}
                 {% set delai = (((facture.dateVersement ? facture.dateVersement |date('U') : 'now' | date('U')) - facture.dateEmission| date('U')) / 86400 ) |round %}
                 {% set totalDelai = delai + totalDelai %}
                 <tr class="{{facture.dateVersement ? 'success' : ( delai > 31 ? 'danger' : 'warning')}}">
@@ -113,15 +92,15 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                     <td>{{ delai }} jour{% if delai > 1%}s{% endif %}</td>
                 </tr>
                 {% endfor %}
-            </table>                
+            </table>
         </div>
    </div>
 
-    
-    
+
+
 {% endblock %}
-    
-    
+
+
 {% block javascript %}
     {{ parent() }}
 {% endblock %}

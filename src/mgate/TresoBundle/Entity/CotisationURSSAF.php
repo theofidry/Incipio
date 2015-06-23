@@ -1,32 +1,20 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\TresoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CotisationURSSAF
+ * CotisationURSSAF.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="mgate\TresoBundle\Entity\CotisationURSSAFRepository")
@@ -34,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 class CotisationURSSAF
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -50,7 +38,7 @@ class CotisationURSSAF
     private $libelle;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="isSurBaseURSSAF", type="boolean")
      */
@@ -83,24 +71,25 @@ class CotisationURSSAF
      * @ORM\Column(name="dateFin", type="date")
      */
     private $dateFin;
-    
+
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="deductible", type="boolean")
      */
     private $deductible;
-    
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->deductible = true;
+
         return $this;
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -108,22 +97,23 @@ class CotisationURSSAF
     }
 
     /**
-     * Set libelle
+     * Set libelle.
      *
      * @param string $libelle
+     *
      * @return CotisationURSSAF
      */
     public function setLibelle($libelle)
     {
         $this->libelle = $libelle;
-    
+
         return $this;
     }
 
     /**
-     * Get libelle
+     * Get libelle.
      *
-     * @return string 
+     * @return string
      */
     public function getLibelle()
     {
@@ -131,22 +121,23 @@ class CotisationURSSAF
     }
 
     /**
-     * Set isSurBaseURSSAF
+     * Set isSurBaseURSSAF.
      *
-     * @param boolean $isSurBaseURSSAF
+     * @param bool $isSurBaseURSSAF
+     *
      * @return CotisationURSSAF
      */
     public function setIsSurBaseURSSAF($isSurBaseURSSAF)
     {
         $this->isSurBaseURSSAF = $isSurBaseURSSAF;
-    
+
         return $this;
     }
 
     /**
-     * Get isSurBaseURSSAF
+     * Get isSurBaseURSSAF.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getIsSurBaseURSSAF()
     {
@@ -154,22 +145,23 @@ class CotisationURSSAF
     }
 
     /**
-     * Set tauxPartJE
+     * Set tauxPartJE.
      *
      * @param string $tauxPartJE
+     *
      * @return CotisationURSSAF
      */
     public function setTauxPartJE($tauxPartJE)
     {
         $this->tauxPartJE = $tauxPartJE;
-    
+
         return $this;
     }
 
     /**
-     * Get tauxPartJE
+     * Get tauxPartJE.
      *
-     * @return string 
+     * @return string
      */
     public function getTauxPartJE()
     {
@@ -177,22 +169,23 @@ class CotisationURSSAF
     }
 
     /**
-     * Set tauxPartEtu
+     * Set tauxPartEtu.
      *
      * @param string $tauxPartEtu
+     *
      * @return CotisationURSSAF
      */
     public function setTauxPartEtu($tauxPartEtu)
     {
         $this->tauxPartEtu = $tauxPartEtu;
-    
+
         return $this;
     }
 
     /**
-     * Get tauxPartEtu
+     * Get tauxPartEtu.
      *
-     * @return string 
+     * @return string
      */
     public function getTauxPartEtu()
     {
@@ -200,22 +193,23 @@ class CotisationURSSAF
     }
 
     /**
-     * Set dateDebut
+     * Set dateDebut.
      *
      * @param \DateTime $dateDebut
+     *
      * @return CotisationURSSAF
      */
     public function setDateDebut($dateDebut)
     {
         $this->dateDebut = $dateDebut;
-    
+
         return $this;
     }
 
     /**
-     * Get dateDebut
+     * Get dateDebut.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateDebut()
     {
@@ -223,22 +217,23 @@ class CotisationURSSAF
     }
 
     /**
-     * Set dateFin
+     * Set dateFin.
      *
      * @param \DateTime $dateFin
+     *
      * @return CotisationURSSAF
      */
     public function setDateFin($dateFin)
     {
         $this->dateFin = $dateFin;
-    
+
         return $this;
     }
 
     /**
-     * Get dateFin
+     * Get dateFin.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateFin()
     {
@@ -246,22 +241,23 @@ class CotisationURSSAF
     }
 
     /**
-     * Set deductible
+     * Set deductible.
      *
-     * @param boolean $deductible
+     * @param bool $deductible
+     *
      * @return CotisationURSSAF
      */
     public function setDeductible($deductible)
     {
         $this->deductible = $deductible;
-    
+
         return $this;
     }
 
     /**
-     * Get deductible
+     * Get deductible.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getDeductible()
     {

@@ -1,32 +1,20 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\SuiviBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Suivi
+ * Suivi.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -34,14 +22,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Suivi
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Etude", inversedBy="suivis", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
@@ -69,11 +57,10 @@ class Suivi
      */
     private $todo;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -81,22 +68,23 @@ class Suivi
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
+     *
      * @return Suivi
      */
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
-     * Get date
+     * Get date.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -104,22 +92,23 @@ class Suivi
     }
 
     /**
-     * Set etat
+     * Set etat.
      *
      * @param string $etat
+     *
      * @return Suivi
      */
     public function setEtat($etat)
     {
         $this->etat = $etat;
-    
+
         return $this;
     }
 
     /**
-     * Get etat
+     * Get etat.
      *
-     * @return string 
+     * @return string
      */
     public function getEtat()
     {
@@ -127,45 +116,47 @@ class Suivi
     }
 
     /**
-     * Set todo
+     * Set todo.
      *
      * @param string $todo
+     *
      * @return Suivi
      */
     public function setTodo($todo)
     {
         $this->todo = $todo;
-    
+
         return $this;
     }
 
     /**
-     * Get todo
+     * Get todo.
      *
-     * @return string 
+     * @return string
      */
     public function getTodo()
     {
         return $this->todo;
     }
-    
+
     /**
-     * Set etude
+     * Set etude.
      *
      * @param string $etude
+     *
      * @return Suivi
      */
     public function setEtude($etude)
     {
         $this->etude = $etude;
-    
+
         return $this;
     }
 
     /**
-     * Get etude
+     * Get etude.
      *
-     * @return string 
+     * @return string
      */
     public function getEtude()
     {
