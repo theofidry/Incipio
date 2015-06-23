@@ -48,6 +48,13 @@ class User extends BaseUser
      */
     private $personne;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * Get id

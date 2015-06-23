@@ -1,0 +1,17 @@
+---
+- hosts: dev
+  sudo:  true
+  vars_files:
+    - parameters.yml
+  roles:
+    - mysql
+    - init
+    - locales
+    - git
+    - shell
+    - nginx
+    - php5
+    - composer
+    - psysh
+    - redis
+    - symfony
