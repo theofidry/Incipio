@@ -20,14 +20,6 @@ class DefaultController extends Controller
     /**
      * @Secure(roles="ROLE_ADMIN")
      */
-    public function indexAction($name)
-    {
-        return $this->render('mgateUserBundle:Default:index.html.twig', array('name' => $name));
-    }
-
-    /**
-     * @Secure(roles="ROLE_ADMIN")
-     */
     public function listerAction()
     {
         $em = $this->getDoctrine()->getManager();

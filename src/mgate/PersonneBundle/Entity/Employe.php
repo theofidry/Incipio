@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * mgate\PersonneBundle\Entity\Employe.
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="mgate\PersonneBundle\Entity\EmployeRepository")
+ * @ORM\Entity
  */
 class Employe
 {
