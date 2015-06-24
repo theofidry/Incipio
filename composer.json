@@ -1,7 +1,7 @@
 {
     "name": "CDJE/Incipio",
     "description": "ERP for Junior-Entreprises.",
-    "license": "MIT",
+    "license": "GNU",
     "type": "project",
     "autoload": {
         "psr-4": { "": "src/", "SymfonyStandard\\": "app/" }
