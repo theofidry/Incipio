@@ -1,10 +1,10 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "in6pio/Incipio",
+    "description": "ERP for Junior-Entreprises.",
+    "license": "GNU",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-4": { "": "src/", "SymfonyStandard\\": "app/" }
     },
     "require": {
         "php": ">=5.3.3",
@@ -28,9 +28,24 @@
         "gedmo/doctrine-extensions": "~2.3",
         "jms/security-extra-bundle": "~1.5",
         "stof/doctrine-extensions-bundle": "~1.0",
-        "egulias/email-validator": "~1.2"         
+        "egulias/email-validator": "~1.2"
     },
     "scripts": {
+        "style:check": "php bin/php-cs-fixer fix --no-interaction --dry-run --diff -vvvv src/",
+        "style:fix": "php bin/php-cs-fixer fix -vvvv src/",
+        "test": "composer test:db && composer test:security",
+        "test:db": "php app/console doctrine:schema:validate --ansi",
+        "test:security": "php bin/security-checker security:check",
+        "db": "composer db:drop && composer db:create && composer db:seed",
+        "db:create": "php app/console doctrine:schema:create --ansi",
+        "db:drop": "php app/console doctrine:schema:drop --force --ansi",
+        "db:reload": "composer db:update && composer db:seed",
+        "db:seed": "php app/console doctrine:fixtures:load -n --ansi",
+        "db:update": "php app/console doctrine:schema:update --force --ansi",
+        "db:test": "composer db:test:drop && composer db:test:create && composer db:test:seed",
+        "db:test:create": "php app/console doctrine:schema:create --env=test --ansi",
+        "db:test:drop": "php app/console doctrine:schema:drop --env=test --force --ansi",
+        "db:test:seed": "php app/console doctrine:fixtures:load --env=test -n --ansi",
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
@@ -49,15 +64,14 @@
     "config": {
         "bin-dir": "bin"
     },
-    "minimum-stability": "stable",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
-        },
-        "branch-alias": {
-            "dev-master": "2.4-dev"
         }
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer": "^1.9"
     }
 }

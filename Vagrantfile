@@ -17,7 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.limit = "dev"
     ansible.playbook = "ansible/playbook.yml"
     # Enable this line if you wish to debug the provision
-    ansible.verbose = "vvvv"
+    #ansible.verbose = "vvvv"
   end
 
   # Create a forwarded port mapping which allows access to a specific port

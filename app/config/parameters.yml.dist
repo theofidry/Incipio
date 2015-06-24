@@ -12,9 +12,9 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
     
-    su_mail:      'contact@incipio.fr'
-    su_username:  'superadmin'
-    su_password:  'motdepasse'
+    su_mail:      contact@incipio.fr
+    su_username:  admin
+    su_password:  admin
     
     locale:            fr
     secret:            ThisIsNotSecretYouKnow
