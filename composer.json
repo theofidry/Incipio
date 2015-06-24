@@ -28,7 +28,8 @@
         "gedmo/doctrine-extensions": "~2.3",
         "jms/security-extra-bundle": "~1.5",
         "stof/doctrine-extensions-bundle": "~1.0",
-        "egulias/email-validator": "~1.2"
+        "egulias/email-validator": "~1.2",
+        "theofidry/psysh-bundle": "~1.0@beta"
     },
     "scripts": {
         "style:check": "php bin/php-cs-fixer fix --no-interaction --dry-run --diff -vvvv src/",
