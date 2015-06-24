@@ -1,7 +1,11 @@
 # Incipio
 
-[![Build Status](https://img.shields.io/travis/CDJE/Incipio.svg?style=flat-square)](https://travis-ci.org/CDJE/Incipio) [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/4720058c-4915-465c-8039-0bfd5fe5bf63.svg?style=flat-square)](https://insight.sensiolabs.com/projects/4720058c-4915-465c-8039-0bfd5fe5bf63) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/CDJE/Incipio.svg?b=master&style=flat-square)](https://scrutinizer-ci.com/g/CDJE/Incipio/?branch=master) [![Codacy Badge](https://img.shields.io/codacy/381eb74af8c1409f884ba2d27f27a0dd.svg?style=flat-square)](https://www.codacy.com/app/theofidry/Incipio) [![Code
-Climate](https://img.shields.io/codeclimate/github/CDJE/Incipio.svg?style=flat-square)](https://codeclimate.com/github/CDJE/Incipio) [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/CDJE/Incipio.svg?style=flat-square)](https://codeclimate.com/github/CDJE/Incipio/coverage)
+[![Build Status](https://img.shields.io/travis/in6pio/Incipio.svg?branc=master&style=flat-square)](https://travis-ci.org/in6pio/Incipio)
+[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/4720058c-4915-465c-8039-0bfd5fe5bf63.svg?style=flat-square)](https://insight.sensiolabs.com/projects/4720058c-4915-465c-8039-0bfd5fe5bf63)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/in6pio/Incipio.svg?b=master&style=flat-square)](https://scrutinizer-ci.com/g/in6pio/Incipio/?branch=master)
+[![Codacy Badge](https://img.shields.io/codacy/381eb74af8c1409f884ba2d27f27a0dd.svg?style=flat-square)](https://www.codacy.com/app/theofidry/Incipio)
+[![Code Climate](https://img.shields.io/codeclimate/github/in6pio/Incipio.svg?style=flat-square)](https://codeclimate.com/github/in6pio/Incipio)
+[![Dependency Status](https://www.versioneye.com/user/projects/558a9292306662001d0003a4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/558a9292306662001d0003a4)
 
 *« Incipio : Prendre en main, se mettre à entreprendre, commencer »*
 
@@ -18,4 +22,4 @@ Incipio est un projet qui vise à bâtir un [ERP](http://fr.wikipedia.org/wiki/P
 
 # Licence
 
-[![License](https://img.shields.io/packagist/l/doctrine/orm.svg?style=flat-square)](https://github.com/CDJE/Incipio/edit/master/LICENSE)
+[![License](https://img.shields.io/badge/Licence-GNU%20AGPL-red.svg?style=flat-square)](LICENSE)
