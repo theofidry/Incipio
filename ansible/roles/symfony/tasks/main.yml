@@ -17,29 +17,32 @@
 #  ignore_errors: true
 
 # Disabled since requires vendors which are not installed because composer is too slow
-#- name:     Create database
-#  shell:    php app/console doctrine:database:create
-#  register: database-result
-#  ignore_errors: true
-#
-#- name:  Create database schema
-#  shell: php app/console doctrine:schema:create
-#  when:  database-result|success
-#  ignore_errors: true
-#
-#- name:     Update database schema
-#  shell:    php app/console doctrine:schema:update --force
-#  when:     database-result|failed
-#  register: database-schema
-#  ignore_errors: true
-#
-#- name:  Drop database and recreate it
-#  shell: >
-#    php app/console doctrine:schema:create
-#    && php app/console doctrine:schema:create
-#  when:  database-schema|failed
-#  ignore_errors: true
-#
-#- name:  Reload fixtures
-#  shell: php app/console doctrine:fixtures:load
-#  ignore_errors: true
+# Create database with its schema if does not exist
+# If already exists, try to update it and if fails drop it to recreate it
+# Fixtures are reloaded
+- name:     Create database
+  shell:    php app/console doctrine:database:create
+  register: database_result
+  ignore_errors: true
+
+- name:  Create database schema
+  shell: php app/console doctrine:schema:create
+  when:  database_result|success
+  ignore_errors: true
+
+- name:     Update database schema
+  shell:    php app/console doctrine:schema:update --force
+  when:     database_result|failed
+  register: database_schema
+  ignore_errors: true
+
+- name:  Drop database and recreate it
+  shell: >
+    php app/console doctrine:schema:create
+    && php app/console doctrine:schema:create
+  when:  database_schema|failed
+  ignore_errors: true
+
+- name:  Reload fixtures
+  shell: php app/console doctrine:fixtures:load -n
+  ignore_errors: true
