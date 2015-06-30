@@ -12,6 +12,5 @@
     - nginx
     - php5
     - composer
-    - redis
     - symfony
     - update

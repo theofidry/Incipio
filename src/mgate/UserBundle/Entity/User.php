@@ -11,6 +11,7 @@
 
 // src/mgate/UserBundle/Entity/User.php
 
+
 namespace mgate\UserBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
