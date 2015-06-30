@@ -1,25 +1,13 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\TresoBundle\Controller;
 
@@ -37,10 +25,10 @@ class BVController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $bvs = $em->getRepository('mgateTresoBundle:BV')->findAll();
-        
+
         return $this->render('mgateTresoBundle:BV:index.html.twig', array('bvs' => $bvs));
     }
-    
+
     /**
      * @Secure(roles="ROLE_CA")
      */
@@ -48,39 +36,39 @@ class BVController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $bv = $em->getRepository('mgateTresoBundle:BV')->find($id);
-        
+
         return $this->render('mgateTresoBundle:BV:voir.html.twig', array('bv' => $bv));
     }
-    
+
     /**
      * @Secure(roles="ROLE_CA")
      */
-    public function modifierAction($id) {
+    public function modifierAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
-        if (!$bv= $em->getRepository('mgateTresoBundle:BV')->find($id)) {
-            $bv = new BV;
-            $bv ->setTypeDeTravail('Réalisateur')
+        if (!$bv = $em->getRepository('mgateTresoBundle:BV')->find($id)) {
+            $bv = new BV();
+            $bv->setTypeDeTravail('Réalisateur')
                 ->setDateDeVersement(new \DateTime('now'))
                 ->setDateDemission(new \DateTime('now'));
         }
 
-        $form = $this->createForm(new BVType, $bv);
+        $form = $this->createForm(new BVType(), $bv);
 
-        if( $this->get('request')->getMethod() == 'POST' )
-        {
+        if ($this->get('request')->getMethod() == 'POST') {
             $form->bind($this->get('request'));
-            if( $form->isValid() )
-            {
+            if ($form->isValid()) {
                 $bv->setCotisationURSSAF();
                 $charges = $em->getRepository('mgateTresoBundle:CotisationURSSAF')->findAllByDate($bv->getDateDemission());
-                foreach ($charges as $charge)
+                foreach ($charges as $charge) {
                     $bv->addCotisationURSSAF($charge);
-                
+                }
+
                 $baseURSSAF = $em->getRepository('mgateTresoBundle:BaseURSSAF')->findByDate($bv->getDateDemission());
                 $bv->setBaseURSSAF($baseURSSAF);
-                
-                $em->persist($bv);                
+
+                $em->persist($bv);
                 $em->flush();
 
                 return $this->redirect($this->generateUrl('mgateTreso_BV_index', array()));
@@ -89,29 +77,24 @@ class BVController extends Controller
 
         return $this->render('mgateTresoBundle:BV:modifier.html.twig', array(
                     'form' => $form->createView(),
-                    'bv' =>$bv,
+                    'bv' => $bv,
                 ));
     }
-    
+
     /**
      * @Secure(roles="ROLE_ADMIN")
      */
-    public function supprimerAction($id) {
+    public function supprimerAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
-        if (!$bv= $em->getRepository('mgateTresoBundle:BV')->find($id))
+        if (!$bv = $em->getRepository('mgateTresoBundle:BV')->find($id)) {
             throw $this->createNotFoundException('Le BV n\'existe pas !');
+        }
 
-        $em->remove($bv);                
+        $em->remove($bv);
         $em->flush();
+
         return $this->redirect($this->generateUrl('mgateTreso_BV_index', array()));
-
-
     }
-    
-    
-    
-    
-    
-    
 }

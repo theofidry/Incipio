@@ -1,36 +1,22 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\UserBundle\EventListener;
 
 use FOS\UserBundle\FOSUserEvents;
-use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * Listener responsible to change the redirection at the end of the password resetting
+ * Listener responsible to change the redirection at the end of the password resetting.
  */
 class RegistrationListener implements EventSubscriberInterface
 {
@@ -64,6 +50,5 @@ class RegistrationListener implements EventSubscriberInterface
             ->setBody($this->templating->render('mgateUserBundle:Default:alert-email.html.twig',
                                         array('username' => $event->getUser()->getUsername(), 'email' => $event->getUser()->getEmail())), 'text/html');
         $this->mailer->send($message);
-        
     }
 }

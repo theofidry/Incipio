@@ -1,49 +1,37 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\FormationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Formation
+ * Formation.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="mgate\FormationBundle\Entity\FormationRepository")
  */
-class Formation {
-
+class Formation
+{
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="mandat", type="integer")
      */
@@ -104,7 +92,8 @@ class Formation {
      */
     private $docPath;
 
-    public static function getCategoriesChoice() {
+    public static function getCategoriesChoice()
+    {
         return array(
             '0' => 'Junior-Entreprise - Généralité',
             '1' => 'Suivi d\'études',
@@ -116,262 +105,297 @@ class Formation {
             '7' => 'Intervenants',
             '8' => 'Autre',);
     }
-    
-    public static function getCategoriesChoiceToString($choice = NULL){
-        $choices = self::getCategoriesChoice ();
-        
-        if($choice === NULL)
+
+    public static function getCategoriesChoiceToString($choice = null)
+    {
+        $choices = self::getCategoriesChoice();
+
+        if ($choice === null) {
             return $choices;
-        else if (array_key_exists ($choice, $choices))
-                return $choices[$choice];
-        else return NULL;
+        } elseif (array_key_exists($choice, $choices)) {
+            return $choices[$choice];
+        } else {
+            return;
+        }
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set categorie
+     * Set categorie.
      *
-     * @param integer $categorie
+     * @param int $categorie
+     *
      * @return Formation
      */
-    public function setCategorie($categorie) {
+    public function setCategorie($categorie)
+    {
         $this->categorie = $categorie;
 
         return $this;
     }
 
     /**
-     * Get categorie
+     * Get categorie.
      *
-     * @return integer 
+     * @return int
      */
-    public function getCategorie() {
+    public function getCategorie()
+    {
         return $this->categorie;
     }
 
     /**
-     * Set titre
+     * Set titre.
      *
      * @param string $titre
+     *
      * @return Formation
      */
-    public function setTitre($titre) {
+    public function setTitre($titre)
+    {
         $this->titre = $titre;
 
         return $this;
     }
 
     /**
-     * Get titre
+     * Get titre.
      *
-     * @return string 
+     * @return string
      */
-    public function getTitre() {
+    public function getTitre()
+    {
         return $this->titre;
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
+     *
      * @return Formation
      */
-    public function setDescription($description) {
+    public function setDescription($description)
+    {
         $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get description
+     * Get description.
      *
-     * @return string 
+     * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
     /**
-     * Set formateurs
+     * Set formateurs.
      *
      * @param \stdClass $formateurs
+     *
      * @return Formation
      */
-    public function setFormateurs($formateurs) {
+    public function setFormateurs($formateurs)
+    {
         $this->formateurs = $formateurs;
 
         return $this;
     }
 
     /**
-     * Get formateurs
+     * Get formateurs.
      *
-     * @return \stdClass 
+     * @return \stdClass
      */
-    public function getFormateurs() {
+    public function getFormateurs()
+    {
         return $this->formateurs;
     }
 
     /**
-     * Set membresPresents
+     * Set membresPresents.
      *
      * @param \stdClass $membresPresents
+     *
      * @return Formation
      */
-    public function setMembresPresents($membresPresents) {
+    public function setMembresPresents($membresPresents)
+    {
         $this->membresPresents = $membresPresents;
 
         return $this;
     }
 
     /**
-     * Get membresPresents
+     * Get membresPresents.
      *
-     * @return \stdClass 
+     * @return \stdClass
      */
-    public function getMembresPresents() {
+    public function getMembresPresents()
+    {
         return $this->membresPresents;
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->formateurs = new \Doctrine\Common\Collections\ArrayCollection();
         $this->membresPresents = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Set dateDebut
+     * Set dateDebut.
      *
      * @param \DateTime $dateDebut
+     *
      * @return Formation
      */
-    public function setDateDebut($dateDebut) {
+    public function setDateDebut($dateDebut)
+    {
         $this->dateDebut = $dateDebut;
 
         return $this;
     }
 
     /**
-     * Get dateDebut
+     * Get dateDebut.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getDateDebut() {
+    public function getDateDebut()
+    {
         return $this->dateDebut;
     }
 
     /**
-     * Set dateFin
+     * Set dateFin.
      *
      * @param \DateTime $dateFin
+     *
      * @return Formation
      */
-    public function setDateFin($dateFin) {
+    public function setDateFin($dateFin)
+    {
         $this->dateFin = $dateFin;
 
         return $this;
     }
 
     /**
-     * Get dateFin
+     * Get dateFin.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getDateFin() {
+    public function getDateFin()
+    {
         return $this->dateFin;
     }
 
     /**
-     * Set docPath
+     * Set docPath.
      *
      * @param string $docPath
+     *
      * @return Formation
      */
-    public function setDocPath($docPath) {
+    public function setDocPath($docPath)
+    {
         $this->docPath = $docPath;
 
         return $this;
     }
 
     /**
-     * Get docPath
+     * Get docPath.
      *
-     * @return string 
+     * @return string
      */
-    public function getDocPath() {
+    public function getDocPath()
+    {
         return $this->docPath;
     }
 
     /**
-     * Add formateurs
+     * Add formateurs.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $formateurs
+     *
      * @return Formation
      */
-    public function addFormateur(\mgate\PersonneBundle\Entity\Personne $formateurs) {
+    public function addFormateur(\mgate\PersonneBundle\Entity\Personne $formateurs)
+    {
         $this->formateurs[] = $formateurs;
 
         return $this;
     }
 
     /**
-     * Remove formateurs
+     * Remove formateurs.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $formateurs
      */
-    public function removeFormateur(\mgate\PersonneBundle\Entity\Personne $formateurs) {
+    public function removeFormateur(\mgate\PersonneBundle\Entity\Personne $formateurs)
+    {
         $this->formateurs->removeElement($formateurs);
     }
 
     /**
-     * Add membresPresents
+     * Add membresPresents.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $membresPresents
+     *
      * @return Formation
      */
-    public function addMembresPresent(\mgate\PersonneBundle\Entity\Personne $membresPresents) {
+    public function addMembresPresent(\mgate\PersonneBundle\Entity\Personne $membresPresents)
+    {
         $this->membresPresents[] = $membresPresents;
 
         return $this;
     }
 
     /**
-     * Remove membresPresents
+     * Remove membresPresents.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $membresPresents
      */
-    public function removeMembresPresent(\mgate\PersonneBundle\Entity\Personne $membresPresents) {
+    public function removeMembresPresent(\mgate\PersonneBundle\Entity\Personne $membresPresents)
+    {
         $this->membresPresents->removeElement($membresPresents);
     }
 
-
     /**
-     * Set mandat
+     * Set mandat.
      *
      * @param \interger $mandat
+     *
      * @return Formation
      */
     public function setMandat($mandat)
     {
         $this->mandat = $mandat;
-    
+
         return $this;
     }
 
     /**
-     * Get mandat
+     * Get mandat.
      *
-     * @return \interger 
+     * @return \interger
      */
     public function getMandat()
     {

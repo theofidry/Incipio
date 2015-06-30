@@ -1,28 +1,7 @@
-        
-#
-#   This file is part of Incipio.
-#
-#   Incipio is an enterprise resource planning for Junior Enterprise
-#   Copyright (C) 2012-2014 Florian Lefevre.
-#
-#   Incipio is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU Affero General Public License as
-#   published by the Free Software Foundation, either version 3 of the
-#   License, or (at your option) any later version.
-#
-#   Incipio is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU Affero General Public License for more details.
-#
-#   You should have received a copy of the GNU Affero General Public License
-#   along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#
-
 mgatePersonne_listeDiffusion:
     pattern: /listediffusion
     defaults: { _controller: mgatePersonneBundle:Personne:listeMail }
-    
+
 mgatePersonne_personne_supprimer:
     pattern: /personne/supprimer/{id}
     defaults: {_controller: mgatePersonneBundle:Personne:delete}
@@ -33,7 +12,7 @@ mgatePersonne_personne_supprimer:
 mgatePersonne_annuaire:
     pattern: /annuaire
     defaults: { _controller: mgatePersonneBundle:Personne:annuaire }
-    
+
 mgatePersonne_homepage:
     pattern:  /
     defaults: { _controller: mgatePersonneBundle:Default:index }
@@ -43,7 +22,7 @@ mgatePersonne_prospect_homepage:
     defaults: { _controller: mgatePersonneBundle:Prospect:index , page: 1 }
     requirements:
       page : \d*
-    
+
 mgatePersonne_prospect_ajouter:
     pattern: /prospect/add/{format}
     defaults: {_controller: mgatePersonneBundle:Prospect:ajouter, format:null}
@@ -53,25 +32,25 @@ mgatePersonne_prospect_voir:
     defaults:  { _controller: mgatePersonneBundle:Prospect:voir}
     requirements:
         id:  \d+
-        
+
 mgatePersonne_prospect_modifier:
     pattern: /prospect/modifier/{id}
     defaults: {_controller: mgatePersonneBundle:Prospect:modifier}
     requirements:
         id: \d+
-        
+
 mgatePersonne_prospect_supprimer:
     pattern: /prospect/supprimer/{id}
     defaults: {_controller: mgatePersonneBundle:Prospect:delete}
     requirements:
         id: \d+
-        
+
 mgatePersonne_employe_homepage:
     pattern:  /employe
     defaults: { _controller: mgatePersonneBundle:Employe:index , page: 1 }
     requirements:
       page : \d*
-    
+
 mgatePersonne_employe_ajouter:
     pattern: /employe/add/{prospect_id}/{format}
     defaults: {_controller: mgatePersonneBundle:Employe:ajouter, format:null}
@@ -93,11 +72,11 @@ mgatePersonne_employe_modifier:
 mgatePersonne_intervenants_homepage:
     pattern:  /intervenants
     defaults: { _controller: mgatePersonneBundle:Membre:listIntervenants }
-    
+
 mgatePersonne_membre_homepage:
     pattern:  /membre
     defaults: { _controller: mgatePersonneBundle:Membre:index }
-    
+
 mgatePersonne_membre_ajouter:
     pattern: /membre/add
     defaults: {_controller: mgatePersonneBundle:Membre:modifier, id:0}
@@ -113,19 +92,19 @@ mgatePersonne_membre_modifier:
     defaults: {_controller: mgatePersonneBundle:Membre:modifier}
     requirements:
         id: \d+
-        
+
 mgatePersonne_membre_supprimer:
     pattern: /membre/supprimer/{id}
     defaults: {_controller: mgatePersonneBundle:Membre:delete}
     requirements:
-        id: \d+      
+        id: \d+
 
 mgatePersonne_poste_homepage:
     pattern:  /poste
     defaults: { _controller: mgatePersonneBundle:Poste:index , page: 1 }
     requirements:
       page : \d*
-    
+
 mgatePersonne_poste_ajouter:
     pattern: /poste/add
     defaults: {_controller: mgatePersonneBundle:Poste:ajouter}
@@ -141,9 +120,9 @@ mgatePersonne_poste_modifier:
     defaults: {_controller: mgatePersonneBundle:Poste:modifier}
     requirements:
         id: \d+
-        
+
 mgatePersonne_poste_supprimer:
     pattern: /poste/supprimer/{id}
     defaults: {_controller: mgatePersonneBundle:Poste:delete}
     requirements:
-        id: \d+     
+        id: \d+

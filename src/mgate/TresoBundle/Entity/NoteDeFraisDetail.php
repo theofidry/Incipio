@@ -1,32 +1,20 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\TresoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * NoteDeFraisDetail
+ * NoteDeFraisDetail.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -34,14 +22,14 @@ use Doctrine\ORM\Mapping as ORM;
 class NoteDeFraisDetail
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="NoteDeFrais", inversedBy="details", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
@@ -70,14 +58,14 @@ class NoteDeFraisDetail
     private $tauxTVA;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     private $type;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="kilometrage", type="integer", nullable=true)
      */
@@ -89,58 +77,51 @@ class NoteDeFraisDetail
      * @ORM\Column(name="tauxKm", type="integer", nullable=true)
      */
     private $tauxKm;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Compte")
      * @ORM\JoinColumn(nullable=true)
      */
     private $compte;
 
-    
     //categorie à ajouter via ManytoMany compteComptable
-    
+
     // Perso
-    public static function getTypeChoices(){
+    public static function getTypeChoices()
+    {
         return array(1 => 'Classique',
             2 => 'Kilométrique',);
-    } 
-    
-    
-    public function getMontantHT(){        
-        if($this->type == 1)
+    }
+
+    public function getMontantHT()
+    {
+        if ($this->type == 1) {
             return $this->prixHT;
-        else
+        } else {
             return $this->kilometrage * $this->tauxKm / 100;
+        }
     }
-    
-    public function getMontantTVA(){
-        if($this->type == 1)
+
+    public function getMontantTVA()
+    {
+        if ($this->type == 1) {
             return $this->tauxTVA * $this->getMontantHT() / 100;
-        else
-            return 0;            
+        } else {
+            return 0;
+        }
     }
-    
-    public function getMontantTTC(){
+
+    public function getMontantTTC()
+    {
         return $this->getMontantHT() + $this->getMontantTVA();
     }
-
-
-
-
-
-
-
-
-
-
-
 
     // Getter Setter Auto Generated
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -148,22 +129,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
+     *
      * @return NoteDeFraisDetail
      */
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
-     * Get description
+     * Get description.
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -171,22 +153,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set prixHT
+     * Set prixHT.
      *
      * @param float $prixHT
+     *
      * @return NoteDeFraisDetail
      */
     public function setPrixHT($prixHT)
     {
         $this->prixHT = $prixHT;
-    
+
         return $this;
     }
 
     /**
-     * Get prixHT
+     * Get prixHT.
      *
-     * @return float 
+     * @return float
      */
     public function getPrixHT()
     {
@@ -194,22 +177,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set tauxTVA
+     * Set tauxTVA.
      *
      * @param float $tauxTVA
+     *
      * @return NoteDeFraisDetail
      */
     public function setTauxTVA($tauxTVA)
     {
         $this->tauxTVA = $tauxTVA;
-    
+
         return $this;
     }
 
     /**
-     * Get tauxTVA
+     * Get tauxTVA.
      *
-     * @return float 
+     * @return float
      */
     public function getTauxTVA()
     {
@@ -217,22 +201,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set type
+     * Set type.
      *
-     * @param integer $type
+     * @param int $type
+     *
      * @return NoteDeFraisDetail
      */
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return integer 
+     * @return int
      */
     public function getType()
     {
@@ -240,22 +225,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set kilometrage
+     * Set kilometrage.
      *
-     * @param integer $kilometrage
+     * @param int $kilometrage
+     *
      * @return NoteDeFraisDetail
      */
     public function setKilometrage($kilometrage)
     {
         $this->kilometrage = $kilometrage;
-    
+
         return $this;
     }
 
     /**
-     * Get kilometrage
+     * Get kilometrage.
      *
-     * @return integer 
+     * @return int
      */
     public function getKilometrage()
     {
@@ -263,22 +249,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set tauxKm
+     * Set tauxKm.
      *
      * @param float $tauxKm
+     *
      * @return NoteDeFraisDetail
      */
     public function setTauxKm($tauxKm)
     {
         $this->tauxKm = $tauxKm;
-    
+
         return $this;
     }
 
     /**
-     * Get tauxKm
+     * Get tauxKm.
      *
-     * @return float 
+     * @return float
      */
     public function getTauxKm()
     {
@@ -286,22 +273,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set categorie
+     * Set categorie.
      *
-     * @param integer $categorie
+     * @param int $categorie
+     *
      * @return NoteDeFraisDetail
      */
     public function setCategorie($categorie)
     {
         $this->categorie = $categorie;
-    
+
         return $this;
     }
 
     /**
-     * Get categorie
+     * Get categorie.
      *
-     * @return integer 
+     * @return int
      */
     public function getCategorie()
     {
@@ -309,22 +297,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set noteDeFrais
+     * Set noteDeFrais.
      *
      * @param \mgate\TresoBundle\Entity\NoteDeFrais $noteDeFrais
+     *
      * @return NoteDeFraisDetail
      */
     public function setNoteDeFrais(\mgate\TresoBundle\Entity\NoteDeFrais $noteDeFrais = null)
     {
         $this->noteDeFrais = $noteDeFrais;
-    
+
         return $this;
     }
 
     /**
-     * Get noteDeFrais
+     * Get noteDeFrais.
      *
-     * @return \mgate\TresoBundle\Entity\NoteDeFrais 
+     * @return \mgate\TresoBundle\Entity\NoteDeFrais
      */
     public function getNoteDeFrais()
     {
@@ -332,22 +321,23 @@ class NoteDeFraisDetail
     }
 
     /**
-     * Set compte
+     * Set compte.
      *
      * @param \mgate\TresoBundle\Entity\Compte $compte
+     *
      * @return NoteDeFraisDetail
      */
     public function setCompte(\mgate\TresoBundle\Entity\Compte $compte = null)
     {
         $this->compte = $compte;
-    
+
         return $this;
     }
 
     /**
-     * Get compte
+     * Get compte.
      *
-     * @return \mgate\TresoBundle\Entity\Compte 
+     * @return \mgate\TresoBundle\Entity\Compte
      */
     public function getCompte()
     {

@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateSuiviBundle::layout.html.twig" %}
 
 {% block title %}
@@ -34,7 +13,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     {% endif %}
 </ul>
 {% endblock %}
-    
+
 {% block content_bundle %}
     <h2>Contact client</h2>
     <table class="table table-bordered">
@@ -51,11 +30,11 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <th>Objet</th>
             <td>
             {% if selectedContactClient.moyenContact == 'telephone'%}
-                <i title="Par téléphone" class="glyphicon glyphicon-headphones"></i> 
+                <i title="Par téléphone" class="glyphicon glyphicon-headphones"></i>
             {% elseif selectedContactClient.moyenContact == 'mail'%}
-                <i title="Par mail" class="glyphicon glyphicon-envelope"></i> 
+                <i title="Par mail" class="glyphicon glyphicon-envelope"></i>
             {% else %}
-                <i title="Physique" class="glyphicon glyphicon-eye-open"></i> 
+                <i title="Physique" class="glyphicon glyphicon-eye-open"></i>
             {% endif %}
                 {{ selectedContactClient.objet }}
             </td>
@@ -65,7 +44,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <td>{{ selectedContactClient.contenu | nl2br }}</td>
         </tr>
     </table>
-    
+
     <h3>Résumé des autres contacts clients</h3>
     <table class="table table-bordered table-striped">
     {% for contact in contactsClient | reverse %}
@@ -75,11 +54,11 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </td>
         <td>
         {% if contact.moyenContact == 'telephone'%}
-            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-headphones"></i> 
+            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-headphones"></i>
         {% elseif contact.moyenContact == 'mail'%}
-            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-envelope"></i> 
+            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-envelope"></i>
         {% else %}
-            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-eye-open"></i> 
+            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-eye-open"></i>
         {% endif %}
         </td>
         <td>
@@ -102,7 +81,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     <p>
         <a href="{{ path('mgateSuivi_etude_voir', {'numero' : etude.numero }) }}">Retour à l'étude</a><br>
         <a href="{{ path('mgateSuivi_clientcontact_modifier', {'id': selectedContactClient.id}) }}">Modifier le contact client</a>
-	
+
     </p>
 
 {% endblock %}

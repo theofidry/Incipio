@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateSuiviBundle::layout.html.twig" %}
 
 {% block title %}
@@ -27,14 +6,14 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
 {% block breadcrumb %}
 <ul class="breadcrumb no-margin">
-    <li><a href="{{ path('mgateSuivi_etude_homepage') }}">Suivi d'Étude</a></li>    
+    <li><a href="{{ path('mgateSuivi_etude_homepage') }}">Suivi d'Étude</a></li>
 </ul>
 {% endblock %}
 
 {% block javascript_quick %}
 {{ parent() }}
     <script src="{{ asset('js/jquery.dataTables.min.js')}}"></script>
-    
+
     <script type="text/javascript" charset="utf-8">
             $(document).ready(function() {
                     $('#example').dataTable({
@@ -43,7 +22,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                     });
             } );
     </script>
-	
+
 {% endblock %}
 
 
@@ -52,11 +31,11 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     <link rel="stylesheet" href="{{ asset('css/datatable.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datatable_page.css') }}">
 {% endblock %}
-    
+
 {% block content_bundle %}
     {% set mounth = {'01' : 'janvier', '02' : 'février', '03' : 'mars', '04' : 'avril', '05' : 'mai', '06' : 'juin', '07' : 'juillet', '08' : 'août', '09' : 'septembre', '10' : 'octobre','11' : 'novembre', '12' : 'décembre'} %}
     <h2>Contact client</h2>
-    
+
     <table style="width: 100%;" aria-describedby="example_info" class="display dataTable table table-bordered table-striped" id="example">
         <thead>
           <tr><th>Contacts</th><th>Date</th><th>Fait Par</th><th>Etude</th><th>Objet</th><th>Contenu</th></tr>
@@ -79,11 +58,11 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         <td>
         <a href="{{ path('mgateSuivi_clientcontact_voir', {'id': contact.id}) }}">
         {% if contact.moyenContact == 'telephone'%}
-            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-headphones"></i> 
+            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-headphones"></i>
         {% elseif contact.moyenContact == 'mail'%}
-            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-envelope"></i> 
+            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-envelope"></i>
         {% else %}
-            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-eye-open"></i> 
+            <i title="{{ contact.date | date("d/m/Y - ") ~ contact.faitPar.PrenomNom}}" class="glyphicon glyphicon-eye-open"></i>
         {% endif %}
             {{ contact.objet }}
         </a>

@@ -1,69 +1,50 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\PersonneBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-
 use mgate\PersonneBundle\Entity\Employe;
 use mgate\PersonneBundle\Form\EmployeType;
 
 class EmployeController extends Controller
 {
-
     /**
      * @Secure(roles="ROLE_SUIVEUR")
-     */    
+     */
     public function ajouterAction($prospect_id, $format)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         // On vérifie que le prospect existe bien
-        if( ! $prospect = $em->getRepository('mgate\PersonneBundle\Entity\Prospect')->find($prospect_id) )
-        {
+        if (!$prospect = $em->getRepository('mgate\PersonneBundle\Entity\Prospect')->find($prospect_id)) {
             throw $this->createNotFoundException('Ce prospect n\'existe pas');
         }
-        
-        
-        $employe = new Employe;
+
+        $employe = new Employe();
         $employe->setProspect($prospect);
 
-        $form        = $this->createForm(new EmployeType, $employe);
-        
-        if( $this->get('request')->getMethod() == 'POST' )
-        {
+        $form = $this->createForm(new EmployeType(), $employe);
+
+        if ($this->get('request')->getMethod() == 'POST') {
             $form->bind($this->get('request'));
-               
-            if( $form->isValid() )
-            {
-                $em->persist($employe);    
+
+            if ($form->isValid()) {
+                $em->persist($employe);
                 $em->flush();
                 $employe->getPersonne()->setEmploye($employe);
                 $em->flush();
-                
-                return $this->redirect( $this->generateUrl('mgatePersonne_employe_voir', array('id' => $employe->getId())) );
+
+                return $this->redirect($this->generateUrl('mgatePersonne_employe_voir', array('id' => $employe->getId())));
             }
         }
 
@@ -72,12 +53,11 @@ class EmployeController extends Controller
             'prospect' => $prospect,
             'format' => $format,
         ));
-        
     }
-    
+
     /**
      * @Secure(roles="ROLE_SUIVEUR")
-     */     
+     */
     public function indexAction($page)
     {
         $em = $this->getDoctrine()->getManager();
@@ -87,12 +67,11 @@ class EmployeController extends Controller
         return $this->render('mgatePersonneBundle:Employe:index.html.twig', array(
             'users' => $entities,
         ));
-                
     }
-    
+
     /**
      * @Secure(roles="ROLE_SUIVEUR")
-     */     
+     */
     public function voirAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -106,42 +85,38 @@ class EmployeController extends Controller
         //$deleteForm = $this->createDeleteForm($id);
 
         return $this->render('mgatePersonneBundle:Employe:voir.html.twig', array(
-            'employe'      => $entity,
+            'employe' => $entity,
             /*'delete_form' => $deleteForm->createView(),        */));
     }
 
     /**
      * @Secure(roles="ROLE_SUIVEUR")
-     */ 
+     */
     public function modifierAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        if( ! $employe = $em->getRepository('mgate\PersonneBundle\Entity\Employe')->find($id) )
-        {
+        if (!$employe = $em->getRepository('mgate\PersonneBundle\Entity\Employe')->find($id)) {
             throw $this->createNotFoundException('L\'employé demandé n\'existe pas');
         }
 
         // On passe l'$article récupéré au formulaire
-        $form        = $this->createForm(new EmployeType, $employe);
-        
-        if( $this->get('request')->getMethod() == 'POST' )
-        {
+        $form = $this->createForm(new EmployeType(), $employe);
+
+        if ($this->get('request')->getMethod() == 'POST') {
             $form->bind($this->get('request'));
-               
-            if( $form->isValid() )
-            {
-                $em->persist($employe);    
+
+            if ($form->isValid()) {
+                $em->persist($employe);
                 $em->flush();
 
-                return $this->redirect( $this->generateUrl('mgatePersonne_employe_voir', array('id' => $employe->getId())) );
+                return $this->redirect($this->generateUrl('mgatePersonne_employe_voir', array('id' => $employe->getId())));
             }
         }
 
-
         return $this->render('mgatePersonneBundle:Employe:modifier.html.twig', array(
             'form' => $form->createView(),
-            'employe'      => $employe,
+            'employe' => $employe,
         ));
     }
 }

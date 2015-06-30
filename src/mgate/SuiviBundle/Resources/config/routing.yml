@@ -1,24 +1,3 @@
-        
-#
-#   This file is part of Incipio.
-#
-#   Incipio is an enterprise resource planning for Junior Enterprise
-#   Copyright (C) 2012-2014 Florian Lefevre.
-#
-#   Incipio is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU Affero General Public License as
-#   published by the Free Software Foundation, either version 3 of the
-#   License, or (at your option) any later version.
-#
-#   Incipio is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU Affero General Public License for more details.
-#
-#   You should have received a copy of the GNU Affero General Public License
-#   along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#
-
 # Domaines de compétence ######################################################
 
 mgateSuivi_domaine_index:
@@ -50,11 +29,11 @@ mgateSuivi_etude_ajax:
 mgateSuivi_etude_suivi:
     pattern: /etudes/suivi
     defaults: {_controller: mgateSuiviBundle:Etude:suivi}
-    
+
 mgateSuivi_etude_suiviQualite:
     pattern: /etudes/suiviQualite
     defaults: {_controller: mgateSuiviBundle:Etude:suiviQualite}
-        
+
 mgateSuivi_etude_ajouter:
     pattern: /etude/ajouter
     defaults: {_controller: mgateSuiviBundle:Etude:add}
@@ -75,7 +54,7 @@ mgateSuivi_etude_supprimer:
     pattern: /etude/supprimer/{numero}
     defaults: {_controller: mgateSuiviBundle:Etude:delete}
     requirements:
-        numero: \d+      
+        numero: \d+
 
 mgateSuivi_ap_voir:
     pattern: /ap/voir/{id}
@@ -94,12 +73,12 @@ mgateSuivi_ap_suivi:
     defaults: {_controller: mgateSuiviBundle:Ap:suivi}
     requirements:
         id: \d+
-        
+
 mgateSuivi_cc_rediger:
     pattern: /cc/rediger/{id}
     defaults: {_controller: mgateSuiviBundle:Cc:rediger}
     requirements:
-        id: \d+ 
+        id: \d+
 
 mgateSuivi_cc_voir:
     pattern: /cc/voir/{id}
@@ -111,7 +90,7 @@ mgateSuivi_cc_suivi:
     pattern: /cc/suivi/{id}
     defaults: {_controller: mgateSuiviBundle:Cc:suivi}
     requirements:
-        id: \d+   
+        id: \d+
 
 mgateSuivi_mission_rediger:
     pattern: /mission/rediger/{id}
@@ -139,8 +118,8 @@ mgateSuivi_state:
 #    pattern: /missions/repartition/{id}
 #    defaults: {_controller: mgateSuiviBundle:MissionsRepartition:index}
 #    requirements:
-#        id: \d+        
-        
+#        id: \d+
+
 
 mgateSuivi_clientcontact_ajouter:
     pattern: /clientcontact/ajouter/{id}
@@ -153,79 +132,79 @@ mgateSuivi_clientcontact_modifier:
     defaults: {_controller: mgateSuiviBundle:ClientContact:modifier}
     requirements:
         id: \d+
-        
+
 mgateSuivi_clientcontact_voir:
     pattern: /clientcontact/voir/{id}
     defaults: {_controller: mgateSuiviBundle:ClientContact:voir}
     requirements:
-        id: \d+     
-        
+        id: \d+
+
 mgateSuivi_clientcontact_index:
     pattern: /clientcontact/
     defaults: {_controller: mgateSuiviBundle:ClientContact:index}
-       
-        
+
+
 mgateSuivi_suivi_ajouter:
     pattern: /suivi/ajouter/{id}
     defaults: {_controller: mgateSuiviBundle:Suivi:add}
     requirements:
         id: \d+
-        
+
 mgateSuivi_suivi_modifier:
     pattern: /suivi/modifier/{id}
     defaults: {_controller: mgateSuiviBundle:Suivi:modifier}
     requirements:
         id: \d+
-        
+
 mgateSuivi_suivi_voir:
     pattern: /suivi/voir/{id}
     defaults: {_controller: mgateSuiviBundle:Suivi:voir}
     requirements:
-        id: \d+     
-        
+        id: \d+
+
 mgateSuivi_suivi_index:
     pattern: /suivi
     defaults: {_controller: mgateSuiviBundle:Suivi:index}
-    
-        
+
+
 mgateSuivi_av_ajouter:
     pattern: /av/ajouter/{id}
     defaults: {_controller: mgateSuiviBundle:Av:add}
     requirements:
         id: \d+
-        
+
 mgateSuivi_av_modifier:
     pattern: /av/modifier/{id}
     defaults: {_controller: mgateSuiviBundle:Av:modifier}
     requirements:
         id: \d+
-        
+
 mgateSuivi_av_voir:
     pattern: /av/voir/{id}
     defaults: {_controller: mgateSuiviBundle:Av:voir}
     requirements:
         id: \d+
-        
+
 mgateSuivi_avmission_ajouter:
     pattern: /avmission/ajouter/{id}
     defaults: {_controller: mgateSuiviBundle:AvMission:add}
     requirements:
         id: \d+
-        
-        
+
+
 mgateSuivi_avmission_voir:
     pattern: /avmission/voir/{id}
     defaults: {_controller: mgateSuiviBundle:AvMission:voir}
     requirements:
         id: \d+
-        
-        
+
+
 mgateSuivi_avmission_modifier:
     pattern: /avmission/modifier/{id}
     defaults: {_controller: mgateSuiviBundle:AvMission:modifier}
     requirements:
         id: \d+
-          
+
 mgateSuivi_phases_modifier:
     pattern: /phases/modifier/{id}
     defaults: {_controller: mgateSuiviBundle:Phases:modifier}
@@ -237,37 +216,37 @@ mgateSuivi_procesverbal_ajouter:
     defaults: {_controller: mgateSuiviBundle:ProcesVerbal:add}
     requirements:
         id: \d+
-      
+
 mgateSuivi_procesverbal_modifier:
     pattern: /procesverbal/modifier/{id_pv}
     defaults: {_controller: mgateSuiviBundle:ProcesVerbal:modifier}
     requirements:
         id: \d+
-        
+
 mgateSuivi_procesverbal_rediger:
     pattern: /procesverbal/rediger/{id_etude}/{type}
     defaults: {_controller: mgateSuiviBundle:ProcesVerbal:rediger}
     requirements:
         id: \d+
- 
+
 mgateSuivi_procesverbal_voir:
     pattern: /procesverbal/voir/{id}
     defaults: {_controller: mgateSuiviBundle:ProcesVerbal:voir}
     requirements:
         id: \d+
-        
+
 mgateSuivi_procesverbal_supprimer:
     pattern: /procesverbal/supprimer/{id_pv}
     defaults: {_controller: mgateSuiviBundle:ProcesVerbal:delete}
     requirements:
         id: \d+
-        
+
 mgateSuivi_etude_suivi_update:
     pattern:  /suivi/update/{id}
     defaults: { _controller: mgateSuiviBundle:Etude:suiviUpdate }
     requirements:
         _method:  POST
-        
+
 mgateSuivi_groupes_modifier:
     pattern: /groupes/modifier/{id}
     defaults: {_controller: mgateSuiviBundle:GroupePhases:modifier}

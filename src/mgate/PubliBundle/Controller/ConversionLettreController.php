@@ -1,25 +1,13 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\PubliBundle\Controller;
 
@@ -27,25 +15,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Description of chiffreEnLettre
- * source : http://www.javascriptfr.com/codes/CONVERSION-CHIFFRE-MONETAIRE-LETTRE_30141.aspx
+ * source : http://www.javascriptfr.com/codes/CONVERSION-CHIFFRE-MONETAIRE-LETTRE_30141.aspx.
+ *
  * @author PHP : adrien (http://blog.toolix.net/convertir-un-chiffre-en-lettres-classe-php-pour-facture-ou-cheque.html)
  * Conversion limitée à 999 999 999 999 999 ou 9 999 999 999 999,99
  * si le nombre contient plus de 2 décimales, il est arrondit à 2 décimales
  */
-class ConversionLettreController extends Controller {
-
-    public function money_format($number){
-        return number_format($number,2,',',' ');
+class ConversionLettreController extends Controller
+{
+    public function money_format($number)
+    {
+        return number_format($number, 2, ',', ' ');
     }
-    
+
     /**
-     * fonction permettant de transformer une valeur numérique en valeur en lettre
+     * fonction permettant de transformer une valeur numérique en valeur en lettre.
+     *
      * @param int $Nombre le nombre a convertir
      * @param int $Devise (0 = aucune, 1 = Euro €, 2 = Dollar $)
      * @param int $Langue (0 = Français, 1 = Belgique, 2 = Suisse)
+     *
      * @return string la chaine
      */
-    public function ConvNumberLetter($Nombre, $Devise = 0, $Langue = 0) {
+    public function ConvNumberLetter($Nombre, $Devise = 0, $Langue = 0)
+    {
         $dblEnt = '';
         $byDec = '';
         $bNegatif = '';
@@ -60,40 +53,48 @@ class ConversionLettreController extends Controller {
         $byDec = round(($Nombre - $dblEnt) * 100);
         if ($byDec == 0) {
             if ($dblEnt > 999999999999999) {
-                return "#TropGrand";
+                return '#TropGrand';
             }
         } else {
             if ($dblEnt > 9999999999999.99) {
-                return "#TropGrand";
+                return '#TropGrand';
             }
         }
         switch ($Devise) {
             case 0 :
-                if ($byDec > 0)
-                    $strDev = " virgule";
+                if ($byDec > 0) {
+                    $strDev = ' virgule';
+                }
                 break;
             case 1 :
-                $strDev = " euro";
-                if ($byDec > 0)
-                    $strCentimes = $strCentimes . " centime" . ($byDec > 1 ? 's' : '');
+                $strDev = ' euro';
+                if ($byDec > 0) {
+                    $strCentimes = $strCentimes.' centime'.($byDec > 1 ? 's' : '');
+                }
                 break;
             case 2 :
-                $strDev = " dollar";
-                if ($byDec > 0)
-                    $strCentimes = $strCentimes . " cent";
+                $strDev = ' dollar';
+                if ($byDec > 0) {
+                    $strCentimes = $strCentimes.' cent';
+                }
                 break;
         }
-        if (($dblEnt > 1) && ($Devise != 0))
-            $strDev .= "s";
-        if (($byDec > 0) && ($Devise != 0))
-            $strDev .= " et";
-        $NumberLetter = $this->ConvNumEnt(floatval($dblEnt), $Langue) . $strDev;
-        if (($byDec > 0) && ($Devise != 0))
-            $NumberLetter .= " " . $this->ConvNumDizaine($byDec, $Langue) . $strCentimes;
+        if (($dblEnt > 1) && ($Devise != 0)) {
+            $strDev .= 's';
+        }
+        if (($byDec > 0) && ($Devise != 0)) {
+            $strDev .= ' et';
+        }
+        $NumberLetter = $this->ConvNumEnt(floatval($dblEnt), $Langue).$strDev;
+        if (($byDec > 0) && ($Devise != 0)) {
+            $NumberLetter .= ' '.$this->ConvNumDizaine($byDec, $Langue).$strCentimes;
+        }
+
         return $NumberLetter;
     }
 
-    private function ConvNumEnt($Nombre, $Langue) {
+    private function ConvNumEnt($Nombre, $Langue)
+    {
         $byNum = $iTmp = $dblReste = '';
         $StrTmp = '';
         $NumEnt = '';
@@ -106,12 +107,12 @@ class ConversionLettreController extends Controller {
             case 0 :
                 break;
             case 1 :
-                $StrTmp = "mille ";
+                $StrTmp = 'mille ';
                 break;
             default :
-                $StrTmp = $StrTmp . " mille ";
+                $StrTmp = $StrTmp.' mille ';
         }
-        $NumEnt = $StrTmp . $NumEnt;
+        $NumEnt = $StrTmp.$NumEnt;
         $dblReste = intval($dblReste / 1000);
         $iTmp = $dblReste - (intval($dblReste / 1000) * 1000);
         $StrTmp = $this->ConvNumCent(intval($iTmp), $Langue);
@@ -119,12 +120,12 @@ class ConversionLettreController extends Controller {
             case 0 :
                 break;
             case 1 :
-                $StrTmp = $StrTmp . " million ";
+                $StrTmp = $StrTmp.' million ';
                 break;
             default :
-                $StrTmp = $StrTmp . " millions ";
+                $StrTmp = $StrTmp.' millions ';
         }
-        $NumEnt = $StrTmp . $NumEnt;
+        $NumEnt = $StrTmp.$NumEnt;
         $dblReste = intval($dblReste / 1000);
         $iTmp = $dblReste - (intval($dblReste / 1000) * 1000);
         $StrTmp = $this->ConvNumCent(intval($iTmp), $Langue);
@@ -132,12 +133,12 @@ class ConversionLettreController extends Controller {
             case 0 :
                 break;
             case 1 :
-                $StrTmp = $StrTmp . " milliard ";
+                $StrTmp = $StrTmp.' milliard ';
                 break;
             default :
-                $StrTmp = $StrTmp . " milliards ";
+                $StrTmp = $StrTmp.' milliards ';
         }
-        $NumEnt = $StrTmp . $NumEnt;
+        $NumEnt = $StrTmp.$NumEnt;
         $dblReste = intval($dblReste / 1000);
         $iTmp = $dblReste - (intval($dblReste / 1000) * 1000);
         $StrTmp = $this->ConvNumCent(intval($iTmp), $Langue);
@@ -145,78 +146,86 @@ class ConversionLettreController extends Controller {
             case 0 :
                 break;
             case 1 :
-                $StrTmp = $StrTmp . " billion ";
+                $StrTmp = $StrTmp.' billion ';
                 break;
             default :
-                $StrTmp = $StrTmp . " billions ";
+                $StrTmp = $StrTmp.' billions ';
         }
-        $NumEnt = $StrTmp . $NumEnt;
+        $NumEnt = $StrTmp.$NumEnt;
+
         return $NumEnt;
     }
 
-    private function ConvNumDizaine($Nombre, $Langue) {
+    private function ConvNumDizaine($Nombre, $Langue)
+    {
         $TabUnit = $TabDiz = '';
         $byUnit = $byDiz = '';
         $strLiaison = '';
 
-        $TabUnit = array("", "un", "deux", "trois", "quatre", "cinq", "six", "sept",
-            "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze", "quinze",
-            "seize", "dix-sept", "dix-huit", "dix-neuf");
-        $TabDiz = array("", "", "vingt", "trente", "quarante", "cinquante",
-            "soixante", "soixante", "quatre-vingt", "quatre-vingt");
+        $TabUnit = array('', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept',
+            'huit', 'neuf', 'dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze',
+            'seize', 'dix-sept', 'dix-huit', 'dix-neuf', );
+        $TabDiz = array('', '', 'vingt', 'trente', 'quarante', 'cinquante',
+            'soixante', 'soixante', 'quatre-vingt', 'quatre-vingt', );
         if ($Langue == 1) {
-            $TabDiz[7] = "septante";
-            $TabDiz[9] = "nonante";
-        } else if ($Langue == 2) {
-            $TabDiz[7] = "septante";
-            $TabDiz[8] = "huitante";
-            $TabDiz[9] = "nonante";
+            $TabDiz[7] = 'septante';
+            $TabDiz[9] = 'nonante';
+        } elseif ($Langue == 2) {
+            $TabDiz[7] = 'septante';
+            $TabDiz[8] = 'huitante';
+            $TabDiz[9] = 'nonante';
         }
         $byDiz = intval($Nombre / 10);
         $byUnit = $Nombre - ($byDiz * 10);
-        $strLiaison = "-";
-        if ($byUnit == 1)
-            $strLiaison = " et ";
+        $strLiaison = '-';
+        if ($byUnit == 1) {
+            $strLiaison = ' et ';
+        }
         switch ($byDiz) {
             case 0 :
-                $strLiaison = "";
+                $strLiaison = '';
                 break;
             case 1 :
                 $byUnit = $byUnit + 10;
-                $strLiaison = "";
+                $strLiaison = '';
                 break;
             case 7 :
-                if ($Langue == 0)
+                if ($Langue == 0) {
                     $byUnit = $byUnit + 10;
+                }
                 break;
             case 8 :
-                if ($Langue != 2)
-                    $strLiaison = "-";
+                if ($Langue != 2) {
+                    $strLiaison = '-';
+                }
                 break;
             case 9 :
                 if ($Langue == 0) {
                     $byUnit = $byUnit + 10;
-                    $strLiaison = "-";
+                    $strLiaison = '-';
                 }
                 break;
         }
         $NumDizaine = $TabDiz[$byDiz];
-        if ($byDiz == 8 && $Langue != 2 && $byUnit == 0)
-            $NumDizaine = $NumDizaine . "s";
-        if ($TabUnit[$byUnit] != "") {
-            $NumDizaine = $NumDizaine . $strLiaison . $TabUnit[$byUnit];
+        if ($byDiz == 8 && $Langue != 2 && $byUnit == 0) {
+            $NumDizaine = $NumDizaine.'s';
+        }
+        if ($TabUnit[$byUnit] != '') {
+            $NumDizaine = $NumDizaine.$strLiaison.$TabUnit[$byUnit];
         } else {
             $NumDizaine = $NumDizaine;
         }
+
         return $NumDizaine;
     }
 
-    private function ConvNumCent($Nombre, $Langue) {
+    private function ConvNumCent($Nombre, $Langue)
+    {
         $TabUnit = '';
         $byCent = $byReste = '';
         $strReste = '';
         $NumCent = '';
-        $TabUnit = array("", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix");
+        $TabUnit = array('', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix');
 
         $byCent = intval($Nombre / 100);
         $byReste = $Nombre - ($byCent * 100);
@@ -226,20 +235,20 @@ class ConversionLettreController extends Controller {
                 $NumCent = $strReste;
                 break;
             case 1 :
-                if ($byReste == 0)
-                    $NumCent = "cent";
-                else
-                    $NumCent = "cent " . $strReste;
+                if ($byReste == 0) {
+                    $NumCent = 'cent';
+                } else {
+                    $NumCent = 'cent '.$strReste;
+                }
                 break;
             default :
-                if ($byReste == 0)
-                    $NumCent = $TabUnit[$byCent] . " cents";
-                else
-                    $NumCent = $TabUnit[$byCent] . " cent " . $strReste;
+                if ($byReste == 0) {
+                    $NumCent = $TabUnit[$byCent].' cents';
+                } else {
+                    $NumCent = $TabUnit[$byCent].' cent '.$strReste;
+                }
         }
+
         return $NumCent;
     }
-
 }
-
-?>

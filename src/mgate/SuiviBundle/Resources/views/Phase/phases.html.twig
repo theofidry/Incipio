@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateSuiviBundle::layout.html.twig" %}
 
 {% block content_bundle %}
@@ -40,7 +19,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 <form method="POST" {{ form_enctype(form) }}>
     {# affiche l'unique champ de la tache : description #}
     {#{ form_row(form.description) }#}
-        
+
 <p><input type="submit" value="Ajouter une phase" name="add"/>
  - <input type="submit" value="Enregistrer les phases" /></p>
 
@@ -48,7 +27,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <div class="row phases" id="phases" data-prototype="{{ form_widget(form.phases.vars.prototype) | e }}">
         {# itere sur chaque tag existant et affiche son unique champ : name #}
         {% for phase in form.phases %}
-                    
+
                 <div class="col-md-6">
                     <table class="table table-striped table-bordered">
                         <tr>
@@ -119,7 +98,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     {{ form_javascript(form) }}
 
 <script type="text/javascript">
-    
+
     // Fenetre resumant
     $.ui.dialog.prototype._oldinit = $.ui.dialog.prototype._init;
     $.ui.dialog.prototype._init = function() {
@@ -137,7 +116,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
     };
     $(function() {
         $( "#dialog" ).dialog({
-            position: { 
+            position: {
                   my: 'right center',
                   at: 'right center'
             },
@@ -145,10 +124,10 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             width:  $(window).width() * 0.25
         });
     });
-    
+
     // Recupere le div qui contient la collection de tags
     var collectionHolder = $('.phases');
-    
+
     function updateOrder() {
         $('input.position').each(function(i) {
             $(this).val( i );
@@ -157,17 +136,17 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             $(this).text( 'Phase n°'+(i+1) );
         });
     }
-    
+
     function updatePrix() {
         var prix = 0;
         var phase = 0;
-        
+
         $('input.nbrJEH').each(function(i1) {
             phase=parseInt($(this).val());
-            
+
             $('input.prixJEH').each(function(i2) {
                 if(i1==i2)
-                phase*=parseInt($(this).val());           
+                phase*=parseInt($(this).val());
             });
             if(!isNaN(phase))
             {
@@ -178,10 +157,10 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
        $('.prix').text( prix );
     }
-    
+
     function updateNbrJEH() {
         var nbrJEH = 0;
-        
+
         $('input.nbrJEH').each(function(i) {
             if(!isNaN(parseInt($(this).val())))
                 nbrJEH+=parseInt($(this).val());
@@ -189,15 +168,15 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
        $('.nbrJEH').text( nbrJEH );
     }
-    
+
     var isDirty = false;
 
     jQuery(document).ready(function() {
-        
+
         updateOrder();
         updatePrix();
-        updateNbrJEH();     
-        
+        updateNbrJEH();
+
         //Verification avant de quitter
         $(':input').change(function(){
             if(!isDirty){
@@ -212,12 +191,12 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             isDirty = false;
             return true;
         });
-        
+
         //Rajout des boutons (X, up, down) pour les phases
         collectionHolder.find('div').each(function() {
             addPhaseBouton($(this));
         });
-        
+
         //Ajouter le drag and drop
         {# $("#phases").dragsort({ dragSelector: "li", dragBetween: true, dragEnd: updateOrder, placeHolderTemplate: "<div class='col-md-6'></div>" }); #}
         collectionHolder.sortable({
@@ -246,38 +225,38 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
             // La fonction appele quand un element change de position
             // C'est le code vraiment utile, en fait
-            update: function(){             
+            update: function(){
                 updateOrder();
             }
-            
+
         });
-        
-        
+
+
         $('input.nbrJEH').each(function() {
-            $(this).change(function() { 
+            $(this).change(function() {
                 updatePrix();
                 updateNbrJEH();
             });
         });
-        
+
         $('input.prixJEH').each(function() {
-            $(this).change(function() { 
+            $(this).change(function() {
                 updatePrix();
             });
         });
-        
+
        $('#myButtonUpdate').on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
-            
+
             updatePrix();
             updateNbrJEH();
         });
-        
+
 
 
     });
-    
+
     function addPhaseBouton($tagFormLi) {
         var $delete = $('<button id="myButtonDelete" class="btn">X</button>');
         var $up = $('<button id="myButtonUp" class="btn">▲</button>');
@@ -289,7 +268,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         $delete.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
-            
+
             //CONFIRM confirmation suppression
             var message = "Êtes vous sûr de vouloir supprimer cette phase ?";
             bootbox.confirm(message, function(result) {
@@ -302,7 +281,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 }
             });
            });
-        
+
         $up.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
@@ -318,7 +297,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             updateOrder();
         });
     }
-    
+
 </script>
 
 

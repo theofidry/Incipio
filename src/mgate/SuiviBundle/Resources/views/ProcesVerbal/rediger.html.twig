@@ -1,52 +1,31 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateSuiviBundle::layout.html.twig" %}
 
 {% block title %}
 	Rédiger la Procès-Verbal - {{ parent() }}
 {% endblock %}
 
-        
+
 {% block content_bundle %}
-       
+
     <h2>Rédiger le Procès-Verbal {% if type=="pvi" %}Intermédiaire{%elseif type=="pvr"%}de Recette{%endif%}</h2>
 
 <form method="post" {{ form_enctype(form) }}>
 	{{ form_widget(form) }}
-	<input type="submit" value="Enregistrer"/>  
+	<input type="submit" value="Enregistrer"/>
 </form>
 
 
 
     <p>
         <a href="{{ path('mgateSuivi_etude_voir', {'numero': etude.numero}) }}" >Retour à l'Etude</a>
-    </p>   
-    
+    </p>
+
 {% endblock %}
 
 {% block javascript %}
     {{ parent() }}
     {{ form_javascript(form) }}
-    {% if type=="pvi" %}  {% include "mgateSuiviBundle:DocType:selectOrNew.html.twig" with { known: form.knownSignataire2, knowned: form.signataire2, newed: form.newSignataire2 }%} 
+    {% if type=="pvi" %}  {% include "mgateSuiviBundle:DocType:selectOrNew.html.twig" with { known: form.knownSignataire2, knowned: form.signataire2, newed: form.newSignataire2 }%}
     {%elseif type=="pvr"%}{% include "mgateSuiviBundle:DocType:selectOrNew.html.twig" with { known: form.pvr.knownSignataire2, knowned: form.pvr.signataire2, newed: form.pvr.newSignataire2 }%} {%endif%}
-     
+
 {% endblock %}

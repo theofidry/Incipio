@@ -1,33 +1,20 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\SuiviBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
- * mgate\SuiviBundle\Entity\ClientContact
+ * mgate\SuiviBundle\Entity\ClientContact.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -35,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ClientContact
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -56,7 +43,7 @@ class ClientContact
     private $faitPar;
 
     /**
-     * @var \DateTime $date
+     * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
      */
@@ -67,33 +54,34 @@ class ClientContact
      * @ORM\JoinColumn(nullable=true)
      */
     private $thread;
-    
+
     /**
-     * @var string $contenu
+     * @var string
      * @ORM\Column(name="objet", type="text",nullable=true)
      */
     private $objet;
-    
+
     /**
-     * @var string $contenu
+     * @var string
      * @ORM\Column(name="contenu", type="text",nullable=true)
      */
     private $contenu;
-    
+
     /**
-     * @var text $moyenContact
+     * @var text
      * @ORM\Column(name="moyenContact", type="text",nullable=true)
      */
     private $moyenContact;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->date = new \DateTime('now');
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -101,22 +89,23 @@ class ClientContact
     }
 
     /**
-     * Set etude
+     * Set etude.
      *
      * @param string $etude
+     *
      * @return ClientContact
      */
     public function setEtude($etude)
     {
         $this->etude = $etude;
-    
+
         return $this;
     }
 
     /**
-     * Get etude
+     * Get etude.
      *
-     * @return string 
+     * @return string
      */
     public function getEtude()
     {
@@ -124,22 +113,23 @@ class ClientContact
     }
 
     /**
-     * Set faitPar
+     * Set faitPar.
      *
      * @param mgate\PersonneBundle\Entity\Personne $faitPar
+     *
      * @return ClientContact
      */
     public function setFaitPar(\mgate\PersonneBundle\Entity\Personne $faitPar)
     {
         $this->faitPar = $faitPar;
-    
+
         return $this;
     }
 
     /**
-     * Get faitPar
+     * Get faitPar.
      *
-     * @return mgate\PersonneBundle\Entity\Personne 
+     * @return mgate\PersonneBundle\Entity\Personne
      */
     public function getFaitPar()
     {
@@ -147,22 +137,23 @@ class ClientContact
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
+     *
      * @return ClientContact
      */
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
-     * Get date
+     * Get date.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -170,22 +161,23 @@ class ClientContact
     }
 
     /**
-     * Set thread
+     * Set thread.
      *
      * @param \mgate\CommentBundle\Entity\Thread $thread
+     *
      * @return Prospect
      */
     public function setThread(\mgate\CommentBundle\Entity\Thread $thread)
     {
         $this->thread = $thread;
-    
+
         return $this;
     }
 
     /**
-     * Get thread
+     * Get thread.
      *
-     * @return mgate\CommentBundle\Entity\Thread 
+     * @return mgate\CommentBundle\Entity\Thread
      */
     public function getThread()
     {
@@ -193,22 +185,23 @@ class ClientContact
     }
 
     /**
-     * Set contenu
+     * Set contenu.
      *
      * @param string $contenu
+     *
      * @return ClientContact
      */
     public function setContenu($contenu)
     {
         $this->contenu = $contenu;
-    
+
         return $this;
     }
 
     /**
-     * Get contenu
+     * Get contenu.
      *
-     * @return string 
+     * @return string
      */
     public function getContenu()
     {
@@ -216,22 +209,23 @@ class ClientContact
     }
 
     /**
-     * Set mail
+     * Set mail.
      *
-     * @param boolean $mail
+     * @param bool $mail
+     *
      * @return ClientContact
      */
     public function setMail($mail)
     {
         $this->mail = $mail;
-    
+
         return $this;
     }
 
     /**
-     * Get mail
+     * Get mail.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getMail()
     {
@@ -239,22 +233,23 @@ class ClientContact
     }
 
     /**
-     * Set appel
+     * Set appel.
      *
-     * @param boolean $appel
+     * @param bool $appel
+     *
      * @return ClientContact
      */
     public function setAppel($appel)
     {
         $this->appel = $appel;
-    
+
         return $this;
     }
 
     /**
-     * Get appel
+     * Get appel.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getAppel()
     {
@@ -262,22 +257,23 @@ class ClientContact
     }
 
     /**
-     * Set moyenContact
+     * Set moyenContact.
      *
      * @param string $moyenContact
+     *
      * @return ClientContact
      */
     public function setMoyenContact($moyenContact)
     {
         $this->moyenContact = $moyenContact;
-    
+
         return $this;
     }
 
     /**
-     * Get moyenContact
+     * Get moyenContact.
      *
-     * @return string 
+     * @return string
      */
     public function getMoyenContact()
     {
@@ -285,22 +281,23 @@ class ClientContact
     }
 
     /**
-     * Set objet
+     * Set objet.
      *
      * @param string $objet
+     *
      * @return ClientContact
      */
     public function setObjet($objet)
     {
         $this->objet = $objet;
-    
+
         return $this;
     }
 
     /**
-     * Get objet
+     * Get objet.
      *
-     * @return string 
+     * @return string
      */
     public function getObjet()
     {

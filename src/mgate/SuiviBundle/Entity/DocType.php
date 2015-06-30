@@ -1,30 +1,17 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\SuiviBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use \mgate\CommentBundle\Entity;
 
 /** @ORM\MappedSuperclass */
 class DocType
@@ -33,15 +20,14 @@ class DocType
      * @var bool
      */
     private $knownSignataire2 = false;
-        
+
     /**
      *
      */
-    private $newSignataire2;   
-    
-    
+    private $newSignataire2;
+
     /**
-     * @var integer $version
+     * @var int
      *
      * @ORM\Column(name="version", type="integer", nullable=true)
      */
@@ -54,39 +40,39 @@ class DocType
     private $thread;
 
     /**
-     * @var boolean $redige
+     * @var bool
      *
      * @ORM\Column(name="redige", type="boolean",nullable=true)
      */
     private $redige;
 
     /**
-     * @var boolean $relu
+     * @var bool
      *
      * @ORM\Column(name="relu", type="boolean",nullable=true)
      */
     private $relu;
 
     /**
-     * @var boolean $spt1
+     * @var bool
      *
      * @ORM\Column(name="spt1", type="boolean",nullable=true)
      */
     private $spt1;
-    
+
     /**
-     * @var boolean $spt2
+     * @var bool
      *
      * @ORM\Column(name="spt2", type="boolean",nullable=true)
      */
     private $spt2;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="mgate\PersonneBundle\Entity\Personne", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $signataire1;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="mgate\PersonneBundle\Entity\Personne", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
@@ -94,29 +80,29 @@ class DocType
     private $signataire2;
 
     /**
-     * @var \DateTime $dateSignature
+     * @var \DateTime
      *
      * @ORM\Column(name="dateSignature", type="datetime",nullable=true)
      */
     private $dateSignature;
 
     /**
-     * @var boolean $envoye
+     * @var bool
      *
      * @ORM\Column(name="envoye", type="boolean",nullable=true)
      */
     private $envoye;
 
     /**
-     * @var boolean $receptionne
+     * @var bool
      *
      * @ORM\Column(name="receptionne", type="boolean",nullable=true)
      */
     private $receptionne;
-    
+
     /**
-     * @var integer $generer
-     * 
+     * @var int
+     *
      * @ORM\Column(name="generer", type="integer",nullable=true)
      */
     private $generer;
@@ -125,8 +111,7 @@ class DocType
     {
         $this->setVersion(1);
     }
-    
-    
+
 /// rajout à la main
     public function isKnownSignataire2()
     {
@@ -136,7 +121,7 @@ class DocType
     {
         $this->knownSignataire2 = $boolean;
     }
-    
+
     public function getNewSignataire2()
     {
         return $this->newSignataire2;
@@ -144,27 +129,27 @@ class DocType
     public function setNewSignataire2($var)
     {
         $this->newSignataire2 = $var;
-
     }
 /// fin rajout
-    
+
     /**
-     * Set version
+     * Set version.
      *
-     * @param integer $version
+     * @param int $version
+     *
      * @return DocType
      */
     public function setVersion($version)
     {
         $this->version = $version;
-    
+
         return $this;
     }
 
     /**
-     * Get version
+     * Get version.
      *
-     * @return integer 
+     * @return int
      */
     public function getVersion()
     {
@@ -172,22 +157,23 @@ class DocType
     }
 
     /**
-     * Set thread
+     * Set thread.
      *
      * @param \mgate\CommentBundle\Entity\Thread $thread
+     *
      * @return Prospect
      */
     public function setThread(\mgate\CommentBundle\Entity\Thread $thread)
     {
         $this->thread = $thread;
-    
+
         return $this;
     }
 
     /**
-     * Get thread
+     * Get thread.
      *
-     * @return mgate\CommentBundle\Entity\Thread 
+     * @return mgate\CommentBundle\Entity\Thread
      */
     public function getThread()
     {
@@ -195,22 +181,23 @@ class DocType
     }
 
     /**
-     * Set redige
+     * Set redige.
      *
-     * @param boolean $redige
+     * @param bool $redige
+     *
      * @return DocType
      */
     public function setRedige($redige)
     {
         $this->redige = $redige;
-    
+
         return $this;
     }
 
     /**
-     * Get redige
+     * Get redige.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getRedige()
     {
@@ -218,22 +205,23 @@ class DocType
     }
 
     /**
-     * Set relu
+     * Set relu.
      *
-     * @param boolean $relu
+     * @param bool $relu
+     *
      * @return DocType
      */
     public function setRelu($relu)
     {
         $this->relu = $relu;
-    
+
         return $this;
     }
 
     /**
-     * Get relu
+     * Get relu.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getRelu()
     {
@@ -241,22 +229,23 @@ class DocType
     }
 
     /**
-     * Set spt1
+     * Set spt1.
      *
-     * @param boolean $spt1
+     * @param bool $spt1
+     *
      * @return DocType
      */
     public function setSpt1($spt1)
     {
         $this->spt1 = $spt1;
-    
+
         return $this;
     }
 
     /**
-     * Get spt1
+     * Get spt1.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getSpt1()
     {
@@ -264,22 +253,23 @@ class DocType
     }
 
     /**
-     * Set dateSignature
+     * Set dateSignature.
      *
      * @param \DateTime $dateSignature
+     *
      * @return DocType
      */
     public function setDateSignature($dateSignature)
     {
         $this->dateSignature = $dateSignature;
-    
+
         return $this;
     }
 
     /**
-     * Get dateSignature
+     * Get dateSignature.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateSignature()
     {
@@ -287,22 +277,23 @@ class DocType
     }
 
     /**
-     * Set envoye
+     * Set envoye.
      *
-     * @param boolean $envoye
+     * @param bool $envoye
+     *
      * @return DocType
      */
     public function setEnvoye($envoye)
     {
         $this->envoye = $envoye;
-    
+
         return $this;
     }
 
     /**
-     * Get envoye
+     * Get envoye.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getEnvoye()
     {
@@ -310,22 +301,23 @@ class DocType
     }
 
     /**
-     * Set receptionne
+     * Set receptionne.
      *
-     * @param boolean $receptionne
+     * @param bool $receptionne
+     *
      * @return DocType
      */
     public function setReceptionne($receptionne)
     {
         $this->receptionne = $receptionne;
-    
+
         return $this;
     }
 
     /**
-     * Get receptionne
+     * Get receptionne.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getReceptionne()
     {
@@ -333,22 +325,23 @@ class DocType
     }
 
     /**
-     * Set spt2
+     * Set spt2.
      *
-     * @param boolean $spt2
+     * @param bool $spt2
+     *
      * @return DocType
      */
     public function setSpt2($spt2)
     {
         $this->spt2 = $spt2;
-    
+
         return $this;
     }
 
     /**
-     * Get spt2
+     * Get spt2.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getSpt2()
     {
@@ -356,22 +349,23 @@ class DocType
     }
 
     /**
-     * Set signataire1
+     * Set signataire1.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $signataire1
+     *
      * @return DocType
      */
     public function setSignataire1(\mgate\PersonneBundle\Entity\Personne $signataire1)
     {
         $this->signataire1 = $signataire1;
-    
+
         return $this;
     }
 
     /**
-     * Get signataire1
+     * Get signataire1.
      *
-     * @return \mgate\PersonneBundle\Entity\Personne 
+     * @return \mgate\PersonneBundle\Entity\Personne
      */
     public function getSignataire1()
     {
@@ -379,46 +373,47 @@ class DocType
     }
 
     /**
-     * Set signataire2
+     * Set signataire2.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $signataire2
+     *
      * @return DocType
      */
     public function setSignataire2(\mgate\PersonneBundle\Entity\Personne $signataire2)
     {
         $this->signataire2 = $signataire2;
-    
+
         return $this;
     }
 
     /**
-     * Get signataire2
+     * Get signataire2.
      *
-     * @return \mgate\PersonneBundle\Entity\Personne 
+     * @return \mgate\PersonneBundle\Entity\Personne
      */
     public function getSignataire2()
     {
         return $this->signataire2;
     }
 
-
     /**
-     * Set generer
+     * Set generer.
      *
-     * @param integer $generer
+     * @param int $generer
+     *
      * @return DocType
      */
     public function setGenerer($generer)
     {
         $this->generer = $generer;
-    
+
         return $this;
     }
 
     /**
-     * Get generer
+     * Get generer.
      *
-     * @return integer 
+     * @return int
      */
     public function getGenerer()
     {

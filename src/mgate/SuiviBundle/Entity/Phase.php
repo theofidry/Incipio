@@ -1,35 +1,22 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\SuiviBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * mgate\SuiviBundle\Entity\Phase
+ * mgate\SuiviBundle\Entity\Phase.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -37,122 +24,124 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Phase
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
-     * Gedmo\SortableGroup
+     * Gedmo\SortableGroup.
+     *
      * @ORM\ManyToOne(targetEntity="Etude", inversedBy="phases", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     protected $etude;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="GroupePhases", inversedBy="phases")
      * @ORM\OrderBy({"numero" = "ASC"})
      */
     private $groupe;
-    
+
     /**
-     * Gedmo\SortablePosition
+     * Gedmo\SortablePosition.
+     *
      * @ORM\Column(name="position", type="integer", nullable=true)
      * todo enlever le nullable=true
      */
     private $position;
-    
+
     /**
-     * @var integer $nbrJEH
+     * @var int
      *
      * @ORM\Column(name="nbrJEH", type="integer", nullable=true)
      */
     private $nbrJEH;
-    
+
     /**
-     * @var integer $prixJEH
+     * @var int
      *
      * @ORM\Column(name="prixJEH", type="integer", nullable=true)
      */
     private $prixJEH;
-    
-   /**
-     * @var string $titre
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="titre", type="text", nullable=true)
      */
     private $titre;
 
     /**
-     * @var string $objectif
+     * @var string
      *
      * @ORM\Column(name="objectif", type="text", nullable=true)
      */
     private $objectif;
-    
+
     /**
-     * @var string $methodo
+     * @var string
      *
      * @ORM\Column(name="methodo", type="text", nullable=true)
      */
     private $methodo;
-    
+
     /**
-     * @var \DateTime $dateDebut
+     * @var \DateTime
      *
      * @ORM\Column(name="dateDebut", type="datetime", nullable=true)
      */
     private $dateDebut;
-    
+
     /**
-     * @var integer $delai
+     * @var int
      *
      * @ORM\Column(name="delai", type="integer", nullable=true)
      */
     private $delai;
-    
+
     /**
-     * @var integer $validation
+     * @var int
      *
      * @ORM\Column(name="validation", type="integer", nullable=true)
      * @Assert\Choice(callback = "getValidationChoiceAssert")
      */
     private $validation;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Av", inversedBy="phases")
      */
     private $avenant;
-    
+
     /**
-     * @var integer $etat 0 : modifiée, 1:ajoutée -1 : supprimée
+     * @var int 0 : modifiée, 1:ajoutée -1 : supprimée
      *
      * @ORM\Column(name="etatSurAvenant", type="integer", nullable=true)
      */
     private $etatSurAvenant;
-    
+
     /**
-     * ADDITIONAL GETTERS/SETTERS
+     * ADDITIONAL GETTERS/SETTERS.
      */
-    
-    public function getMontantHT(){
+    public function getMontantHT()
+    {
         return $this->nbrJEH * $this->prixJEH;
     }
 
-    public function getDateFin() {
-        if($this->dateDebut){
+    public function getDateFin()
+    {
+        if ($this->dateDebut) {
             $date = clone $this->dateDebut;
             $date->modify('+ '.$this->delai.' day');
-            return $date;
-        }
-        else
-            return new \DateTime("now");
-        
-    }
 
+            return $date;
+        } else {
+            return new \DateTime('now');
+        }
+    }
 
     public function __construct()
     {
@@ -164,9 +153,9 @@ class Phase
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -174,45 +163,47 @@ class Phase
     }
 
     /**
-     * Set etude
+     * Set etude.
      *
      * @param mgate\SuiviBundle\Entity\Etude $etude
+     *
      * @return Phase
      */
-    public function setEtude($etude = NULL)
+    public function setEtude($etude = null)
     {
         $this->etude = $etude;
-    
+
         return $this;
     }
 
     /**
-     * Get etude
+     * Get etude.
      *
-     * @return mgate\SuiviBundle\Entity\Etude 
+     * @return mgate\SuiviBundle\Entity\Etude
      */
     public function getEtude()
     {
         return $this->etude;
     }
-    
+
     /**
-     * Set etude
+     * Set etude.
      *
      * @param mgate\SuiviBundle\Entity\GroupePhases $groupe
+     *
      * @return Phase
      */
-    public function setGroupe($groupe = NULL)
+    public function setGroupe($groupe = null)
     {
         $this->groupe = $groupe;
-    
+
         return $this;
     }
 
     /**
-     * Get groupe
+     * Get groupe.
      *
-     * @return mgate\SuiviBundle\Entity\GroupePhases 
+     * @return mgate\SuiviBundle\Entity\GroupePhases
      */
     public function getGroupe()
     {
@@ -220,22 +211,23 @@ class Phase
     }
 
     /**
-     * Set nbrJEH
+     * Set nbrJEH.
      *
-     * @param integer $nbrJEH
+     * @param int $nbrJEH
+     *
      * @return Phase
      */
     public function setNbrJEH($nbrJEH)
     {
         $this->nbrJEH = $nbrJEH;
-    
+
         return $this;
     }
 
     /**
-     * Get nbrJEH
+     * Get nbrJEH.
      *
-     * @return integer 
+     * @return int
      */
     public function getNbrJEH()
     {
@@ -243,22 +235,23 @@ class Phase
     }
 
     /**
-     * Set prixJEH
+     * Set prixJEH.
      *
-     * @param integer $prixJEH
+     * @param int $prixJEH
+     *
      * @return Phase
      */
     public function setPrixJEH($prixJEH)
     {
         $this->prixJEH = $prixJEH;
-    
+
         return $this;
     }
 
     /**
-     * Get prixJEH
+     * Get prixJEH.
      *
-     * @return integer 
+     * @return int
      */
     public function getPrixJEH()
     {
@@ -266,22 +259,23 @@ class Phase
     }
 
     /**
-     * Set titre
+     * Set titre.
      *
      * @param string $titre
+     *
      * @return Phase
      */
     public function setTitre($titre)
     {
         $this->titre = $titre;
-    
+
         return $this;
     }
 
     /**
-     * Get titre
+     * Get titre.
      *
-     * @return string 
+     * @return string
      */
     public function getTitre()
     {
@@ -289,22 +283,23 @@ class Phase
     }
 
     /**
-     * Set objectif
+     * Set objectif.
      *
      * @param string $objectif
+     *
      * @return Phase
      */
     public function setObjectif($objectif)
     {
         $this->objectif = $objectif;
-    
+
         return $this;
     }
 
     /**
-     * Get objectif
+     * Get objectif.
      *
-     * @return string 
+     * @return string
      */
     public function getObjectif()
     {
@@ -312,22 +307,23 @@ class Phase
     }
 
     /**
-     * Set methodo
+     * Set methodo.
      *
      * @param string $methodo
+     *
      * @return Phase
      */
     public function setMethodo($methodo)
     {
         $this->methodo = $methodo;
-    
+
         return $this;
     }
 
     /**
-     * Get methodo
+     * Get methodo.
      *
-     * @return string 
+     * @return string
      */
     public function getMethodo()
     {
@@ -335,22 +331,23 @@ class Phase
     }
 
     /**
-     * Set dateDebut
+     * Set dateDebut.
      *
      * @param \DateTime $dateDebut
+     *
      * @return Phase
      */
     public function setDateDebut($dateDebut)
     {
         $this->dateDebut = $dateDebut;
-    
+
         return $this;
     }
 
     /**
-     * Get dateDebut
+     * Get dateDebut.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateDebut()
     {
@@ -358,159 +355,164 @@ class Phase
     }
 
     /**
-     * Set delai
+     * Set delai.
      *
      * @param string $delai
+     *
      * @return Phase
      */
     public function setDelai($delai)
     {
         $this->delai = $delai;
-    
+
         return $this;
     }
 
     /**
-     * Get delai
+     * Get delai.
      *
-     * @return string 
+     * @return string
      */
     public function getDelai()
     {
         return $this->delai;
     }
-    
+
     /**
-     * Set position
+     * Set position.
      *
      * @param string $position
-     * @return integer
+     *
+     * @return int
      */
     public function setPosition($position)
     {
         $this->position = $position;
-        
+
         return $this;
     }
-    
+
     /**
-     * Get position
+     * Get position.
      *
-     * @return integer 
-     */ 
+     * @return int
+     */
     public function getPosition()
     {
         return $this->position;
     }
 
     /**
-     * Set validation
+     * Set validation.
      *
-     * @param integer $validation
+     * @param int $validation
+     *
      * @return Phase
      */
     public function setValidation($validation)
     {
         $this->validation = $validation;
-    
+
         return $this;
     }
 
     /**
-     * Get validation
+     * Get validation.
+     *
      * @deprecated since version 0.0
      *
-     * @return integer 
+     * @return int
      */
     public function getValidation()
     {
         return $this->validation;
     }
-    
+
     /**
      * @deprecated since version 0.0
      */
     public static function getValidationChoice()
     {
-        return array(   //0 => "Aucune", //Inutile
-                        1 => "Cette phase sera soumise à une validation orale lors d’un entretien avec le client.",
-                        2 => "Cette phase sera soumise à une validation écrite qui prend la forme d’un Procès-Verbal Intermédiaire signé par le client.");
+        return array(//0 => "Aucune", //Inutile
+                        1 => 'Cette phase sera soumise à une validation orale lors d’un entretien avec le client.',
+                        2 => 'Cette phase sera soumise à une validation écrite qui prend la forme d’un Procès-Verbal Intermédiaire signé par le client.', );
     }
-    
+
     /**
      * @deprecated since version 0.0
      */
     public static function getValidationChoiceAssert()
     {
-        return array_keys(Phase::getValidationChoice());
+        return array_keys(self::getValidationChoice());
     }
-    
+
     public function getValidationToString()
     {
         $tab = $this->getValidationChoice();
+
         return $tab[$this->validation];
     }
-    
-    
-    
+
     /**
-     * Set avenant
+     * Set avenant.
      *
      * @param \mgate\SuiviBundle\Entity\Av $avenant
+     *
      * @return Phase
      */
     public function setAvenant(\mgate\SuiviBundle\Entity\Av $avenant = null)
     {
         $this->avenant = $avenant;
-    
+
         return $this;
     }
 
     /**
-     * Get avenant
+     * Get avenant.
      *
-     * @return \mgate\SuiviBundle\Entity\Av 
+     * @return \mgate\SuiviBundle\Entity\Av
      */
     public function getAvenant()
     {
         return $this->avenant;
     }
 
-    
     public static function getEtatSurAvenantChoice()
     {
-        return array(   0 => "Modifiée", //Inutile
-                        1 => "Ajoutée",
-                        -1 => "Supprimée");
+        return array(0 => 'Modifiée', //Inutile
+                        1 => 'Ajoutée',
+                        -1 => 'Supprimée', );
     }
     public static function getEtatSurAvenantChoiceAssert()
     {
-        return array_keys(Phase::getEtatSurAvenantChoice());
+        return array_keys(self::getEtatSurAvenantChoice());
     }
-    
+
     public function getEtatSurAvenantToString()
     {
         $tab = $this->getValidationChoice();
+
         return $tab[$this->validation];
     }
-    
+
     /**
-     * Set etatSurAvenant
+     * Set etatSurAvenant.
      *
-     * @param integer $etatSurAvenant
+     * @param int $etatSurAvenant
+     *
      * @return Phase
      */
     public function setEtatSurAvenant($etatSurAvenant)
     {
         $this->etatSurAvenant = $etatSurAvenant;
-    
+
         return $this;
     }
 
     /**
-     * Get etatSurAvenant
+     * Get etatSurAvenant.
      *
-     * @return integer 
+     * @return int
      */
     public function getEtatSurAvenant()
     {

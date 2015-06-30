@@ -1,48 +1,35 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\PersonneBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * mgate\PersonneBundle\Entity\Membre
+ * mgate\PersonneBundle\Entity\Membre.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="mgate\PersonneBundle\Entity\MembreRepository")
  */
-class Membre {
-
+class Membre
+{
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-       
+
     /**
      * @ORM\OneToMany(targetEntity="mgate\SuiviBundle\Entity\Mission", mappedBy="intervenant", cascade={"persist","remove"})
      */
@@ -53,48 +40,48 @@ class Membre {
      * @ORM\JoinColumn(nullable=true)
      */
     private $personne;
-    
+
     /**
-     * @var \Date $dateSignature
+     * @var \Date
      *
      * @ORM\Column(name="dateCE", type="date",nullable=true)
      */
     private $dateConventionEleve;
 
     /**
-     * @var string $identifiant
+     * @var string
      *
      * @ORM\Column(name="identifiant", type="string", length=10, nullable=true, unique=true)
      */
     private $identifiant;
-    
+
     /**
-     * @var string $emailEMSE
+     * @var string
      *
      * @ORM\Column(name="emailEMSE", type="string", length=50, nullable=true)
      */
     private $emailEMSE;
 
     /**
-     * @var int $promotion
+     * @var int
      * @ORM\Column(name="promotion", type="smallint", nullable=true)
      */
     private $promotion;
-    
+
     /**
-     * @var int $appartement
+     * @var int
      * @ORM\Column(name="appartement", type="smallint", nullable=true)
      */
     private $appartement;
 
     /**
-     * @var date $datedDeNaissance
+     * @var date
      * @ORM\Column(name="birthdate", type="date", nullable=true)
      */
     private $dateDeNaissance;
 
     /**
-     * @var string $lieuDeNaissancce
+     * @var string
      * @ORM\Column(name="placeofbirth", type="string", nullable=true)
      */
     private $lieuDeNaissance;
@@ -103,286 +90,315 @@ class Membre {
      * @ORM\OneToMany(targetEntity="mgate\PersonneBundle\Entity\Mandat", mappedBy="membre", cascade={"persist","remove"})
      */
     private $mandats;
-	
-	/**
-     * @var string $nationalite
+
+    /**
+     * @var string
      * @ORM\Column(name="nationalite", type="string", nullable=true)
      */
     private $nationalite;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="mgate\PubliBundle\Entity\RelatedDocument", mappedBy="membre", cascade={"remove"})
      */
     private $relatedDocuments;
-    
-    
+
     /**
-     * @var string $photoURI
+     * @var string
      * @ORM\Column(name="photoURI", type="string", nullable=true)
      */
     private $photoURI;
-    
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set identifiant
+     * Set identifiant.
      *
      * @param string $identifiant
+     *
      * @return Membre
      */
-    public function setIdentifiant($identifiant) {
+    public function setIdentifiant($identifiant)
+    {
         $this->identifiant = $identifiant;
 
         return $this;
     }
 
     /**
-     * Get identifiant
+     * Get identifiant.
      *
-     * @return string 
+     * @return string
      */
-    public function getIdentifiant() {
+    public function getIdentifiant()
+    {
         return $this->identifiant;
     }
 
     /**
-     * Set personne
+     * Set personne.
      *
      * @param \mgate\PersonneBundle\Entity\Personne $personne
+     *
      * @return Membre
      */
-    public function setPersonne(\mgate\PersonneBundle\Entity\Personne $personne = null) {
-        if ($personne != null)
+    public function setPersonne(\mgate\PersonneBundle\Entity\Personne $personne = null)
+    {
+        if ($personne != null) {
             $personne->setMembre($this);
+        }
         $this->personne = $personne;
 
         return $this;
     }
 
     /**
-     * Get personne
+     * Get personne.
      *
-     * @return \mgate\PersonneBundle\Entity\Personne 
+     * @return \mgate\PersonneBundle\Entity\Personne
      */
-    public function getPersonne() {
+    public function getPersonne()
+    {
         return $this->personne;
     }
 
     /**
-     * Set poste
+     * Set poste.
      *
      * @param \mgate\PersonneBundle\Entity\Membre $poste
+     *
      * @return Membre
      */
-    public function setPoste(\mgate\PersonneBundle\Entity\Poste $poste = null) {
+    public function setPoste(\mgate\PersonneBundle\Entity\Poste $poste = null)
+    {
         $this->poste = $poste;
+
         return $this;
     }
 
     /**
-     * Get poste
+     * Get poste.
      *
      * @return \mgate\PersonneBundle\Entity\Membre
      */
-    public function getPoste() {
+    public function getPoste()
+    {
         return $this->poste;
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->mandats = new \Doctrine\Common\Collections\ArrayCollection();
         $this->missions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->relatedDocuments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Add mandats
+     * Add mandats.
      *
      * @param \mgate\PersonneBundle\Entity\Mandat $mandats
+     *
      * @return Membre
      */
-    public function addMandat(\mgate\PersonneBundle\Entity\Mandat $mandats) {
+    public function addMandat(\mgate\PersonneBundle\Entity\Mandat $mandats)
+    {
         $this->mandats[] = $mandats;
 
         return $this;
     }
 
     /**
-     * Remove mandats
+     * Remove mandats.
      *
      * @param \mgate\PersonneBundle\Entity\Mandat $mandats
      */
-    public function removeMandat(\mgate\PersonneBundle\Entity\Mandat $mandats) {
+    public function removeMandat(\mgate\PersonneBundle\Entity\Mandat $mandats)
+    {
         $this->mandats->removeElement($mandats);
     }
 
     /**
-     * Get mandats
+     * Get mandats.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getMandats() {
+    public function getMandats()
+    {
         return $this->mandats;
     }
 
     /**
-     * Set promotion
+     * Set promotion.
      *
-     * @param integer $promotion
+     * @param int $promotion
+     *
      * @return Membre
      */
-    public function setPromotion($promotion) {
+    public function setPromotion($promotion)
+    {
         $this->promotion = $promotion;
 
         return $this;
     }
 
     /**
-     * Get promotion
+     * Get promotion.
      *
-     * @return integer 
+     * @return int
      */
-    public function getPromotion() {
+    public function getPromotion()
+    {
         return $this->promotion;
     }
 
     /**
-     * Set dateDeNaissance
+     * Set dateDeNaissance.
      *
      * @param \DateTime $dateDeNaissance
+     *
      * @return Membre
      */
-    public function setDateDeNaissance($dateDeNaissance) {
+    public function setDateDeNaissance($dateDeNaissance)
+    {
         $this->dateDeNaissance = $dateDeNaissance;
 
         return $this;
     }
 
     /**
-     * Get dateDeNaissance
+     * Get dateDeNaissance.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getDateDeNaissance() {
+    public function getDateDeNaissance()
+    {
         return $this->dateDeNaissance;
     }
 
     /**
-     * Set lieuDeNaissance
+     * Set lieuDeNaissance.
      *
      * @param string $lieuDeNaissance
+     *
      * @return Membre
      */
-    public function setLieuDeNaissance($lieuDeNaissance) {
+    public function setLieuDeNaissance($lieuDeNaissance)
+    {
         $this->lieuDeNaissance = $lieuDeNaissance;
 
         return $this;
     }
 
     /**
-     * Get lieuDeNaissance
+     * Get lieuDeNaissance.
      *
-     * @return string 
+     * @return string
      */
-    public function getLieuDeNaissance() {
+    public function getLieuDeNaissance()
+    {
         return $this->lieuDeNaissance;
     }
 
-
     /**
-     * Set appartement
+     * Set appartement.
      *
-     * @param integer $appartement
+     * @param int $appartement
+     *
      * @return Membre
      */
     public function setAppartement($appartement)
     {
         $this->appartement = $appartement;
-    
+
         return $this;
     }
 
     /**
-     * Get appartement
+     * Get appartement.
      *
-     * @return integer 
+     * @return int
      */
     public function getAppartement()
     {
         return $this->appartement;
     }
-	
-	 /**
-     * Set nationalite
+
+    /**
+     * Set nationalite.
      *
      * @param string $nationalite
+     *
      * @return Membre
      */
     public function setNationalite($nationalite)
     {
         $this->nationalite = $nationalite;
-    
+
         return $this;
     }
 
     /**
-     * Get nationalite
+     * Get nationalite.
      *
-     * @return string 
+     * @return string
      */
     public function getNationalite()
     {
         return $this->nationalite;
     }
-    
+
     /**
-     * Set emailEMSE
+     * Set emailEMSE.
      *
      * @param string $emailEMSE
+     *
      * @return Membre
      */
-    public function setEmailEMSE($emailEMSE) {
+    public function setEmailEMSE($emailEMSE)
+    {
         $this->emailEMSE = $emailEMSE;
 
         return $this;
     }
 
     /**
-     * Get emailEMSE
+     * Get emailEMSE.
      *
-     * @return string 
+     * @return string
      */
-    public function getEmailEMSE() {
+    public function getEmailEMSE()
+    {
         return $this->emailEMSE;
     }
 
     /**
-     * Set dateConventionEleve
+     * Set dateConventionEleve.
      *
      * @param \DateTime $dateConventionEleve
+     *
      * @return Membre
      */
     public function setDateConventionEleve($dateConventionEleve)
     {
         $this->dateConventionEleve = $dateConventionEleve;
-    
+
         return $this;
     }
 
     /**
-     * Get dateConventionEleve
+     * Get dateConventionEleve.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateConventionEleve()
     {
@@ -390,20 +406,21 @@ class Membre {
     }
 
     /**
-     * Add missions
+     * Add missions.
      *
      * @param \mgate\SuiviBundle\Entity\Mission $missions
+     *
      * @return Membre
      */
     public function addMission(\mgate\SuiviBundle\Entity\Mission $missions)
     {
         $this->missions[] = $missions;
-    
+
         return $this;
     }
 
     /**
-     * Remove missions
+     * Remove missions.
      *
      * @param \mgate\SuiviBundle\Entity\Mission $missions
      */
@@ -413,9 +430,9 @@ class Membre {
     }
 
     /**
-     * Get missions
+     * Get missions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMissions()
     {
@@ -423,20 +440,21 @@ class Membre {
     }
 
     /**
-     * Add relatedDocuments
+     * Add relatedDocuments.
      *
      * @param \mgate\PubliBundle\Entity\RelatedDocument $relatedDocuments
+     *
      * @return Membre
      */
     public function addRelatedDocument(\mgate\PubliBundle\Entity\RelatedDocument $relatedDocuments)
     {
         $this->relatedDocuments[] = $relatedDocuments;
-    
+
         return $this;
     }
 
     /**
-     * Remove relatedDocuments
+     * Remove relatedDocuments.
      *
      * @param \mgate\PubliBundle\Entity\RelatedDocument $relatedDocuments
      */
@@ -446,9 +464,9 @@ class Membre {
     }
 
     /**
-     * Get relatedDocuments
+     * Get relatedDocuments.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRelatedDocuments()
     {
@@ -456,22 +474,23 @@ class Membre {
     }
 
     /**
-     * Set photoURI
+     * Set photoURI.
      *
      * @param string $photoURI
+     *
      * @return Membre
      */
     public function setPhotoURI($photoURI)
     {
         $this->photoURI = $photoURI;
-    
+
         return $this;
     }
 
     /**
-     * Get photoURI
+     * Get photoURI.
      *
-     * @return string 
+     * @return string
      */
     public function getPhotoURI()
     {

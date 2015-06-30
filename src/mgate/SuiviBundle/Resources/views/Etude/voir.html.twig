@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgateSuiviBundle::layout.html.twig" %}
 
 {% block title %}
@@ -34,7 +13,7 @@ Affichage d'une étude - {{ parent() }}
         {% if is_granted('ROLE_CA') %}
         <li><a href="#tab4" data-toggle="tab">Suivi</a></li>
         {%endif%}
-        <li><a href="#tab5" data-toggle="tab">Documents</a></li>        
+        <li><a href="#tab5" data-toggle="tab">Documents</a></li>
     </ul>
     <div class="tab-content">
     <!-- ERRORS -->
@@ -56,12 +35,12 @@ Affichage d'une étude - {{ parent() }}
         </div>
     <!-- SUIVI DOCUMENTS TYPES AUDIT -->
     {% if is_granted('ROLE_CA') %}
-        <div class="tab-pane" id="tab4">   
+        <div class="tab-pane" id="tab4">
         {% include "mgateSuiviBundle:Etude:TabVoir/Redaction.html.twig" with  {'etude':  etude} %}
         </div>
     {% endif %}
      <!-- SUIVI DOCUMENTS TYPES AUDIT -->
-        <div class="tab-pane" id="tab5">   
+        <div class="tab-pane" id="tab5">
         {% include "mgateSuiviBundle:Etude:TabVoir/Documents.html.twig" with  {'etude':  etude} %}
         </div>
     </div>
@@ -69,7 +48,7 @@ Affichage d'une étude - {{ parent() }}
 
 {% if etude.thread|default('0') %}
     {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': etude.thread.id} %}
-{% endif %} 
+{% endif %}
 {% endblock %}
 
 {% block javascript_quick %}
@@ -79,7 +58,7 @@ Affichage d'une étude - {{ parent() }}
 function equalHeight(group) {
     var tallest = 0;
     group.each(function() {
-        thisHeight = $(this).height();     
+        thisHeight = $(this).height();
         if(thisHeight > tallest) {
             tallest = thisHeight;
         }
@@ -106,7 +85,7 @@ $(window).load(function(){
     <script src="{{ asset('js/highcharts.js') }}"></script>
     <script src="{{ asset('js/highcharts-fr.js') }}"></script>
     <script src="{{ asset('js/exporting.js') }}"></script>
-    
+
     <script type="text/javascript">
         {{ chart(chart) }}
     </script>
@@ -137,7 +116,7 @@ $(window).load(function(){
         $("#myForm :input").change(function(){
             $(".loading").show();
             var $form = $(this).closest("form");
-            $.post($form.attr("action"), $form.serialize(), 
+            $.post($form.attr("action"), $form.serialize(),
             function(data){
                 $(".loading").hide();
 

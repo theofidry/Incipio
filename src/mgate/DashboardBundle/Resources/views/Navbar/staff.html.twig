@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 <style>
 .dropdown-menu > li > ul{
     padding: 3px 20px;
@@ -43,9 +22,9 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </ul>
     </li>
     {% endif %}
-                  
 
-    
+
+
     <!-- RECRUTEMENT FORMATIONS PASSATION -->
     {% if is_granted('ROLE_SUIVEUR') %}
     <li class="dropdown">
@@ -63,8 +42,8 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </ul>
     </li>
     {% endif %}
-    
-    
+
+
     {% if is_granted('ROLE_SUIVEUR') %}
     <!-- SUIVI D'ETUDES-->
     <li class="dropdown">
@@ -92,28 +71,28 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </ul>
     </li>
     {% endif %}
-    
+
     <!-- TRESORERIE-->
     {% if is_granted('ROLE_CA') %}
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trésorerie<b class="caret"></b></a>
-        <ul class="dropdown-menu">            
+        <ul class="dropdown-menu">
             <li class="dropdown-header">Saisie des informations</li>
-            <li>                
+            <li>
                 <ul class="pager">
                     <span class="pull-left">Factures</span>
                     <li><a href="{{ path('mgateTreso_Facture_index') }}"><span class="glyphicon glyphicon-list"></span> Lister</a></li>
                     <li><a href="{{ path('mgateTreso_Facture_ajouter') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></li>
                 </ul>
             </li>
-            <li>                
+            <li>
                 <ul class="pager">
                     <span class="pull-left">BVs</span>
                     <li><a href="{{ path('mgateTreso_BV_index') }}"><span class="glyphicon glyphicon-list"></span> Lister</a></li>
                     <li><a href="{{ path('mgateTreso_BV_ajouter') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></li>
                 </ul>
             </li>
-            <li>                
+            <li>
                 <ul class="pager">
                     <span class="pull-left">NFs</span>
                     <li><a href="{{ path('mgateTreso_NoteDeFrais_index') }}"><span class="glyphicon glyphicon-list"></span> Lister</a></li>
@@ -126,32 +105,32 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
             <li><a href="{{ path('mgateTreso_Declaratif_BRC') }}"><span class="glyphicon glyphicon-qrcode"></span> Bordereau Récapitulatif des Cotisations </a></li>
             <li class="divider"></li>
             <li class="dropdown-header">Administration</li>
-            <li>                
+            <li>
                 <ul class="pager">
                     <span class="pull-left">Comptes</span>
                     <li><a href="{{ path('mgateTreso_Compte_index') }}"><span class="glyphicon glyphicon-list"></span> Lister</a></li>
                     <li><a href="{{ path('mgateTreso_Compte_ajouter') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></li>
                 </ul>
             </li>
-            <li>                
+            <li>
                 <ul class="pager">
                     <span class="pull-left">B. URSSAF</span>
                     <li><a href="{{ path('mgateTreso_BaseURSSAF_index') }}"><span class="glyphicon glyphicon-list"></span> Lister</a></li>
                     <li><a href="{{ path('mgateTreso_BaseURSSAF_ajouter') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></li>
                 </ul>
             </li>
-            <li>                
+            <li>
                 <ul class="pager">
                     <span class="pull-left">Charges</span>
                     <li><a href="{{ path('mgateTreso_CotisationURSSAF_index') }}"><span class="glyphicon glyphicon-list"></span> Lister</a></li>
                     <li><a href="{{ path('mgateTreso_CotisationURSSAF_ajouter') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></li>
                 </ul>
             </li>
-            
+
         </ul>
     </li>
     {% endif %}
-    
+
     <!-- DEVELOPPEMENT COMMERCIAL -->
     {% if is_granted('ROLE_SUIVEUR') %}
     <li class="dropdown">
@@ -169,7 +148,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </ul>
     </li>
     {% endif %}
-    
+
     <!-- PILOTAGE DE LA J.E. -->
     {% if is_granted('ROLE_CA') %}
     <li class="dropdown">
@@ -179,7 +158,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         </ul>
     </li>
     {% endif %}
-    
+
     <!-- ADMINISTRATION DU SITE -->
     {% if is_granted('ROLE_ADMIN') %}
     <li class="dropdown">

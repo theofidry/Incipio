@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "::layout.html.twig" %}
 
 {% block title %}Identification requise{% endblock %}
@@ -69,14 +48,14 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
 
 
 {% block content %}
-<div class="container">    
+<div class="container">
     {% block fos_user_content %}{% endblock %}
 </div>
 <p style="text-align: right;">
 {% if app.user %}
     <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
 {% else %}
-    <a href="{{ path('fos_user_registration_register') }}">Inscription</a> 
+    <a href="{{ path('fos_user_registration_register') }}">Inscription</a>
     <a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié</a>
 {% endif %}
 </p>

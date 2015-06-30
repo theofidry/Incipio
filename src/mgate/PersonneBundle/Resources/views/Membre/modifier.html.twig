@@ -1,24 +1,3 @@
-        
-{#
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
 {% extends "mgatePersonneBundle::layout.html.twig" %}
 {% block title %}Ajouter/Modifier un membre - {{ parent() }}{% endblock %}
 
@@ -117,7 +96,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
         var isDirty = false;
 
         jQuery(document).ready(function() {
-        
+
             //Verification avant de quitter
             $(':input').change(function(){
                 if(!isDirty){
@@ -132,22 +111,22 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 isDirty = false;
                 return true;
             });
-        
+
             //Rajout des boutons (X, up, down) pour les phases
             $('.mandats').each(function() {
                 addPhaseBouton($(this));
             });
-        
+
         });
-    
+
         function addPhaseBouton($tagFormLi) {
             var $delete = $('<button class="btn" id="myButtonDelete" class="btn">X</button>');
             $tagFormLi.children().first().append($delete);
-        
+
             $delete.on('click', function(e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
-            
+
                 //CONFIRM confirmation suppression
                 var message = "Êtes vous sûr de vouloir supprimer ce mandat ?";
                 bootbox.confirm(message, function(result) {
@@ -157,7 +136,7 @@ along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/license
                 });
                });
         }
-        
+
         </script>
 {% endblock %}
 

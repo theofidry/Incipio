@@ -1,25 +1,13 @@
 <?php
-        
+
 /*
-This file is part of Incipio.
-
-Incipio is an enterprise resource planning for Junior Enterprise
-Copyright (C) 2012-2014 Florian Lefevre.
-
-Incipio is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Incipio is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Incipio as the file LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * This file is part of the Incipio package.
+ *
+ * (c) Florian Lefevre
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace mgate\SuiviBundle\Entity;
 
@@ -27,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * mgate\SuiviBundle\Entity\GroupePhases
+ * mgate\SuiviBundle\Entity\GroupePhases.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="mgate\SuiviBundle\Entity\GroupePhasesRepository")
@@ -35,16 +23,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class GroupePhases
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
-     * Gedmo\SortableGroup
+     * Gedmo\SortableGroup.
+     *
      * @ORM\ManyToOne(targetEntity="Etude", inversedBy="groupes", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
@@ -58,7 +47,7 @@ class GroupePhases
     private $titre;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="numero", type="smallint")
      */
@@ -70,7 +59,7 @@ class GroupePhases
      * @ORM\Column(name="description", type="text")
      */
     private $description;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Phase", mappedBy="groupe")
      * @ORM\OrderBy({"position" = "ASC"})
@@ -78,39 +67,41 @@ class GroupePhases
     private $phases;
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->phases = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-    
+
     /**
-     * Set etude
+     * Set etude.
      *
      * @param mgate\SuiviBundle\Entity\Etude $etude
+     *
      * @return GroupePhases
      */
-    public function setEtude($etude = NULL)
+    public function setEtude($etude = null)
     {
         $this->etude = $etude;
-    
+
         return $this;
     }
 
     /**
-     * Get etude
+     * Get etude.
      *
-     * @return mgate\SuiviBundle\Entity\Etude 
+     * @return mgate\SuiviBundle\Entity\Etude
      */
     public function getEtude()
     {
@@ -118,22 +109,23 @@ class GroupePhases
     }
 
     /**
-     * Set titre
+     * Set titre.
      *
      * @param string $titre
+     *
      * @return GroupePhases
      */
     public function setTitre($titre)
     {
         $this->titre = $titre;
-    
+
         return $this;
     }
 
     /**
-     * Get titre
+     * Get titre.
      *
-     * @return titre 
+     * @return titre
      */
     public function getTitre()
     {
@@ -141,22 +133,23 @@ class GroupePhases
     }
 
     /**
-     * Set numero
+     * Set numero.
      *
-     * @param integer $numero
+     * @param int $numero
+     *
      * @return GroupePhases
      */
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
-     * Get numero
+     * Get numero.
      *
-     * @return integer 
+     * @return int
      */
     public function getNumero()
     {
@@ -164,57 +157,60 @@ class GroupePhases
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
+     *
      * @return GroupePhases
      */
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
-     * Get description
+     * Get description.
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
         return $this->description;
     }
-    
-    
-        /**
-     * Add phases
+
+    /**
+     * Add phases.
      *
      * @param \mgate\SuiviBundle\Entity\Phase $phases
+     *
      * @return GroupePhases
      */
-    public function addPhase(\mgate\SuiviBundle\Entity\Phase $phases) {
+    public function addPhase(\mgate\SuiviBundle\Entity\Phase $phases)
+    {
         $this->phases[] = $phases;
 
         return $this;
     }
 
     /**
-     * Remove phases
+     * Remove phases.
      *
      * @param \mgate\SuiviBundle\Entity\Phase $phases
      */
-    public function removePhase(\mgate\SuiviBundle\Entity\Phase $phases) {
+    public function removePhase(\mgate\SuiviBundle\Entity\Phase $phases)
+    {
         $this->phases->removeElement($phases);
     }
 
     /**
-     * Get phases
+     * Get phases.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPhases() {
+    public function getPhases()
+    {
         return $this->phases;
     }
-    
 }
