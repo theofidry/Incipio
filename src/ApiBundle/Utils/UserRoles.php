@@ -11,6 +11,8 @@
 
 namespace ApiBundle\Utils;
 
+use Symfony\Component\VarDumper\VarDumper;
+
 /**
  * Class UserRoles.
  *
@@ -38,33 +40,22 @@ class UserRoles
      */
     public function getRoles()
     {
-        // Flatten array to get all its values
-        $roles = $this->flattenArray($this->hierarchy);
-
-        return array_unique($roles);
+        return array_keys($this->extractRoles($this->hierarchy));
     }
 
     /**
-     * Flatten the given array including the key of the arrays inside.
+     * @param array $hierarchy
      *
-     * Warning: has been tested only on arrays with the same structure as hierarchy! For instance, if an inner array
-     * has no key, the result we be something like `0 => 0` (new key of the flattened array => the key of the inner
-     * array).
-     *
-     * @param array $array Array to flatten.
-     *
-     * @return array Flattened array.
+     * @return array Array with roles as keys
      */
-    private function flattenArray(array $array)
+    private function extractRoles(array $hierarchy)
     {
         $return = [];
 
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $return[] = $key;
-                $return = array_merge($return, $this->flattenArray($value));
-            } else {
-                $return[$key] = $value;
+        foreach ($hierarchy as $role => $roles) {
+            $return[$role] = null;
+            foreach ($roles as $subRole) {
+                $return[$subRole] = null;
             }
         }
 
