@@ -1,11 +1,12 @@
 # Incipio
 
-[![Build Status](https://img.shields.io/travis/in6pio/Incipio.svg?branc=master&style=flat-square)](https://travis-ci.org/in6pio/Incipio)
+[![Build Status](https://img.shields.io/travis/CDJE/Incipio.svg?branch=master&style=flat-square)](https://travis-ci
+.org/in6pio/Incipio?branch=master)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/4720058c-4915-465c-8039-0bfd5fe5bf63.svg?style=flat-square)](https://insight.sensiolabs.com/projects/4720058c-4915-465c-8039-0bfd5fe5bf63)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/in6pio/Incipio.svg?b=master&style=flat-square)](https://scrutinizer-ci.com/g/in6pio/Incipio/?branch=master)
-[![Codacy Badge](https://img.shields.io/codacy/381eb74af8c1409f884ba2d27f27a0dd.svg?style=flat-square)](https://www.codacy.com/app/theofidry/Incipio)
-[![Code Climate](https://img.shields.io/codeclimate/github/in6pio/Incipio.svg?style=flat-square)](https://codeclimate.com/github/in6pio/Incipio)
-[![Dependency Status](https://www.versioneye.com/user/projects/558a9292306662001d0003a4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/558a9292306662001d0003a4)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/in6pio/Incipio/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/in6pio/Incipio/?branch=master)
+[![Codacy Badge](https://img.shields.io/codacy/f7fcdb21eaef491bac3485e52e10894b.svg?style=flat-square)](https://www.codacy.com/app/theofidry/Incipio)
+[![Composer Dependency Status](https://www.versioneye.com/user/projects/558a9292306662001d0003a4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/558a9292306662001d0003a4)
+[![Node.js Dependency Status](https://www.versioneye.com/user/projects/558a9292306662001a00050c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/558a9292306662001a00050c)
 
 *« Incipio : Prendre en main, se mettre à entreprendre, commencer »*
 
@@ -13,12 +14,13 @@ Incipio est un projet qui vise à bâtir un [ERP](http://fr.wikipedia.org/wiki/P
 
 ## Documentation
 
-[Documentation](https://github.com/CDJE/Incipio/wiki)
+[Documentation](https://github.com/in6pio/Incipio/wiki)
 
 # Contributeurs
 
 * [Florian LEFÈVRE](https://github.com/flef)
 * [Théo FIDRY](https://github.com/theofidry)
+* [Autres contributeurs](https://github.com/in6pio/Incipio/graphs/contributors)
 
 # Licence
 
