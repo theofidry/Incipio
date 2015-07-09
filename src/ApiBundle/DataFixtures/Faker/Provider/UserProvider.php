@@ -22,35 +22,10 @@ use Faker\Provider\Base as BaseProvider;
  */
 class UserProvider extends BaseProvider
 {
-    /** @var UserRoles */
-    private $userRoles;
-
-    /** @var array */
-    private $roleCount = [];
-
     /**
-     * The first call generate unique values. This is to ensure all values are called before generating deplicates.
-     *
-     * @return string Random Symfony role.
-     *
-     * TODO: take into account users hierarchy too!
+     * @var UserRoles
      */
-    public function userRole()
-    {
-        $roles = $this->userRoles->getRoles();
-        $returnedRole = $roles[array_rand($roles)];
-
-        if (count($roles) !== count($this->roleCount)) {
-            // Not all values have been generated yet
-            // Get item that have not been used yet
-            while (in_array($returnedRole, $this->roleCount)) {
-                $returnedRole = $roles[array_rand($roles)];
-            }
-            $this->roleCount[] = $returnedRole;
-        }
-
-        return $returnedRole;
-    }
+    private $userRoles;
 
     /**
      * Constructor.
@@ -63,5 +38,17 @@ class UserProvider extends BaseProvider
         parent::__construct($generator);
 
         $this->userRoles = $userRoles;
+    }
+
+    /**
+     * The first call generate unique values. This is to ensure all values are called before generating deplicates.
+     *
+     * @return string Random Symfony role.
+     *
+     * TODO: take into account users hierarchy too!
+     */
+    public function userRole()
+    {
+        return self::randomElement($this->userRoles->getRoles());
     }
 }

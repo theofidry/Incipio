@@ -664,13 +664,13 @@ class JobProvider extends BaseProvider
         $names = [
             sprintf(
                 '%s %s',
-                $this->getRandomValueFromArray($this->titleProvider['firstname']),
-                $this->getRandomValueFromArray($this->titleProvider['lastname'])
+                self::randomElement($this->titleProvider['firstname']),
+                self::randomElement($this->titleProvider['lastname'])
             ),
-            $this->getRandomValueFromArray($this->titleProvider['fullname']),
+            self::randomElement($this->titleProvider['fullname']),
         ];
 
-        return $this->getRandomValueFromArray($names);
+        return self::randomElement($names);
     }
 
     /**
@@ -678,20 +678,6 @@ class JobProvider extends BaseProvider
      */
     public function jobAbbreviation()
     {
-        return $this->getRandomValueFromArray($this->abbreviationProvider);
-    }
-
-    /**
-     * Helper to get a random value from array.
-     *
-     * @param array $array
-     *
-     * @return mixed|null Null on error, random value on success.
-     */
-    private function getRandomValueFromArray(array $array)
-    {
-        $key = array_rand($array);
-
-        return (null === $key) ? $key : $array[$key];
+        return self::randomElement($this->abbreviationProvider);
     }
 }

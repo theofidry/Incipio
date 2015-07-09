@@ -11,9 +11,6 @@
 
 namespace ApiBundle\DataFixtures\ORM;
 
-use ApiBundle\DataFixtures\Faker\Provider\UserProvider;
-use ApiBundle\DataFixtures\Faker\Provider\JobProvider;
-use ApiBundle\DataFixtures\Faker\Provider\MandateProvider;
 use Doctrine\Common\Persistence\ObjectManager;
 use Hautelook\AliceBundle\Alice\DataFixtureLoader;
 
@@ -28,7 +25,8 @@ class DataLoader extends DataFixtureLoader
      * {inheritDoc}.
      *
      * TODO: do not override this method. This is done as a temporary measure for adding custom providers. To check
-     * the updates on the subject, check the following link.
+     * the updates on the subject, check the following link. Currently overrided loader to not change the loader's
+     * providers
      *
      * @link https://github.com/hautelook/AliceBundle/issues/46
      */
@@ -38,8 +36,6 @@ class DataLoader extends DataFixtureLoader
         /** @var $loader \Hautelook\AliceBundle\Alice\Loader */
         $loader = $this->container->get('hautelook_alice.loader');
         $loader->setObjectManager($manager);
-        //TODO: changed line
-        $loader->setProviders($this->getProviders());
 
         foreach ($this->getProcessors() as $processor) {
             $loader->addProcessor($processor);
@@ -59,22 +55,6 @@ class DataLoader extends DataFixtureLoader
             __DIR__.'/job.yml',
             __DIR__.'/mandate.yml',
             __DIR__.'/user.yml',
-        ];
-    }
-
-    /**
-     * @return array List of Faker providers.
-     */
-    protected function getProviders()
-    {
-        //TODO: change this faker instance to used the real one instead (which loads locales form config)
-        $faker = \Faker\Factory::create();
-
-        return [
-            $this,
-            new JobProvider($faker),
-            new MandateProvider($faker),
-            new UserProvider($faker, $this->container->get('api.user.roles')),
         ];
     }
 }

@@ -3,13 +3,42 @@ services:
         class:     ApiBundle\Utils\UserRoles
         arguments: [ %security.role_hierarchy.roles% ]
 
-
+    #
     # Native filters
+    #
     api.filter.order_filter:
         parent: loopback_api.filter.order_filter
 
     api.filter.where_filter:
         parent: loopback_api.filter.where_filter
+
+
+    #
+    # Faker's providers
+    #
+    # Faker generator initialized with application locale and defined seed
+    api.faker:
+        class:     Faker\Generator
+        factory:   [ Faker\Factory, create ]
+        arguments: [ %locale_full% ]
+        calls:
+            - method:    seed
+              arguments: [ %seed% ]
+
+    faker.provider.job:
+        class:     ApiBundle\DataFixtures\Faker\Provider\JobProvider
+        arguments: [ @api.faker ]
+        tags:      [ { name: faker.provider } ]
+
+    faker.provider.mandate:
+        class:     ApiBundle\DataFixtures\Faker\Provider\MandateProvider
+        arguments: [ @api.faker ]
+        tags:      [ { name: faker.provider } ]
+
+    faker.provider.user:
+        class:     ApiBundle\DataFixtures\Faker\Provider\UserProvider
+        arguments: [ @api.faker, @api.user.roles ]
+        tags:      [ { name: faker.provider } ]
 
 
     #
