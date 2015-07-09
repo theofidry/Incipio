@@ -1,7 +1,6 @@
 # Incipio
 
-[![Build Status](https://img.shields.io/travis/CDJE/Incipio.svg?branch=master&style=flat-square)](https://travis-ci
-.org/in6pio/Incipio?branch=master)
+[![Build Status](https://img.shields.io/travis/CDJE/Incipio.svg?branch=master&style=flat-square)](https://travis-ci.org/in6pio/Incipio?branch=master)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/4720058c-4915-465c-8039-0bfd5fe5bf63.svg?style=flat-square)](https://insight.sensiolabs.com/projects/4720058c-4915-465c-8039-0bfd5fe5bf63)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/in6pio/Incipio/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/in6pio/Incipio/?branch=master)
 [![Codacy Badge](https://img.shields.io/codacy/f7fcdb21eaef491bac3485e52e10894b.svg?style=flat-square)](https://www.codacy.com/app/theofidry/Incipio)
