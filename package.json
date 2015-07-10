@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CDJE/Incipio.git"
+    "url": "https://github.com/in6pio/Incipio.git"
   },
   "author": "Theo FIDRY <theo.fidry@gmail.com> (https://github.com/theofidry)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CDJE/Incipio/issues"
+    "url": "https://github.com/in6pio/Incipio/issues"
   },
   "homepage": "http://incipio.fr",
   "dependencies": {

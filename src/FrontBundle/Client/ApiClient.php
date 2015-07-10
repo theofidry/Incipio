@@ -77,7 +77,7 @@ class ApiClient extends Client
 
         // Check for query parameters
         if (isset($options['query']) && is_string($options['query'])) {
-            $uri .= (false !== strpos($uri, '?'))? '&': '?';
+            $uri .= (false !== strpos($uri, '?')) ? '&' : '?';
             $uri .= $options['query'];
             unset($options['query']);
         }

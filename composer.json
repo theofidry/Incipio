@@ -9,9 +9,9 @@
     "require": {
         "php": ">=5.5.0",
         "symfony/symfony": "~2.7",
-        "doctrine/dbal": "<2.5",
+        "doctrine/dbal": "~2.5",
         "doctrine/doctrine-bundle": "~1.4",
-        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
+        "doctrine/orm": "~2.5",
         "dunglas/api-bundle": "dev-master",
         "friendsofsymfony/http-cache-bundle": "~1.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",

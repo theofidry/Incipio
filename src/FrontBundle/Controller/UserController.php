@@ -96,7 +96,7 @@ class UserController extends BaseController
 
         return [
             'mandates' => $mandates,
-            'users'    => $users
+            'users' => $users,
         ];
     }
 
@@ -225,8 +225,8 @@ class UserController extends BaseController
             'users_cget',
             $request->getSession()->get('api_token'),
             ['query' => [
-                ''
-                ]
+                '',
+                ],
             ]
         )->send();
 
@@ -237,8 +237,9 @@ class UserController extends BaseController
         $jsonContent = $response->getBody(true);
         $user = $this->serializer->decode($jsonContent, 'json');
 
-        dump($user);die();
-        
+        dump($user);
+        die();
+
 //        return [
 //            'user' => $user,
 //            'form' => $this->createEditForm($user)->createView(),

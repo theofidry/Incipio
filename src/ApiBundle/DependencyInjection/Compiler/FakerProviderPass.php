@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class FakerProviderPass implements CompilerPassInterface
 {
     const CHAIN_SERVICE = 'hautelook_alice.loader';
-    const SERVICE_TAG   = 'faker.provider';
+    const SERVICE_TAG = 'faker.provider';
 
     /**
      * {@inheritdoc}

@@ -50,7 +50,7 @@ class JobProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testProvider()
     {
-        for ($i = 0; $i <= self::N; $i++) {
+        for ($i = 0; $i <= self::N; ++$i) {
             $this->assertEquals('string', gettype($this->provider->jobTitle()), 'Expected string value.');
             $this->assertEquals('string', gettype($this->provider->jobAbbreviation()), 'Expected string value.');
         }

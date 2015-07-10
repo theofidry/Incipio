@@ -68,7 +68,7 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testStartMandateDateTime_withValidData()
     {
-        for ($i = 0; $i <= self::N; $i++) {
+        for ($i = 0; $i <= self::N; ++$i) {
             $date = $this->provider->startMandateDateTime(2014);
             $this->assertEquals('2014', $date->format('Y'), 'Expected date of the same year.');
 
@@ -96,7 +96,7 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
         $expectedEndDate = new \DateTime();
         $expectedEndDate->setDate(2016, 4, 01);
 
-        for ($i = 0; $i <= self::N; $i++) {
+        for ($i = 0; $i <= self::N; ++$i) {
             $date = $this->provider->endMandateDateTime($input);
             $this->assertGreaterThan($expectedStartDate->getTimestamp(), $date->getTimestamp());
             $this->assertLessThan($expectedEndDate->getTimestamp(), $date->getTimestamp());

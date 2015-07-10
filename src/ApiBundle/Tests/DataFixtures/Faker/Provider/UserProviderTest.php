@@ -57,7 +57,7 @@ class UserProviderTest extends KernelTestCase
      */
     public function testProvider()
     {
-        for ($i = 0; $i <= self::N; $i++) {
+        for ($i = 0; $i <= self::N; ++$i) {
             $this->assertTrue(in_array($this->provider->userRole(), $this->roles), 'Expected to generate a known role');
         }
     }

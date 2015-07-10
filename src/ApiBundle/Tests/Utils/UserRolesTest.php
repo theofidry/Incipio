@@ -12,7 +12,6 @@
 namespace ApiBundle\Tests\Utils;
 
 use ApiBundle\Utils\UserRoles;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class UserRolesTest.
@@ -36,7 +35,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provides set of data returned by the `%security.role_hierarchy.roles%` parameter
+     * Provides set of data returned by the `%security.role_hierarchy.roles%` parameter.
      *
      * @return array
      */
@@ -53,22 +52,22 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase
             [
                 'ROLE_ADMIN',
                 'ROLE_USER',
-            ]
+            ],
         ];
 
         $return[] = [
             [
-                'ROLE_ADMIN'             => [
+                'ROLE_ADMIN' => [
                     'ROLE_USER',
                 ],
-                'ROLE_SUPER_ADMIN'       => [
+                'ROLE_SUPER_ADMIN' => [
                     'ROLE_ADMIN',
                     'ROLE_ALLOWED_TO_SWITCH',
                 ],
                 'ROLE_SUPER_SUPER_ADMIN' => [
                     'ROLE_SUPER_ADMIN',
                     'NEW_ROLE',
-                ]
+                ],
             ],
             [
                 'ROLE_ADMIN',
@@ -77,7 +76,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase
                 'ROLE_ALLOWED_TO_SWITCH',
                 'ROLE_SUPER_SUPER_ADMIN',
                 'NEW_ROLE',
-            ]
+            ],
         ];
 
         return $return;

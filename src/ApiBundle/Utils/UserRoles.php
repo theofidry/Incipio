@@ -11,8 +11,6 @@
 
 namespace ApiBundle\Utils;
 
-use Symfony\Component\VarDumper\VarDumper;
-
 /**
  * Class UserRoles.
  *
