@@ -55,9 +55,9 @@ abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implem
 
             foreach ($results as $method => $returnedValue) {
                 $this->assertEquals(
-                    $reflClass->getName(),
+                    $reflClass->name,
                     get_class($returnedValue),
-                    sprintf('Expected %s to return a %s object.', $method, $reflClass->getName())
+                    sprintf('Expected %s to return a %s object.', $method, $reflClass->name)
                 );
             }
         }

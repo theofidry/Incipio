@@ -203,7 +203,7 @@ class UserController extends BaseController
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $user = $serializer->decode($response->getBody(true), 'json');
+        $user = $this->serializer->decode($response->getBody(true), 'json');
 
         return [
             'user' => $user,

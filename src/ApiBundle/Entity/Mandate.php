@@ -47,7 +47,7 @@ class Mandate
     private $endAt;
 
     /**
-     * @var ArrayCollection<Job> List of jobs attached to this mandate.
+     * @var ArrayCollection|Job[] List of jobs attached to this mandate.
      *
      * @ORM\OneToMany(targetEntity="Job", mappedBy="mandate")
      *
@@ -145,7 +145,7 @@ class Mandate
     }
 
     /**
-     * @return ArrayCollection<Job>
+     * @return ArrayCollection|Job[]
      */
     public function getJobs()
     {
@@ -153,7 +153,7 @@ class Mandate
     }
 
     /**
-     * @param \DateTime $name
+     * @param string $name
      *
      * @return $this
      */
@@ -165,7 +165,7 @@ class Mandate
     }
 
     /**
-     * @return \DateTime|null
+     * @return string|null
      */
     public function getName()
     {

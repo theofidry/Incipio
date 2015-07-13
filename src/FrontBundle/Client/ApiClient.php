@@ -48,10 +48,7 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
      */
     public function get($uriOrRouterName = null, $token = null, $options = [])
     {
-        $headers = $this->extractHeaders($token, $options);
-        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
-
-        return parent::get($uri, $headers, $options);
+        return parent::get($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $options);
     }
 
     /**
@@ -59,10 +56,7 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
      */
     public function head($uriOrRouterName = null, $token = null, array $options = [])
     {
-        $headers = $this->extractHeaders($token, $options);
-        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
-
-        return parent::head($uri, $headers, $options);
+        return parent::head($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $options);
     }
 
     /**
@@ -70,10 +64,7 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
      */
     public function delete($uriOrRouterName = null, $token = null, $body = null, array $options = array())
     {
-        $headers = $this->extractHeaders($token, $options);
-        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
-
-        return parent::delete($uri, $headers, $body, $options);
+        return parent::delete($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $body, $options);
     }
 
     /**
@@ -81,10 +72,7 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
      */
     public function put($uriOrRouterName = null, $token = null, $body = null, array $options = array())
     {
-        $headers = $this->extractHeaders($token, $options);
-        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
-
-        return parent::put($uri, $headers, $body, $options);
+        return parent::put($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $body, $options);
     }
 
     /**
@@ -92,10 +80,7 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
      */
     public function patch($uriOrRouterName = null, $token = null, $body = null, array $options = array())
     {
-        $headers = $this->extractHeaders($token, $options);
-        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
-
-        return parent::patch($uri, $headers, $body, $options);
+        return parent::patch($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $body, $options);
     }
 
     /**
@@ -103,10 +88,7 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
      */
     public function post($uriOrRouterName = null, $token = null, $postBody = null, array $options = array())
     {
-        $headers = $this->extractHeaders($token, $options);
-        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
-
-        return parent::post($uri, $headers, $postBody, $options);
+        return parent::post($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $postBody, $options);
     }
 
     /**
@@ -136,5 +118,17 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
         }
 
         return $headers;
+    }
+
+    /**
+     * If the input parameter is an URI, the URI is returned unchanged. If is a route, return its matching URI.
+     * 
+     * @param string $uriOrRouterName
+     *
+     * @return string 
+     */
+    private function getUri($uriOrRouterName)
+    {
+        return (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
     }
 }
