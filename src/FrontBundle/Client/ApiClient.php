@@ -125,7 +125,7 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
      * 
      * @param string $uriOrRouterName
      *
-     * @return string 
+     * @return string
      */
     private function getUri($uriOrRouterName)
     {

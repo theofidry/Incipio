@@ -17,17 +17,30 @@ Feature: Jobs related user management
     And the JSON should be equal to:
     """
     {
-      "@context": "/api/contexts\/User",
-      "@id": "/api/users\/1",
-      "@type": "User",
+      "@context": "/api/contexts/User",
+      "@id": "/api/users/1",
+      "@type": "https://schema.org/Person",
+      "fullname": "Président TENDISERP",
+      "jobs": [
+        {
+          "@id": "/api/jobs/1",
+          "@type": "Job",
+          "title": "President",
+          "abbreviation": "PR",
+          "mandate": {
+            "@id": "/api/mandates/12",
+            "@type": "Mandate",
+            "endAt": "2018-04-19T08:27:09+02:00",
+            "name": "Mandate 2016/2018",
+            "startAt": "2016-09-08T06:36:47+02:00"
+          }
+        }
+      ],
       "username": "president.tendiserp",
       "email": "president.tendiserp@incipio.fr",
       "roles": [
-        "ROLE_CA",
+        "ROLE_ADMIN",
         "ROLE_USER"
-      ],
-      "jobs": [
-        "/api/jobs\/101"
       ]
     }
     """
