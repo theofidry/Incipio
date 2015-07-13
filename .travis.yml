@@ -23,4 +23,5 @@ install:
 script:
   - php app/console doctrine:schema:validate
   - composer test
-  - composer style:check
+  - php bin/php-cs-fixer fix --no-interaction --dry-run --diff src
+  - php bin/php-cs-fixer fix --no-interaction --dry-run --diff features
