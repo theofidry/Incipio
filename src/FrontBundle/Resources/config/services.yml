@@ -1,18 +1,16 @@
 parameters:
-    api_client.class:    FrontBundle\Client\ApiClient
     knp_menu_item.class: Knp\Menu\MenuItem
-    roles_helper.class:  FrontBundle\Utils\RoleHierarchyHelper
 
 services:
-
     api.client:
-        class: %api_client.class%
-        calls:
-            -  [ setRouter, [ @router ] ]
-            -  [ setBaseUrl, [ 'http://localhost' ] ]
+        class: FrontBundle\Client\ApiClient
+        arguments:
+            - @router
+            - http://localhost/api
+#        tags: [ { name: csa_guzzle.client } ]
 
     front.security.roles.helper:
-        class: %roles_helper.class%
+        class: FrontBundle\Utils\RoleHierarchyHelper
 
     front.authentication.success_handler:
         class:     FrontBundle\Security\Http\Authentication\AuthenticationSuccessHandler

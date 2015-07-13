@@ -11,15 +11,18 @@
 
 namespace FrontBundle\Client;
 
-use Guzzle\Http\Client;
+use Guzzle\Common\Collection;
+use Guzzle\Common\Exception\RuntimeException;
+use Guzzle\Http\Client as GuzzleClient;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
- * Class ApiClient.
+ * PHP API client. For now is a Guzzle client which has been extended to allow to pass route names instead of just
+ * the URI and easily pass the token
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class ApiClient extends Client
+class ApiClient extends GuzzleClient implements ApiClientInterface
 {
     /**
      * @var Router
@@ -27,63 +30,111 @@ class ApiClient extends Client
     private $router;
 
     /**
-     * Set client router. Is Used for generating URI from routes name.
+     * @param Router           $router  Component used to generate URI from route names
+     * @param string           $baseUrl Base URL of the web service
+     * @param array|Collection $config  Configuration settings
      *
-     * @param Router $router
-     *
-     * @return $this
+     * @throws RuntimeException if cURL is not installed
      */
-    public function setRouter(Router $router)
+    public function __construct(Router $router, $baseUrl = '', $config = null)
     {
-        $this->router = $router;
+        parent::__construct($baseUrl, $config);
 
-        return $this;
+        $this->router = $router;
     }
 
     /**
-     * Create a GET request for the client.
-     *
-     * @example
-     *  ::get(users, $token, ['query' => 'filter' => 'where' => ['name' => 'john'])
-     *  ::get(users, $token, ['query' => 'filter[where][name]=john'])
-     *  ::get(/users?filter[where][name]=john, $token)
-     *
-     * Will all yield: GET /users?filter[where][name]=john
-     *
-     * @param string $name    URI or route name. Is considered as URI when a `/` is present
-     * @param string $token   API token.
-     * @param array  $options Options to apply to the request. For BC compatibility, you can also pass a string to tell
-     *                        Guzzle to download the body of the response to a particular location. Use the 'body'
-     *                        option instead for forward compatibility. If you wish to apply custom headers, place them
-     *                        in a `headers` key of the $options.
-     *                        Options can also take query parameters as a string for
-     *
-     * @return \Guzzle\Http\Message\RequestInterface
+     * {@inheritdoc}
      */
-    public function get($name = null, $token = null, $options = [])
+    public function get($uriOrRouterName = null, $token = null, $options = [])
+    {
+        $headers = $this->extractHeaders($token, $options);
+        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
+
+        return parent::get($uri, $headers, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function head($uriOrRouterName = null, $token = null, array $options = [])
+    {
+        $headers = $this->extractHeaders($token, $options);
+        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
+
+        return parent::head($uri, $headers, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($uriOrRouterName = null, $token = null, $body = null, array $options = array())
+    {
+        $headers = $this->extractHeaders($token, $options);
+        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
+
+        return parent::delete($uri, $headers, $body, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function put($uriOrRouterName = null, $token = null, $body = null, array $options = array())
+    {
+        $headers = $this->extractHeaders($token, $options);
+        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
+
+        return parent::put($uri, $headers, $body, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function patch($uriOrRouterName = null, $token = null, $body = null, array $options = array())
+    {
+        $headers = $this->extractHeaders($token, $options);
+        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
+
+        return parent::patch($uri, $headers, $body, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function post($uriOrRouterName = null, $token = null, $postBody = null, array $options = array())
+    {
+        $headers = $this->extractHeaders($token, $options);
+        $uri = (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
+
+        return parent::post($uri, $headers, $postBody, $options);
+    }
+
+    /**
+     * For the API client, headers are not often set it have been removed from the most of the client functions
+     * signature and have been moved in the query options. However as they are still used for the call of the Guzzle
+     * client, this helper extract it form the options to return only the query headers.
+     *
+     * In the process the helper also set the bearer token header.
+     *
+     * @param string|null $token   API token
+     * @param array       $options Request options
+     *
+     * @return array Request headers
+     */
+    private function extractHeaders($token = null, array &$options = [])
     {
         // Extract header from options
         $headers = [];
-        if (array_key_exists('headers', $options)) {
+        if (isset($options['headers'])) {
             $headers = $options['headers'];
             unset($options['headers']);
         }
 
         // Add authorization token
-        $headers['authorization'] = sprintf('Bearer %s', $token);
-
-        // Get URI
-        $uri = (false !== strpos($name, '/')) ? $name : $this->router->generate($name);
-
-        // Check for query parameters
-        if (isset($options['query']) && is_string($options['query'])) {
-            $uri .= (false !== strpos($uri, '?')) ? '&' : '?';
-            $uri .= $options['query'];
-            unset($options['query']);
+        if (null !== $token) {
+            $headers['authorization'] = sprintf('Bearer %s', $token);
         }
 
-        return parent::get($uri, $headers, $options);
+        return $headers;
     }
-
-    //TODO: other methods
 }

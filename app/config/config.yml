@@ -56,6 +56,11 @@ dunglas_api:
     description:     %api_description%
     enable_fos_user: true
 
+# CsaGuzzleBundle
+csa_guzzle:
+    profiler: %kernel.debug%
+    logger:   %kernel.debug%
+
 # FOSUserBundle
 fos_user:
     db_driver:     orm
@@ -75,7 +80,7 @@ knp_menu:
     templating: false
     default_renderer: twig
 
-# LewikJWTAuthentificationBundle
+# LewikJWTAuthenticationBundle
 lexik_jwt_authentication:
     private_key_path: %kernel.root_dir%/config/jwt/private.pem
     public_key_path:  %kernel.root_dir%/config/jwt/public.pem

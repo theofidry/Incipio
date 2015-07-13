@@ -15,7 +15,8 @@ use FrontBundle\Client\ApiClient;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * Class ApiClientTest.
+ * Since the client heavily relies on Guzzle client, we only tests the added functionalities which are the token
+ * handling and the generation of request via the route name instead of only the URI.
  *
  * @coversDefaultClass FrontBundle\Client\ApiClient
  *
@@ -38,232 +39,193 @@ class ApiClientTest extends KernelTestCase
     }
 
     /**
+     * @testdox Check that the overridden methods generates the expected request
+     *
      * @covers ::get
-     */
-    public function testGetMethod()
-    {
-        $request = $this->service->get('users_cget', null, ['query' => ['random' => 'test']]);
-        $this->assertEquals(
-            '/api/users?random=test',
-            $request->getPath()
-        );
-
-        $request = $this->service->get('/api/users?lol', null, ['query' => ['random' => 'test']]);
-        $this->assertEquals(
-            '/api/users?lol&random=test',
-            $request->getPath()
-        );
-
-        $request = $this->service->get('/api/users?lol', null, ['query' => 'random=test']);
-        $this->assertEquals(
-            '/api/users?lol&random=test',
-            $request->getPath()
-        );
-    }
-
-    /**
-     * @dataProvider routeProvider
+     * @covers ::head
+     * @covers ::delete
+     * @covers ::put
+     * @covers ::patch
+     * @covers ::post
+     * @covers ::extractHeaders
      *
-     * @param string $route Input route name.
-     * @param string $uri   Route's URI.
+     * @dataProvider getMethodProvider
      *
-     * TODO: refactor get method and add tests for headers too and add @cover annotation
+     * @param string $uriOrRouteName
+     * @param bool   $token
+     * @param array  $options
+     * @param string $expectedUrl
      */
-    public function testUriGenerator($route, $uri)
+    public function testOverriddenMethod($uriOrRouteName, $token, $options, $expectedUrl)
     {
-        $requests = $this->generatedRequests([
-            'route' => $route,
-            'uri' => $uri,
-        ]);
+        $tokenValue = (true === $token)? 'MyToken': null;
+
+        $requests = [
+            'get'    => $this->service->get($uriOrRouteName, $tokenValue, $options),
+            'head'   => $this->service->head($uriOrRouteName, $tokenValue, $options),
+            'delete' => $this->service->delete($uriOrRouteName, $tokenValue, null, $options),
+            'put'    => $this->service->put($uriOrRouteName, $tokenValue, null, $options),
+            'patch'  => $this->service->patch($uriOrRouteName, $tokenValue, null, $options),
+            'post'   => $this->service->post($uriOrRouteName, $tokenValue, null, $options),
+        ];
 
         foreach ($requests as $request) {
-            $this->assertEquals($uri, $request->getPath(), 'Expected Request path to match URI.');
-        }
-    }
-
-    /**
-     * @dataProvider routeWithTokenProvider
-     *
-     * @param string $route Input route name.
-     * @param string $uri   Route's URI.
-     * @param string $token API Token.
-     */
-    public function testUriGeneratorWithToken($route, $uri, $token)
-    {
-        $requests = $this->generatedRequests([
-            'route' => $route,
-            'uri' => $uri,
-            'token' => $token,
-        ]);
-
-        foreach ($requests as $request) {
-            $this->assertEquals($uri, $request->getPath(), 'Expected Request path to match URI.');
-            /* @var \Guzzle\Http\Message\Header */
-            $header = $request->getHeaders()->get('authorization');
-            $this->assertTrue(
-                $header->hasValue(sprintf('Bearer %s', $token)),
-                'Expected Authorization header to have API key.'
+            $this->assertEquals(
+                sprintf('http://localhost%s', $expectedUrl),
+                $request->getUrl()
             );
-        }
-    }
 
-    /**
-     * @dataProvider routeWithQueryProvider
-     *
-     * @param string $route Input route name.
-     * @param string $uri   Route's URI.
-     * @param string $query Query parameters.
-     */
-    public function testUriGeneratorWithQuery($route, $uri, $query)
-    {
-        $requests = $this->generatedRequests([
-            'route' => $route,
-            'uri' => $uri,
-            'query' => $query,
-        ]);
-
-        foreach ($requests as $request) {
-            $this->assertEquals($uri, $request->getPath(), 'Expected Request path to match URI.');
-            $queries = $request->getQuery()->getAll();
-            $this->assertEquals($queries, $query, 'Expected request to have query.');
-        }
-    }
-
-    /**
-     * @dataProvider routeWithTokenAndQueryProvider
-     *
-     * @param string $route Input route name.
-     * @param string $uri   Route's URI.
-     * @param string $token API Token.
-     * @param string $query Query parameters.
-     */
-    public function testUriGeneratorWithTokenAndQuery($route, $uri, $token, $query)
-    {
-        $requests = $this->generatedRequests([
-            'route' => $route,
-            'uri' => $uri,
-            'token' => $token,
-            'query' => $query,
-        ]);
-
-        foreach ($requests as $request) {
-            $this->assertEquals($uri, $request->getPath(), 'Expected Request path to match URI.');
-            $queries = $request->getQuery()->getAll();
-            $this->assertEquals($queries, $query, 'Expected request to have query.');
-            /* @var \Guzzle\Http\Message\Header */
-            $header = $request->getHeaders()->get('authorization');
-            $this->assertTrue(
-                $header->hasValue(sprintf('Bearer %s', $token)),
-                'Expected Authorization header to have API key.'
-            );
-        }
-    }
-
-    /**
-     * Generate the list of requests to test with the parameters provided.
-     *
-     * @param array $inputs Input parameters.
-     *
-     * @return \Guzzle\Http\Message\RequestInterface[] List of requests.
-     */
-    private function generatedRequests(array $inputs)
-    {
-        $requests = [];
-
-        if (array_key_exists('token', $inputs)) {
-            if (array_key_exists('query', $inputs)) {
-                $requests[] = $this->service->get($inputs['route'], $inputs['token'], ['query' => $inputs['query']]);
-                $requests[] = $this->service->get($inputs['uri'], $inputs['token'], ['query' => $inputs['query']]);
-            } else {
-                $requests[] = $this->service->get($inputs['route'], $inputs['token']);
-                $requests[] = $this->service->get($inputs['uri'], $inputs['token']);
+            $headerCount = 2;
+            if (null !== $tokenValue) {
+                $this->assertTrue($request->getHeader('authorization')->hasValue('Bearer MyToken'));
+                $headerCount++;
             }
-        } else {
-            if (array_key_exists('query', $inputs)) {
-                $requests[] = $this->service->get($inputs['route'], null, ['query' => $inputs['query']]);
-                $requests[] = $this->service->get($inputs['uri'], null, ['query' => $inputs['query']]);
-            } else {
-                $requests[] = $this->service->get($inputs['route'], null);
-                $requests[] = $this->service->get($inputs['uri'], null);
-            }
-        }
 
-        return $requests;
+            if (isset($options['headers'])) {
+                foreach ($options['headers'] as $header => $value) {
+                    $this->assertTrue($request->getHeader($header)->hasValue($value));
+                }
+                $headerCount += count($options['headers']);
+            }
+
+            $this->assertEquals($headerCount, count($request->getHeaders()));
+        }
     }
 
-    /**
-     * @return array List of routes and matching URI.
-     */
-    public function routeProvider()
+    public function getMethodProvider()
     {
         return [
+            // route name
+            // no token
+            // no options
             [
-                0 => 'dashboard',
-                1 => '/',
+                'users_cget',
+                false,
+                [],
+                '/api/users',
             ],
+            // route name
+            // no token
+            // options
             [
-                0 => 'nelmio_api_doc_index',
-                1 => '/api-doc',
+                'users_cget',
+                false,
+                [
+                    'query'   => ['random' => 'test'],
+                    'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                ],
+                '/api/users?random=test',
             ],
+
+            // route name
+            // token
+            // no options
             [
-                0 => 'fos_user_security_login',
-                1 => '/login',
+                'users_cget',
+                true,
+                [],
+                '/api/users',
             ],
+            // route name
+            // token
+            // options
             [
-                0 => 'users_cget',
-                1 => '/api/users',
+                'users_cget',
+                true,
+                [
+                    'query'   => ['random' => 'test'],
+                    'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                ],
+                '/api/users?random=test',
+            ],
+
+            // URI
+            // no token
+            // no options
+            [
+                '/api/users',
+                false,
+                [],
+                '/api/users',
+            ],
+            // URI
+            // no token
+            // options
+            [
+                '/api/users',
+                false,
+                [
+                    'query'   => ['random' => 'test'],
+                    'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                ],
+                '/api/users?random=test',
+            ],
+
+            // URI
+            // token
+            // no options
+            [
+                '/api/users',
+                true,
+                [],
+                '/api/users',
+            ],
+            // URI
+            // token
+            // options
+            [
+                '/api/users',
+                true,
+                [
+                    'query'   => ['random' => 'test'],
+                    'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                ],
+                '/api/users?random=test',
+            ],
+
+            // URI with params
+            // no token
+            // no options
+            [
+                '/api/users?lol',
+                false,
+                [],
+                '/api/users?lol',
+            ],
+            // URI with params
+            // no token
+            // options
+            [
+                '/api/users?lol',
+                false,
+                [
+                    'query'   => ['random' => 'test'],
+                    'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                ],
+                '/api/users?random=test&lol',
+            ],
+
+            // URI with params
+            // token
+            // no options
+            [
+                '/api/users?lol',
+                true,
+                [],
+                '/api/users?lol',
+            ],
+            // URI with params
+            // token
+            // options
+            [
+                '/api/users?lol',
+                true,
+                [
+                    'query'   => ['random' => 'test'],
+                    'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                ],
+                '/api/users?random=test&lol',
             ],
         ];
-    }
-
-    /**
-     * @return array List of routes, their matching URI and API tokens.
-     */
-    public function routeWithTokenProvider()
-    {
-        $sourceValues = $this->routeProvider();
-        $values = [];
-
-        foreach ($sourceValues as $dataSet) {
-            $dataSet[2] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXUyJ9.eyJleHAiOjE0MzEyODQ0NjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOiIxNDMxMTk4MDY2In0.ChSbITRMHQWS_tNP5slOU70YO2fxjtJ7QeMsDKXe9A7uT7dijPnxOQllZLZ8ntvThlPchWiHZbtLJ700bEibMD2zlOLRQCTMjCvUwAGX9TDBb3geaPb9vKBDntk0PwKzfN7v8WQmhH2BI0UPHr-XCFRW3x8Xdnbjqd3FbbRmHlWY2TJUcrGmk5qADj7uCXToejnrt40OySIKT61RM0iW16dvjplMqWkuc4va-alBnNKRBbZZIdjZMGLTZOXrCqYoHKTUxuOElLwbWdfBjoPqgvNPGRAa6vodpXfXr8V2VXWQO5l-7p1JUcN5__AfTIjSzpb1vBasav4BA9xVx1ZAbuOWTkuYeo8Bq0i_Vm_hYngfkWZg_7JODdnd7ExnTBJxZuqicDpJX-imtVdb0-6gAc8VgNEfw5Ws0y8iQRONXEZ_xfYvMPudJihFC48PpbaVTp6bBeo4SzqP-MJJn9aHWS96L6NvSXeMaZWlx7F6riUCgBFMcR_r7_Ljluc53RQNULP3KgXpiVnQKxfz8Hggxr47QSrULb-D6tEA8fs7Bx9-cbeYo5hv0bB-EIrJc_NUfqN5T_dd_sVTS_bnZzG_a8zvc_kx34xXT4UzWFp7Sg86blwNyTJ7ZXj-lSabQpLjQQ3AWRvsW5L6nMOKOXAfDkwGTAeskdS4h6wjSqTkU0Q';
-            ksort($dataSet);
-            $values[] = $dataSet;
-        }
-
-        return $values;
-    }
-
-    /**
-     * @return array List of routes, their matching URI and query parameters.
-     */
-    public function routeWithQueryProvider()
-    {
-        $sourceValues = $this->routeProvider();
-        $values = [];
-
-        foreach ($sourceValues as $dataSet) {
-            $dataSet[3] = ['property' => 'value'];
-            ksort($dataSet);
-            $values[] = $dataSet;
-        }
-
-        return $values;
-    }
-
-    /**
-     * @return array List of routes, their matching URI, API tokens and query parameters.
-     */
-    public function routeWithTokenAndQueryProvider()
-    {
-        $sourceValues = $this->routeWithQueryProvider();
-        $values = [];
-
-        foreach ($sourceValues as $dataSet) {
-            $dataSet[2] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXUyJ9.eyJleHAiOjE0MzEyODQ0NjYsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOiIxNDMxMTk4MDY2In0.ChSbITRMHQWS_tNP5slOU70YO2fxjtJ7QeMsDKXe9A7uT7dijPnxOQllZLZ8ntvThlPchWiHZbtLJ700bEibMD2zlOLRQCTMjCvUwAGX9TDBb3geaPb9vKBDntk0PwKzfN7v8WQmhH2BI0UPHr-XCFRW3x8Xdnbjqd3FbbRmHlWY2TJUcrGmk5qADj7uCXToejnrt40OySIKT61RM0iW16dvjplMqWkuc4va-alBnNKRBbZZIdjZMGLTZOXrCqYoHKTUxuOElLwbWdfBjoPqgvNPGRAa6vodpXfXr8V2VXWQO5l-7p1JUcN5__AfTIjSzpb1vBasav4BA9xVx1ZAbuOWTkuYeo8Bq0i_Vm_hYngfkWZg_7JODdnd7ExnTBJxZuqicDpJX-imtVdb0-6gAc8VgNEfw5Ws0y8iQRONXEZ_xfYvMPudJihFC48PpbaVTp6bBeo4SzqP-MJJn9aHWS96L6NvSXeMaZWlx7F6riUCgBFMcR_r7_Ljluc53RQNULP3KgXpiVnQKxfz8Hggxr47QSrULb-D6tEA8fs7Bx9-cbeYo5hv0bB-EIrJc_NUfqN5T_dd_sVTS_bnZzG_a8zvc_kx34xXT4UzWFp7Sg86blwNyTJ7ZXj-lSabQpLjQQ3AWRvsW5L6nMOKOXAfDkwGTAeskdS4h6wjSqTkU0Q';
-            ksort($dataSet);
-            $values[] = $dataSet;
-        }
-
-        return $values;
     }
 }
