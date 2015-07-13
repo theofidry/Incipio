@@ -21,7 +21,7 @@ namespace ApiBundle\Test;
 interface FluentTestCaseInterface
 {
     /**
-     * Test if the class properly implements the fluent interface.
+     * @testdox Test if the class properly implements the fluent interface.
      *
      * @param array $data Set of data to hydrate the entity with.
      *

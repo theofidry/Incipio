@@ -16,8 +16,6 @@ use ApiBundle\Entity\Mandate;
 use ApiBundle\Test\Entity\AbstractEntityTestCase;
 
 /**
- * Class MandateTest.
- *
  * @coversDefaultClass ApiBundle\Entity\Mandate
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>

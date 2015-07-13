@@ -1,3 +1,4 @@
+@authentication
 Feature: Authenticate users
   The authentication system should work application wide.
   It should be possible to authenticate from the API.
@@ -11,7 +12,7 @@ Feature: Authenticate users
     And the response should be in JSON
     And the JSON node "token" should exist
 
-  Scenario Outline: Access to the API with JWT token should be acccepted.
+  Scenario Outline: Access to the API with JWT token should be accepted.
     Given I authenticate myself as <user>
     When I send a "GET" request to "/api/contexts/Entrypoint"
     Then the response status code should be 200

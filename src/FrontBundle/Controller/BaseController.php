@@ -66,7 +66,7 @@ class BaseController extends Controller
      *
      * @return array $parameters with the new value for the `id` key.
      */
-    public function extractId(array $parameters)
+    public static function extractId(array $parameters)
     {
         if (array_key_exists('id', $parameters) && 0 === strpos($parameters['id'], '/')) {
             $parameters['id'] = substr(strrchr($parameters['id'], '/'), 1);

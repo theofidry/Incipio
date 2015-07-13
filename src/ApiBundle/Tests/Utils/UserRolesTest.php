@@ -12,52 +12,74 @@
 namespace ApiBundle\Tests\Utils;
 
 use ApiBundle\Utils\UserRoles;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * Class UserRolesTest.
- *
  * @coversDefaultClass ApiBundle\Utils\UserRoles
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
-class UserRolesTest extends KernelTestCase
+class UserRolesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var UserRoles
+     * @testdox Test the service's methods.
+     *
+     * @covers ::getRoles
+     * @dataProvider hierarchyProvider
+     *
+     * @param array $hierarchy
+     * @param array $expected
      */
-    private $service;
-
-    /**
-     * @var array List of roles used in the system.
-     */
-    private $roles = [
-        'ROLE_ALLOWED_TO_SWITCH',
-        'ROLE_USER',
-        'ROLE_ADMIN',
-        'ROLE_SUPER_ADMIN',
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
+    public function testService(array $hierarchy, array $expected)
     {
-        self::bootKernel();
-        $this->service = self::$kernel->getContainer()->get('api.user.roles');
+        $service = new UserRoles($hierarchy);
+        $this->assertEquals($expected, $service->getRoles());
     }
 
     /**
-     * Test the service's methods.
+     * Provides set of data returned by the `%security.role_hierarchy.roles%` parameter.
      *
-     * @covers ::getRoles
+     * @return array
      */
-    public function testService()
+    public function hierarchyProvider()
     {
-        $serviceRoles = $this->service->getRoles();
+        $return = [];
 
-        foreach ($this->roles as $role) {
-            $this->assertTrue(in_array($role, $serviceRoles), "Role $role was expected to be found by the service.");
-        }
+        $return[] = [
+            [
+                'ROLE_ADMIN' => [
+                    'ROLE_USER',
+                ],
+            ],
+            [
+                'ROLE_ADMIN',
+                'ROLE_USER',
+            ],
+        ];
+
+        $return[] = [
+            [
+                'ROLE_ADMIN' => [
+                    'ROLE_USER',
+                ],
+                'ROLE_SUPER_ADMIN' => [
+                    'ROLE_ADMIN',
+                    'ROLE_ALLOWED_TO_SWITCH',
+                ],
+                'ROLE_SUPER_SUPER_ADMIN' => [
+                    'ROLE_SUPER_ADMIN',
+                    'NEW_ROLE',
+                ],
+            ],
+            [
+                'ROLE_ADMIN',
+                'ROLE_USER',
+                'ROLE_SUPER_ADMIN',
+                'ROLE_ALLOWED_TO_SWITCH',
+                'ROLE_SUPER_SUPER_ADMIN',
+                'NEW_ROLE',
+            ],
+        ];
+
+        return $return;
     }
 }

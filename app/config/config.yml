@@ -50,11 +50,16 @@ doctrine:
         auto_mapping:    true
         naming_strategy: doctrine.orm.naming_strategy.underscore
 
-# DunglasJsonLdApi
+# DunglasApiBundle
 dunglas_api:
     title:           %api_name%
     description:     %api_description%
     enable_fos_user: true
+
+# CsaGuzzleBundle
+csa_guzzle:
+    profiler: %kernel.debug%
+    logger:   %kernel.debug%
 
 # FOSUserBundle
 fos_user:
@@ -64,8 +69,8 @@ fos_user:
 
 # AliceBundle
 hautelook_alice:
-    locale:   %locale_full%
-    seed:     5123512343123
+    locale:   %locale%
+    seed:     %seed%
 
 # KnpMenuBundle
 knp_menu:
@@ -75,12 +80,15 @@ knp_menu:
     templating: false
     default_renderer: twig
 
-# LewikJWTAuthentificationBundle
+# LewikJWTAuthenticationBundle
 lexik_jwt_authentication:
     private_key_path: %kernel.root_dir%/config/jwt/private.pem
     public_key_path:  %kernel.root_dir%/config/jwt/public.pem
     pass_phrase:      %jwt_pass_phrase%
     token_ttl:        86400
+
+# LoopBackApiBundle
+# Let default configuration
 
 # Nelmio API Doc
 nelmio_api_doc:

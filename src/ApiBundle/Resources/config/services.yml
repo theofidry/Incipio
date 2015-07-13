@@ -1,86 +1,77 @@
-parameters:
-    api_user.user_roles.class: ApiBundle\Utils\UserRoles
-
 services:
-
     api.user.roles:
-        class:     %api_user.user_roles.class%
+        class:     ApiBundle\Utils\UserRoles
         arguments: [ %security.role_hierarchy.roles% ]
 
     #
-    # Native Filters
+    # Native filters
     #
-    api.dunglas_filter.where_filter:
-        parent:   api.doctrine.orm.search_filter
-        class:    ApiBundle\Filter\WhereFilter
-        abstract: true
-        public:   false
-        calls:
-            - method:    initParameter
-              arguments: [ where ]
-
-    api.dunglas_filter.order_filter:
-        parent:   api.doctrine.orm.order_filter
-        class:    ApiBundle\Filter\OrderFilter
-        abstract: true
-        public:   false
-        calls:
-            - method:    initParameter
-              arguments: [ order ]
+    api.filter.order_filter:
+        parent: loopback_api.filter.order_filter
 
     api.filter.where_filter:
-        parent:   api.dunglas_filter.where_filter
-        class:    ApiBundle\Filter\WhereFilter
-        public:   false
+        parent: loopback_api.filter.where_filter
 
-    api.filter.order_filter:
-        parent:   api.dunglas_filter.order_filter
-        class:    ApiBundle\Filter\OrderFilter
-        public:   false
+
+    #
+    # Faker's providers
+    #
+    faker.provider.job:
+        class:     ApiBundle\DataFixtures\Faker\Provider\JobProvider
+        tags:      [ { name: hautelook_alice.faker.provider } ]
+
+    faker.provider.mandate:
+        class:     ApiBundle\DataFixtures\Faker\Provider\MandateProvider
+        arguments: [ @hautelook_alice.faker ]
+        tags:      [ { name: hautelook_alice.faker.provider } ]
+
+    faker.provider.user:
+        class:     ApiBundle\DataFixtures\Faker\Provider\UserProvider
+        arguments: [ @api.user.roles ]
+        tags:      [ { name: hautelook_alice.faker.provider } ]
 
 
     #
     # Resources exposed to the API
     #
-    api.app_resource:
-        parent:   api.resource
-        abstract: true
-        public:   false
-        calls:
-            - method:    addFilter
-              arguments: [ @api.filter.where_filter ]
-            - method:    addFilter
-              arguments: [ @api.filter.order_filter ]
-
+    # Job resource
     resource.job:
-        parent:    api.app_resource
+        parent:    api.resource
         arguments: [ ApiBundle\Entity\Job ]
         calls:
+            - method:    initFilters
+              arguments:
+                -
+                    -    @api.filter.order_filter
+                    -    @api.filter.where_filter
             - method:    initNormalizationContext
               arguments: [ { groups: [ job, user ] } ]
         tags:      [ { name: api.resource } ]
 
+
+    # Mandate resource
     resource.mandate:
-        parent:    api.app_resource
+        parent:    api.resource
         arguments: [ ApiBundle\Entity\Mandate ]
+        calls:
+            - method:    initFilters
+              arguments:
+                -
+                    -    @api.filter.order_filter
+                    -    @api.filter.where_filter
         tags:      [ { name: api.resource } ]
 
-    resource.user.where_filter:
-        parent:    api.dunglas_filter.where_filter
-        arguments: [ [ 'id', 'username', 'fullname', 'email', 'roles' ] ]
 
-    resource.user.order_filter:
-        parent:    api.dunglas_filter.order_filter
-        arguments: [ [ 'id', 'username', 'fullname', 'email', 'roles' ] ]
-
+    # User resource
     resource.user:
         parent:    api.resource
         arguments: [ ApiBundle\Entity\User ]
         calls:
+            - method:    initFilters
+              arguments:
+                -
+                    -    @api.filter.order_filter
+                    -    @api.filter.where_filter
             - method:    initNormalizationContext
               arguments: [ { groups: [ user ] } ]
-            - method:    addFilter
-              arguments: [ @resource.user.where_filter ]
-            - method:    addFilter
-              arguments: [ @resource.user.order_filter ]
         tags:      [ { name: api.resource } ]

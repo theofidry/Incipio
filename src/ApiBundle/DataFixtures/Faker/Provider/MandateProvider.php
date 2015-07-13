@@ -14,12 +14,56 @@ namespace ApiBundle\DataFixtures\Faker\Provider;
 use Faker\Provider\DateTime as DateTimeProvider;
 
 /**
- * Class MandateProvider.
+ * Faker provider for mandates.
+ *
+ * @see    ApiBundle\Entity\Mandate
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 class MandateProvider extends DateTimeProvider
 {
+    /**
+     * Generate a datetime starting from the date given and on a period going from 3 month to 2 years.
+     *
+     * @param \DateTime $startDate
+     *
+     * @return \DateTime
+     */
+    public function endMandateDateTime(\DateTime $startDate)
+    {
+        $year = (int) $startDate->format('Y');
+        $month = (int) $startDate->format('m');
+
+        $startDate = new \DateTime();
+        $startDate->setDate($year, $month + 3, 01);
+
+        $endDate = new \DateTime();
+        $endDate->setDate($year + 2, $month, 01);
+
+        return $this->dateTimeBetween($startDate, $endDate);
+    }
+
+    /**
+     * Generate a name for the mandate from its period.
+     *
+     * @example
+     *  mandate of two different years: "Mandate startYear/endYear"
+     *  mandate of the same year: "Mandate startMonth Year"
+     *
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     *
+     * @return string
+     */
+    public function nameFromDates(\DateTime $startDate, \DateTime $endDate = null)
+    {
+        if (null !== $endDate && $startDate->format('Y') !== $endDate->format('Y')) {
+            return sprintf('Mandate %s/%s', $startDate->format('Y'), $endDate->format('Y'));
+        }
+
+        return sprintf('Mandate %s %s', $startDate->format('m'), $startDate->format('Y'));
+    }
+
     /**
      * Generate a datetime from the year given.
      *
@@ -48,27 +92,6 @@ class MandateProvider extends DateTimeProvider
 
         $startDate = new \DateTime(sprintf('%d-01-01', $year));
         $endDate = new \DateTime(sprintf('%d-12-31', $year));
-
-        return $this->dateTimeBetween($startDate, $endDate);
-    }
-
-    /**
-     * Generate a datetime starting from the date given and on a period going from 3 month to 2 years.
-     *
-     * @param \DateTime $startDate
-     *
-     * @return \DateTime
-     */
-    public function endMandateDateTime(\DateTime $startDate)
-    {
-        $year = (int) $startDate->format('Y');
-        $month = (int) $startDate->format('m');
-
-        $startDate = new \DateTime();
-        $startDate->setDate($year, $month + 3, 01);
-
-        $endDate = new \DateTime();
-        $endDate->setDate($year + 2, $month, 01);
 
         return $this->dateTimeBetween($startDate, $endDate);
     }

@@ -17,8 +17,6 @@ use ApiBundle\Entity\User;
 use ApiBundle\Test\Entity\AbstractEntityTestCase;
 
 /**
- * Class JobTest.
- *
  * @coversDefaultClass ApiBundle\Entity\Job
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -69,14 +67,14 @@ class JobTest extends AbstractEntityTestCase
         $job
             ->setTitle(null)
             ->setAbbreviation(null)
-            ->setEnabled(null)
+            ->setEnabled(true)
             ->setUser(null)
             ->setMandate(null)
         ;
 
         $this->assertEquals(null, $job->getTitle());
         $this->assertEquals(null, $job->getAbbreviation());
-        $this->assertEquals(null, $job->getEnabled());
+        $this->assertEquals(true, $job->getEnabled());
         $this->assertEquals(null, $job->getUser());
         $this->assertEquals(null, $job->getMandate());
 

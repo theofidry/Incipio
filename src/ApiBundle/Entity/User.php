@@ -99,7 +99,7 @@ class User extends BaseUser
     protected $roles;
 
     /**
-     * @var ArrayCollection<Job> List of job for this mandate.
+     * @var ArrayCollection|Job[] List of job for this mandate.
      *
      * @ORM\OneToMany(targetEntity="ApiBundle\Entity\Job", mappedBy="user")
      * @Groups({"user"})
@@ -108,9 +108,6 @@ class User extends BaseUser
      **/
     protected $jobs;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         parent::__construct();
@@ -119,8 +116,6 @@ class User extends BaseUser
     }
 
     /**
-     * Sets full name.
-     *
      * @param string|null $fullname
      *
      * @return $this
@@ -133,8 +128,6 @@ class User extends BaseUser
     }
 
     /**
-     * Gets full name.
-     *
      * @return string|null
      */
     public function getFullname()
@@ -177,9 +170,7 @@ class User extends BaseUser
     }
 
     /**
-     * Gets Jobs.
-     *
-     * @return ArrayCollection<Job>
+     * @return ArrayCollection|Job[]
      */
     public function getJobs()
     {

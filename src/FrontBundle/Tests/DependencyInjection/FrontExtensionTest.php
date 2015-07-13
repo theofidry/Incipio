@@ -15,8 +15,6 @@ use FrontBundle\DependencyInjection\FrontExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 
 /**
- * Class FrontExtensionTest.
- *
  * @coversDefaultClass FrontBundle\DependencyInjection\FrontExtension
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -24,7 +22,7 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 class FrontExtensionTest extends AbstractExtensionTestCase
 {
     /**
-     * Ensure that the Bundle extension load properly.
+     * @testdox Ensure that the Bundle extension load properly.
      *
      * @covers ::load
      */
@@ -38,8 +36,8 @@ class FrontExtensionTest extends AbstractExtensionTestCase
      */
     protected function getContainerExtensions()
     {
-        return array(
+        return [
             new FrontExtension(),
-        );
+        ];
     }
 }

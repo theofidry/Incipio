@@ -18,9 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Job.
- *
- * @ORM\Table()
+ * @ORM\Table
  * @ORM\Entity
  * @UniqueEntity("title")
  *
@@ -90,8 +88,6 @@ class Job
     private $mandate;
 
     /**
-     * Get id.
-     *
      * @return int|null
      */
     public function getId()
@@ -100,8 +96,6 @@ class Job
     }
 
     /**
-     * Set title.
-     *
      * @param string $title
      *
      * @return $this
@@ -114,8 +108,6 @@ class Job
     }
 
     /**
-     * Get title.
-     *
      * @return string
      */
     public function getTitle()
@@ -124,8 +116,6 @@ class Job
     }
 
     /**
-     * Set Abbreviation.
-     *
      * @param string|null $abbreviation
      *
      * @return $this
@@ -138,8 +128,6 @@ class Job
     }
 
     /**
-     * Get Abbreviation.
-     *
      * @return string|null
      */
     public function getAbbreviation()
@@ -148,8 +136,6 @@ class Job
     }
 
     /**
-     * Set enabled.
-     *
      * @param bool $enabled
      *
      * @return $this
@@ -162,8 +148,6 @@ class Job
     }
 
     /**
-     * Get enabled.
-     *
      * @return bool
      */
     public function getEnabled()
@@ -172,8 +156,6 @@ class Job
     }
 
     /**
-     * Sets User.
-     *
      * @param User|null $user
      *
      * @return $this
@@ -192,8 +174,6 @@ class Job
     }
 
     /**
-     * Gets User.
-     *
      * @return User|null
      */
     public function getUser()
@@ -202,8 +182,6 @@ class Job
     }
 
     /**
-     * Sets Mandate.
-     *
      * @param Mandate|null $mandate
      *
      * @return $this
@@ -222,8 +200,6 @@ class Job
     }
 
     /**
-     * Gets Mandate.
-     *
      * @return Mandate|null
      */
     public function getMandate()

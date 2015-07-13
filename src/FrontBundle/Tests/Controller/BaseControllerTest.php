@@ -12,42 +12,28 @@
 namespace FrontBundle\Tests\Controller;
 
 use FrontBundle\Controller\BaseController;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 /**
- * Class BaseControllerTest.
- *
  * @coversDefaultClass FrontBundle\Controller\BaseController
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
-class BaseControllerTest extends TestCase
+class BaseControllerTest
 {
     /**
-     * @var BaseController
-     */
-    protected $controller;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        $this->controller = new BaseController();
-    }
-
-    /**
+     * @testdox Test if properly extract ID from an URI
+     *
      * @covers       ::generateUrl
      * @dataProvider dataProvider
      *
      * @param string $input    URI or ID to extract.
      * @param string $expected Expected output value.
      */
-    public function testGenerateUrl($input, $expected)
+    public function testExtractId($input, $expected)
     {
         $parameters = ['id' => $input];
 
-        $actual = $this->controller->extractId($parameters)['id'];
+        $actual = BaseController::extractId($parameters)['id'];
         $this->assertEquals($expected,
             $actual,
             sprintf('Unexpected URI generated, got `%s` instead of `%s`.', $actual, $expected)

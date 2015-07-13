@@ -12,24 +12,32 @@
 namespace ApiBundle\DataFixtures\Faker\Provider;
 
 use ApiBundle\Utils\UserRoles;
-use Faker\Generator;
 use Faker\Provider\Base as BaseProvider;
 
 /**
- * Class UserProvider.
+ * Faker provider for users.
+ *
+ * @see    ApiBundle\Entity\User
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class UserProvider extends BaseProvider
+class UserProvider
 {
-    /** @var UserRoles */
+    /**
+     * @var UserRoles
+     */
     private $userRoles;
 
-    /** @var array */
-    private $roleCount = [];
+    /**
+     * @param UserRoles $userRoles
+     */
+    public function __construct(UserRoles $userRoles)
+    {
+        $this->userRoles = $userRoles;
+    }
 
     /**
-     * The first call generate unique values. This is to ensure all values are called before generating deplicates.
+     * The first call generate unique values. This is to ensure all values are called before generating duplicates.
      *
      * @return string Random Symfony role.
      *
@@ -37,31 +45,6 @@ class UserProvider extends BaseProvider
      */
     public function userRole()
     {
-        $roles = $this->userRoles->getRoles();
-        $returnedRole = $roles[array_rand($roles)];
-
-        if (count($roles) !== count($this->roleCount)) {
-            // Not all values have been generated yet
-            // Get item that have not been used yet
-            while (in_array($returnedRole, $this->roleCount)) {
-                $returnedRole = $roles[array_rand($roles)];
-            }
-            $this->roleCount[] = $returnedRole;
-        }
-
-        return $returnedRole;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param Generator $generator
-     * @param UserRoles $userRoles
-     */
-    public function __construct(Generator $generator, UserRoles $userRoles)
-    {
-        parent::__construct($generator);
-
-        $this->userRoles = $userRoles;
+        return BaseProvider::randomElement($this->userRoles->getRoles());
     }
 }

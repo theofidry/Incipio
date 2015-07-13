@@ -1,33 +1,41 @@
 {
-    "name": "CDJE/Incipio",
+    "name": "in6pio/Incipio",
     "description": "ERP for Junior-Entreprises.",
     "license": "GNU",
     "type": "project",
     "autoload": {
         "psr-4": { "": "src/", "SymfonyStandard\\": "app/" }
     },
+    "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/theofidry/AliceBundle.git"
+        }
+    ],
     "require": {
         "php": ">=5.5.0",
-        "symfony/symfony": "~2.7@beta",
-        "doctrine/dbal": "<2.5",
+        "symfony/symfony": "~2.7",
+        "doctrine/dbal": "~2.5",
         "doctrine/doctrine-bundle": "~1.4",
-        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
+        "doctrine/orm": "~2.5",
         "dunglas/api-bundle": "dev-master",
+        "csa/guzzle-bundle": "2.0.x-dev",
         "friendsofsymfony/http-cache-bundle": "~1.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
-        "guzzle/guzzle": "~3.9",
-        "hautelook/alice-bundle": "~0.2",
+        "hautelook/alice-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
         "knplabs/knp-menu-bundle": "~2",
         "lexik/jwt-authentication-bundle": "~1.0",
-        "nelmio/api-doc-bundle": "dev-master",
+        "nelmio/api-doc-bundle": "~2.9",
         "nelmio/cors-bundle": "~1.4",
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "stof/doctrine-extensions-bundle": "~1.1",
         "symfony/monolog-bundle": "~2.4",
         "symfony/swiftmailer-bundle": "~2.3",
-        "twig/extensions": "~1.0"
+        "theofidry/loopback-api-bundle": "dev-master",
+        "twig/extensions": "~1.0",
+        "nelmio/alice": "2.0.x-dev"
     },
     "require-dev": {
         "behat/behat": "~3.0",
@@ -38,6 +46,7 @@
         "behatch/contexts": "dev-master#eef7ab39ca896796bf3ba25a0fa5a95f15276eb7",
         "bit3/faker-cli": "~1.3",
         "codeclimate/php-test-reporter": "dev-master",
+        "doctrine/doctrine-fixtures-bundle": "~2.0",
         "dunglas/php-schema": "~0.3",
         "fabpot/php-cs-fixer": "~1.6",
         "matthiasnoback/symfony-dependency-injection-test": "0.7.*",
@@ -47,13 +56,13 @@
         "vipsoft/doctrine-data-fixtures-extension": "dev-master"
     },
     "scripts": {
-        "style:check": "php bin/php-cs-fixer fix --no-interaction --dry-run --diff -vvvv src/",
-        "style:fix": "php bin/php-cs-fixer fix -vvvv src/",
+        "style:check": "php bin/php-cs-fixer fix --no-interaction --dry-run --diff -vvv src && php bin/php-cs-fixer fix --no-interaction --dry-run --diff -vvv features",
+        "style:fix": "php bin/php-cs-fixer fix -vvv src && php bin/php-cs-fixer fix -vvv features",
         "test": "composer test:db && composer test:phpunit && composer test:behat && composer test:security",
         "test:db": "php app/console doctrine:schema:validate --ansi",
         "test:security": "php bin/security-checker security:check",
-        "test:phpunit": "php bin/phpunit -c app/ --colors=always --strict-coverage",
-        "test:behat": "php bin/behat --colors",
+        "test:phpunit": "php bin/phpunit -c app/ --colors=always",
+        "test:behat": "php bin/behat --colors -vvv",
         "db": "composer db:drop && composer db:create && composer db:seed",
         "db:create": "php app/console doctrine:schema:create --ansi",
         "db:drop": "php app/console doctrine:schema:drop --force --ansi",

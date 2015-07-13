@@ -12,8 +12,6 @@
 namespace FrontBundle\Tests\Security\Http\Authentication;
 
 /**
- * Class AuthenticationSuccessHandlerTest.
- *
  * @coversDefaultClass FrontBundle\Security\Http\Authentication\AuthenticationSuccessHandler
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>

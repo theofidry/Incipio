@@ -1,3 +1,4 @@
+@user @job
 Feature: Jobs related user management
   There is a mandate for every year.
   A mandate is composed of a group of users, although may not have any user.
@@ -8,30 +9,42 @@ Feature: Jobs related user management
   New jobs are created for the current mandate.
   A user may have one or several mandate, with or without a job.
 
-#  Scenario: It should be possible to get the jobs of a user per mandates.
-#    Given I authenticate myself as "admin"
-#    When I send a "GET" request to "/api/users/1"
-#    Then the response should be in JSON
-#    And the header "Content-Type" should be equal to "application/ld+json"
-#    And the response status code should be 200
-#    And the JSON should be equal to:
-#    """
-#    {
-#      "@context": "/api/contexts\/User",
-#      "@id": "/api/users\/1",
-#      "@type": "User",
-#      "username": "president.tendiserp",
-#      "email": "president.tendiserp@incipio.fr",
-#      "roles": [
-#        "ROLE_CA",
-#        "ROLE_USER"
-#      ],
-#      "jobs": [
-#        "/api/jobs\/101"
-#      ]
-#    }
-#    """
-#    #TODO
+  Scenario: It should be possible to get the jobs of a user per mandates.
+    Given I authenticate myself as "admin"
+    When I send a "GET" request to "/api/users/1"
+    Then the response should be in JSON-LD
+    And the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "@context": "/api/contexts/User",
+      "@id": "/api/users/1",
+      "@type": "https://schema.org/Person",
+      "fullname": "Président TENDISERP",
+      "jobs": [
+        {
+          "@id": "/api/jobs/1",
+          "@type": "Job",
+          "title": "President",
+          "abbreviation": "PR",
+          "mandate": {
+            "@id": "/api/mandates/12",
+            "@type": "Mandate",
+            "endAt": "2018-04-19T08:27:09+02:00",
+            "name": "Mandate 2016/2018",
+            "startAt": "2016-09-08T06:36:47+02:00"
+          }
+        }
+      ],
+      "username": "president.tendiserp",
+      "email": "president.tendiserp@incipio.fr",
+      "roles": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ]
+    }
+    """
+    #TODO
 
   Scenario: When adding a job to a user, the mandate concerned should be required.
     #TODO

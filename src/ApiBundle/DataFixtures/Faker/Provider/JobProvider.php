@@ -14,19 +14,18 @@ namespace ApiBundle\DataFixtures\Faker\Provider;
 use Faker\Provider\Base as BaseProvider;
 
 /**
- * Class JobProvider.
- *
  * Faker provider for jobs.
  *
  * @see    ApiBundle\Entity\Job
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class JobProvider extends BaseProvider
+class JobProvider
 {
     /**
+     * Sources: {@link http://siliconvalleyjobtitlegenerator.tumblr.com/}.
+     *
      * @var array List of job titles.
-     *            Sources: {@link http://siliconvalleyjobtitlegenerator.tumblr.com/}
      */
     private $titleProvider = [
         'firstname' => [
@@ -275,8 +274,9 @@ class JobProvider extends BaseProvider
     ];
 
     /**
+     * Sources: {@link http://sos.uhrs.indiana.edu/Job_Code_Title_Abbreviation_List.htm}.
+     *
      * @var array List of job abbreviations.
-     *            Sources: {@link http://sos.uhrs.indiana.edu/Job_Code_Title_Abbreviation_List.htm}
      */
     private $abbreviationProvider = [
         'ABATE',
@@ -664,13 +664,13 @@ class JobProvider extends BaseProvider
         $names = [
             sprintf(
                 '%s %s',
-                $this->getRandomValueFromArray($this->titleProvider['firstname']),
-                $this->getRandomValueFromArray($this->titleProvider['lastname'])
+                BaseProvider::randomElement($this->titleProvider['firstname']),
+                BaseProvider::randomElement($this->titleProvider['lastname'])
             ),
-            $this->getRandomValueFromArray($this->titleProvider['fullname']),
+            BaseProvider::randomElement($this->titleProvider['fullname']),
         ];
 
-        return $this->getRandomValueFromArray($names);
+        return BaseProvider::randomElement($names);
     }
 
     /**
@@ -678,20 +678,6 @@ class JobProvider extends BaseProvider
      */
     public function jobAbbreviation()
     {
-        return $this->getRandomValueFromArray($this->abbreviationProvider);
-    }
-
-    /**
-     * Helper to get a random value from array.
-     *
-     * @param array $array
-     *
-     * @return mixed|null Null on error, random value on success.
-     */
-    private function getRandomValueFromArray(array $array)
-    {
-        $key = array_rand($array);
-
-        return (null === $key) ? $key : $array[$key];
+        return BaseProvider::randomElement($this->abbreviationProvider);
     }
 }

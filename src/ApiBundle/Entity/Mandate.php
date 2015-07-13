@@ -14,14 +14,14 @@ namespace ApiBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Mandate.
- *
- * @ORM\Table()
+ * @ORM\Table
  * @ORM\Entity(repositoryClass="ApiBundle\Entity\MandateRepository")
+ * @UniqueEntity("name")
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
@@ -39,17 +39,6 @@ class Mandate
     /**
      * @var \DateTime
      *
-     * @Iri("https://schema.org/startDate")
-     * @ORM\Column(name="start_at", type="datetime")
-     * @Assert\Date
-     * @Assert\NotNull
-     * @Groups({"user"})
-     */
-    private $startAt;
-
-    /**
-     * @var \DateTime
-     *
      * @Iri("https://schema.org/endDate")
      * @ORM\Column(name="end_at", type="datetime", nullable=true)
      * @Assert\Date
@@ -58,7 +47,7 @@ class Mandate
     private $endAt;
 
     /**
-     * @var ArrayCollection<Job> List of jobs attached to this mandate.
+     * @var ArrayCollection|Job[] List of jobs attached to this mandate.
      *
      * @ORM\OneToMany(targetEntity="Job", mappedBy="mandate")
      *
@@ -67,16 +56,33 @@ class Mandate
     private $jobs;
 
     /**
-     * Default constructor.
+     * @var string
+     *
+     * @Iri("https://schema.org/name")
+     * @ORM\Column(name="name", type="string")
+     * @Assert\Type("string")
+     * @Assert\Length(min="5", max="30")
+     * @Groups({"user"})
      */
+    private $name;
+
+    /**
+     * @var \DateTime
+     *
+     * @Iri("https://schema.org/startDate")
+     * @ORM\Column(name="start_at", type="datetime")
+     * @Assert\Date
+     * @Assert\NotNull
+     * @Groups({"user"})
+     */
+    private $startAt;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
     }
 
     /**
-     * Get id.
-     *
      * @return int
      */
     public function getId()
@@ -85,32 +91,6 @@ class Mandate
     }
 
     /**
-     * Set startAt.
-     *
-     * @param \DateTime $startAt
-     *
-     * @return $this
-     */
-    public function setStartAt(\DateTime $startAt)
-    {
-        $this->startAt = $startAt;
-
-        return $this;
-    }
-
-    /**
-     * Get startAt.
-     *
-     * @return \DateTime|null
-     */
-    public function getStartAt()
-    {
-        return $this->startAt;
-    }
-
-    /**
-     * Set endAt.
-     *
      * @param \DateTime|null $endAt
      *
      * @return $this
@@ -123,8 +103,6 @@ class Mandate
     }
 
     /**
-     * Get endAt.
-     *
      * @return \DateTime|null
      */
     public function getEndAt()
@@ -167,12 +145,50 @@ class Mandate
     }
 
     /**
-     * Gets Jobs.
-     *
-     * @return ArrayCollection<Job>
+     * @return ArrayCollection|Job[]
      */
     public function getJobs()
     {
         return $this->jobs;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param \DateTime $startAt
+     *
+     * @return $this
+     */
+    public function setStartAt(\DateTime $startAt)
+    {
+        $this->startAt = $startAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getStartAt()
+    {
+        return $this->startAt;
     }
 }

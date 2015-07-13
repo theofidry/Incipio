@@ -13,13 +13,12 @@ namespace FrontBundle\Controller;
 
 //TODO: remove reference to User
 use ApiBundle\Entity\User;
-use FrontBundle\Form\UserType;
+use FrontBundle\Form\Type\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class UserController.
@@ -48,15 +47,57 @@ class UserController extends BaseController
         $roleHelper = $this->get('front.security.roles.helper');
 
         // Retrieve users
-        $jsonContent = $this->client->get('users_cget', $request->getSession()->get('api_token'))->send()->getBody(true);
-        $users = $this->serializer->decode($jsonContent, 'json');
+        $decodedResponse = $this->serializer->decode(
+            $this->client->get('users_cget', $request->getSession()->get('api_token'))->send()->getBody(true),
+            'json'
+        );
+        $users = $decodedResponse['hydra:member'];
+        while (isset($decodedResponse['hydra:nextPage'])) {
+            $decodedResponse = $this->serializer->decode(
+                $this->client->get(
+                    'users_cget',
+                    $request->getSession()->get('api_token'),
+                    ['query' => $decodedResponse['hydra:nextPage']]
+                )->send()->getBody(true),
+                'json'
+            );
 
-        // Add top level role
-        foreach ($users['hydra:member'] as $key => $user) {
-            $users['hydra:member'][$key]['topRole'] = $roleHelper->getTopLevelRole($user['roles']);
+            $users = array_merge($users, $decodedResponse['hydra:member']);
         }
 
-        return ['users' => $users['hydra:member']];
+        // Add top level role
+        foreach ($users as $key => $user) {
+            $users[$key]['topRole'] = $roleHelper->getTopLevelRole($user['roles']);
+        }
+
+        // Retrieve mandates
+        $decodedResponse = $this->serializer->decode(
+            $this->client->get(
+                'mandates_cget',
+                $request->getSession()->get('api_token'),
+                ['query' => 'filter[order][startAt]=desc']
+            )->send()
+                ->getBody(true),
+            'json'
+        );
+        $mandates = $decodedResponse['hydra:member'];
+        while (isset($decodedResponse['hydra:nextPage'])) {
+            $decodedResponse = $this->serializer->decode(
+                $this->client->get(
+                    $decodedResponse['@id'],
+                    $request->getSession()->get('api_token'),
+                    ['query' => $decodedResponse['hydra:nextPage']]
+                )->send()->getBody(true),
+                'json'
+            );
+
+            $mandates = array_merge($mandates, $decodedResponse['hydra:member']);
+        }
+
+        return [
+            'mandates' => $mandates,
+            'users' => $users,
+        ];
     }
 
     /**
@@ -133,8 +174,7 @@ class UserController extends BaseController
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $jsonContent = $response->getBody(true);
-        $user = $serializer->decode($jsonContent, 'json');
+        $user = $serializer->decode($response->getBody(true), 'json');
 
         return ['user' => $user];
     }
@@ -163,8 +203,7 @@ class UserController extends BaseController
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $jsonContent = $response->getBody(true);
-        $user = $this->serializer->decode($jsonContent, 'json');
+        $user = $this->serializer->decode($response->getBody(true), 'json');
 
         return [
             'user' => $user,
@@ -186,8 +225,8 @@ class UserController extends BaseController
             'users_cget',
             $request->getSession()->get('api_token'),
             ['query' => [
-                ''
-                ]
+                '',
+                ],
             ]
         )->send();
 
@@ -198,8 +237,9 @@ class UserController extends BaseController
         $jsonContent = $response->getBody(true);
         $user = $this->serializer->decode($jsonContent, 'json');
 
-        dump($user);die();
-        
+        dump($user);
+        die();
+
 //        return [
 //            'user' => $user,
 //            'form' => $this->createEditForm($user)->createView(),
@@ -271,7 +311,8 @@ class UserController extends BaseController
             [
                 'action' => $this->generateUrl('users_create'),
                 'method' => 'POST',
-            ]);
+            ]
+        );
 
         return $form;
     }
@@ -310,6 +351,7 @@ class UserController extends BaseController
             ->setAction($this->generateUrl('users_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm();
+            ->getForm()
+        ;
     }
 }

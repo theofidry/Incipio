@@ -1,12 +1,8 @@
 <?php
 
-use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkContext;
 
 /**
- * Class FrontContext.
- *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 class FrontContext extends MinkContext
