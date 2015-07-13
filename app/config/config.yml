@@ -64,7 +64,7 @@ fos_user:
 
 # AliceBundle
 hautelook_alice:
-    locale:   %locale_full%
+    locale:   %locale%
     seed:     %seed%
 
 # KnpMenuBundle

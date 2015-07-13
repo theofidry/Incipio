@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fe0ebdd67c4281c758d1447da2de47c3",
+    "hash": "a4468e16d06c4ef8c3ab509799e5a4b9",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -324,63 +324,6 @@
             "time": "2015-04-02 19:55:44"
         },
         {
-            "name": "doctrine/data-fixtures",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/data-fixtures.git",
-                "reference": "bd44f6b6e40247b6530bc8abe802e4e4d914976a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/bd44f6b6e40247b6530bc8abe802e4e4d914976a",
-                "reference": "bd44f6b6e40247b6530bc8abe802e4e4d914976a",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/common": "~2.2",
-                "php": ">=5.3.2"
-            },
-            "conflict": {
-                "doctrine/orm": "< 2.4"
-            },
-            "require-dev": {
-                "doctrine/orm": "~2.4"
-            },
-            "suggest": {
-                "doctrine/mongodb-odm": "For loading MongoDB ODM fixtures",
-                "doctrine/orm": "For loading ORM fixtures",
-                "doctrine/phpcr-odm": "For loading PHPCR ODM fixtures"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Doctrine\\Common\\DataFixtures": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                }
-            ],
-            "description": "Data Fixtures for all Doctrine Object Managers",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "database"
-            ],
-            "time": "2015-03-30 12:14:13"
-        },
-        {
             "name": "doctrine/dbal",
             "version": "v2.5.1",
             "source": {
@@ -612,66 +555,6 @@
                 "caching"
             ],
             "time": "2014-11-28 09:43:36"
-        },
-        {
-            "name": "doctrine/doctrine-fixtures-bundle",
-            "version": "v2.2.0",
-            "target-dir": "Doctrine/Bundle/FixturesBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "c811f96f0cf83b997e3a3ed037cac729bbe3e803"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/c811f96f0cf83b997e3a3ed037cac729bbe3e803",
-                "reference": "c811f96f0cf83b997e3a3ed037cac729bbe3e803",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/data-fixtures": "~1.0",
-                "doctrine/doctrine-bundle": "~1.0",
-                "php": ">=5.3.2",
-                "symfony/doctrine-bridge": "~2.1"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Doctrine\\Bundle\\FixturesBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
-                    "name": "Doctrine Project",
-                    "homepage": "http://www.doctrine-project.org"
-                }
-            ],
-            "description": "Symfony DoctrineFixturesBundle",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "Fixture",
-                "persistence"
-            ],
-            "time": "2013-09-05 11:23:37"
         },
         {
             "name": "doctrine/inflector",
@@ -1497,33 +1380,37 @@
         },
         {
             "name": "hautelook/alice-bundle",
-            "version": "0.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/hautelook/AliceBundle.git",
-                "reference": "44824200e88cdec9b9f8ee5056c4a197299e5293"
+                "url": "https://github.com/theofidry/AliceBundle.git",
+                "reference": "ee33ad404b7879d60ede0ba4bd98e4b7ce97cdbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hautelook/AliceBundle/zipball/44824200e88cdec9b9f8ee5056c4a197299e5293",
-                "reference": "44824200e88cdec9b9f8ee5056c4a197299e5293",
+                "url": "https://api.github.com/repos/theofidry/AliceBundle/zipball/ee33ad404b7879d60ede0ba4bd98e4b7ce97cdbe",
+                "reference": "ee33ad404b7879d60ede0ba4bd98e4b7ce97cdbe",
                 "shasum": ""
             },
             "require": {
-                "doctrine/doctrine-bundle": "~1.2",
-                "doctrine/doctrine-fixtures-bundle": "~2.2",
-                "nelmio/alice": "~1.7",
-                "php": ">=5.3.0"
+                "nelmio/alice": "2.0.x-dev",
+                "php": ">=5.4.0"
             },
             "require-dev": {
+                "doctrine/doctrine-bundle": "~1.2",
+                "doctrine/doctrine-fixtures-bundle": "~2.2",
                 "doctrine/orm": "~2.4",
+                "fabpot/php-cs-fixer": "^1.9",
                 "hautelook/solarium-fixtures": "~1.0",
+                "phpunit/phpunit": "^4.7",
                 "solarium/solarium": "~3.1",
                 "symfony/browser-kit": "~2.1",
                 "symfony/console": "~2.1",
+                "symfony/finder": "^2.7",
                 "symfony/framework-bundle": "~2.1",
                 "symfony/validator": "~2.1",
-                "symfony/yaml": "~2.1"
+                "symfony/yaml": "~2.1",
+                "theofidry/psysh-bundle": "@beta"
             },
             "suggest": {
                 "hautelook/solarium-fixtures": "To add Solarium fixtures"
@@ -1534,7 +1421,11 @@
                     "Hautelook\\AliceBundle\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Hautelook\\AliceBundle\\Tests\\": "Tests"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -1546,12 +1437,16 @@
             ],
             "description": "Symfony2 Bundle that helps loading fixture data written with the Alice library",
             "keywords": [
+                "Alice",
                 "Fixture",
-                "Symfony2",
-                "alice",
-                "orm"
+                "ORM",
+                "Symfony2"
             ],
-            "time": "2014-10-19 05:10:40"
+            "support": {
+                "source": "https://github.com/theofidry/AliceBundle/tree/master",
+                "issues": "https://github.com/theofidry/AliceBundle/issues"
+            },
+            "time": "2015-07-13 11:19:21"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1895,16 +1790,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc"
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b287fbbe1ca27847064beff2bad7fb6920bf08cc",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/dc5150cc608f2334c72c3b6a553ec9668a4156b0",
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0",
                 "shasum": ""
             },
             "require": {
@@ -1941,7 +1836,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14.x-dev"
+                    "dev-master": "1.15.x-dev"
                 }
             },
             "autoload": {
@@ -1967,7 +1862,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-06-19 13:29:54"
+            "time": "2015-07-12 13:54:09"
         },
         {
             "name": "namshi/jose",
@@ -2021,21 +1916,21 @@
         },
         {
             "name": "nelmio/alice",
-            "version": "1.7.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/alice.git",
-                "reference": "33cfab06b7e0d546c001ba95f9c594e4bd63d958"
+                "reference": "1256496ceda7a0f2ad0d0febb8c9c507c7addca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/alice/zipball/33cfab06b7e0d546c001ba95f9c594e4bd63d958",
-                "reference": "33cfab06b7e0d546c001ba95f9c594e4bd63d958",
+                "url": "https://api.github.com/repos/nelmio/alice/zipball/1256496ceda7a0f2ad0d0febb8c9c507c7addca8",
+                "reference": "1256496ceda7a0f2ad0d0febb8c9c507c7addca8",
                 "shasum": ""
             },
             "require": {
                 "fzaninotto/faker": "~1.0",
-                "php": ">=5.3",
+                "php": ">=5.4",
                 "symfony/yaml": "~2.0"
             },
             "require-dev": {
@@ -2060,11 +1955,12 @@
             ],
             "authors": [
                 {
-                    "name": "Tim Shelburne"
-                },
-                {
                     "name": "Jordi Boggiano",
                     "email": "j.boggiano@seld.be"
+                },
+                {
+                    "name": "Tim Shelburne",
+                    "email": "shelburt02@gmail.com"
                 }
             ],
             "description": "Expressive fixtures generator",
@@ -2074,7 +1970,7 @@
                 "orm",
                 "test"
             ],
-            "time": "2014-10-10 13:07:37"
+            "time": "2015-07-12 15:17:37"
         },
         {
             "name": "nelmio/api-doc-bundle",
@@ -3925,6 +3821,123 @@
             "time": "2015-04-18 14:43:54"
         },
         {
+            "name": "doctrine/data-fixtures",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/data-fixtures.git",
+                "reference": "bd44f6b6e40247b6530bc8abe802e4e4d914976a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/bd44f6b6e40247b6530bc8abe802e4e4d914976a",
+                "reference": "bd44f6b6e40247b6530bc8abe802e4e4d914976a",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "~2.2",
+                "php": ">=5.3.2"
+            },
+            "conflict": {
+                "doctrine/orm": "< 2.4"
+            },
+            "require-dev": {
+                "doctrine/orm": "~2.4"
+            },
+            "suggest": {
+                "doctrine/mongodb-odm": "For loading MongoDB ODM fixtures",
+                "doctrine/orm": "For loading ORM fixtures",
+                "doctrine/phpcr-odm": "For loading PHPCR ODM fixtures"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\Common\\DataFixtures": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                }
+            ],
+            "description": "Data Fixtures for all Doctrine Object Managers",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "database"
+            ],
+            "time": "2015-03-30 12:14:13"
+        },
+        {
+            "name": "doctrine/doctrine-fixtures-bundle",
+            "version": "v2.2.0",
+            "target-dir": "Doctrine/Bundle/FixturesBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
+                "reference": "c811f96f0cf83b997e3a3ed037cac729bbe3e803"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/c811f96f0cf83b997e3a3ed037cac729bbe3e803",
+                "reference": "c811f96f0cf83b997e3a3ed037cac729bbe3e803",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/data-fixtures": "~1.0",
+                "doctrine/doctrine-bundle": "~1.0",
+                "php": ">=5.3.2",
+                "symfony/doctrine-bridge": "~2.1"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\Bundle\\FixturesBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Doctrine Project",
+                    "homepage": "http://www.doctrine-project.org"
+                }
+            ],
+            "description": "Symfony DoctrineFixturesBundle",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "Fixture",
+                "persistence"
+            ],
+            "time": "2013-09-05 11:23:37"
+        },
+        {
             "name": "dunglas/php-schema",
             "version": "v0.4.3",
             "source": {
@@ -4112,16 +4125,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "7dfe4f1db8a62be3dd35710efce663537d515653"
+                "reference": "44adc6f25592c6990409607c95537f577861f9b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/7dfe4f1db8a62be3dd35710efce663537d515653",
-                "reference": "7dfe4f1db8a62be3dd35710efce663537d515653",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/44adc6f25592c6990409607c95537f577861f9b1",
+                "reference": "44adc6f25592c6990409607c95537f577861f9b1",
                 "shasum": ""
             },
             "require": {
@@ -4174,7 +4187,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2015-06-14 20:01:28"
+            "time": "2015-07-13 05:06:53"
         },
         {
             "name": "matthiasnoback/symfony-config-test",
@@ -5352,7 +5365,9 @@
     "stability-flags": {
         "dunglas/api-bundle": 20,
         "friendsofsymfony/user-bundle": 20,
+        "hautelook/alice-bundle": 20,
         "theofidry/loopback-api-bundle": 20,
+        "nelmio/alice": 20,
         "behat/symfony2-extension": 20,
         "behatch/contexts": 20,
         "codeclimate/php-test-reporter": 20,

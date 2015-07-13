@@ -20,7 +20,7 @@ use Faker\Provider\Base as BaseProvider;
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class UserProvider extends BaseProvider
+class UserProvider
 {
     /**
      * @var UserRoles
@@ -30,18 +30,15 @@ class UserProvider extends BaseProvider
     /**
      * Constructor.
      *
-     * @param Generator $generator
      * @param UserRoles $userRoles
      */
-    public function __construct(Generator $generator, UserRoles $userRoles)
+    public function __construct(UserRoles $userRoles)
     {
-        parent::__construct($generator);
-
         $this->userRoles = $userRoles;
     }
 
     /**
-     * The first call generate unique values. This is to ensure all values are called before generating deplicates.
+     * The first call generate unique values. This is to ensure all values are called before generating duplicates.
      *
      * @return string Random Symfony role.
      *
@@ -49,6 +46,6 @@ class UserProvider extends BaseProvider
      */
     public function userRole()
     {
-        return self::randomElement($this->userRoles->getRoles());
+        return BaseProvider::randomElement($this->userRoles->getRoles());
     }
 }

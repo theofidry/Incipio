@@ -16,29 +16,19 @@ services:
     #
     # Faker's providers
     #
-    # Faker generator initialized with application locale and defined seed
-    api.faker:
-        class:     Faker\Generator
-        factory:   [ Faker\Factory, create ]
-        arguments: [ %locale_full% ]
-        calls:
-            - method:    seed
-              arguments: [ %seed% ]
-
     faker.provider.job:
         class:     ApiBundle\DataFixtures\Faker\Provider\JobProvider
-        arguments: [ @api.faker ]
-        tags:      [ { name: faker.provider } ]
+        tags:      [ { name: hautelook_alice.faker.provider } ]
 
     faker.provider.mandate:
         class:     ApiBundle\DataFixtures\Faker\Provider\MandateProvider
-        arguments: [ @api.faker ]
-        tags:      [ { name: faker.provider } ]
+        arguments: [ @hautelook_alice.faker ]
+        tags:      [ { name: hautelook_alice.faker.provider } ]
 
     faker.provider.user:
         class:     ApiBundle\DataFixtures\Faker\Provider\UserProvider
-        arguments: [ @api.faker, @api.user.roles ]
-        tags:      [ { name: faker.provider } ]
+        arguments: [ @api.user.roles ]
+        tags:      [ { name: hautelook_alice.faker.provider } ]
 
 
     #

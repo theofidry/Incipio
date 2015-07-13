@@ -24,8 +24,7 @@ parameters:
 
 
     # Locale language
-    locale:            fr
-    locale_full:       fr_FR
+    locale: fr_FR
 
     # Faker generator seed
     seed: 82158366

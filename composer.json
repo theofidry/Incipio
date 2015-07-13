@@ -6,6 +6,12 @@
     "autoload": {
         "psr-4": { "": "src/", "SymfonyStandard\\": "app/" }
     },
+    "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/theofidry/AliceBundle.git"
+        }
+    ],
     "require": {
         "php": ">=5.5.0",
         "symfony/symfony": "~2.7",
@@ -16,7 +22,7 @@
         "friendsofsymfony/http-cache-bundle": "~1.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "guzzle/guzzle": "~3.9",
-        "hautelook/alice-bundle": "~0.2",
+        "hautelook/alice-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
         "knplabs/knp-menu-bundle": "~2",
         "lexik/jwt-authentication-bundle": "~1.0",
@@ -28,7 +34,8 @@
         "symfony/monolog-bundle": "~2.4",
         "symfony/swiftmailer-bundle": "~2.3",
         "theofidry/loopback-api-bundle": "dev-master",
-        "twig/extensions": "~1.0"
+        "twig/extensions": "~1.0",
+        "nelmio/alice": "2.0.x-dev"
     },
     "require-dev": {
         "behat/behat": "~3.0",

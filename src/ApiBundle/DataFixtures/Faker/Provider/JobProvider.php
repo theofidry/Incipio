@@ -22,7 +22,7 @@ use Faker\Provider\Base as BaseProvider;
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class JobProvider extends BaseProvider
+class JobProvider
 {
     /**
      * @var array List of job titles.
@@ -664,13 +664,13 @@ class JobProvider extends BaseProvider
         $names = [
             sprintf(
                 '%s %s',
-                self::randomElement($this->titleProvider['firstname']),
-                self::randomElement($this->titleProvider['lastname'])
+                BaseProvider::randomElement($this->titleProvider['firstname']),
+                BaseProvider::randomElement($this->titleProvider['lastname'])
             ),
-            self::randomElement($this->titleProvider['fullname']),
+            BaseProvider::randomElement($this->titleProvider['fullname']),
         ];
 
-        return self::randomElement($names);
+        return BaseProvider::randomElement($names);
     }
 
     /**
@@ -678,6 +678,6 @@ class JobProvider extends BaseProvider
      */
     public function jobAbbreviation()
     {
-        return self::randomElement($this->abbreviationProvider);
+        return BaseProvider::randomElement($this->abbreviationProvider);
     }
 }
