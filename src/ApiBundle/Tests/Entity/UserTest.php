@@ -110,13 +110,13 @@ class UserTest extends AbstractEntityTestCase
         return [
             [
                 [
-                    'username'      => 'john.doe',
-                    'fullname'      => 'John Doe',
-                    'email'         => 'john.doe@incipio.fr',
-                    'roles'         => ['ROLE_SUPER_ADMIN'],
+                    'username' => 'john.doe',
+                    'fullname' => 'John Doe',
+                    'email' => 'john.doe@incipio.fr',
+                    'roles' => ['ROLE_SUPER_ADMIN'],
                     'plainPassword' => 'password',
-                    'enabled'       => true,
-                    'job'           => new Job(),
+                    'enabled' => true,
+                    'job' => new Job(),
                 ],
             ],
         ];

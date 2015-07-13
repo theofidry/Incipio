@@ -11,8 +11,6 @@
 
 namespace ApiBundle;
 
-use ApiBundle\DependencyInjection\Compiler\FakerProviderPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**

@@ -88,7 +88,7 @@ abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implem
      */
     private function camelize($string)
     {
-        return strtr(ucwords(strtr($string, array('_' => ' '))), array(' ' => ''));
+        return strtr(ucwords(strtr($string, ['_' => ' '])), [' ' => '']);
     }
 
     /**
@@ -111,7 +111,7 @@ abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implem
             $removeMethodFound = $this->isMethodAccessible($reflClass, $removeMethod, 1);
 
             if ($addMethodFound && $removeMethodFound) {
-                return array($addMethod, $removeMethod);
+                return [$addMethod, $removeMethod];
             }
         }
     }
@@ -135,7 +135,8 @@ abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implem
 
             if ($method->isPublic()
                 && $method->getNumberOfRequiredParameters() <= $parameters
-                && $method->getNumberOfParameters() >= $parameters) {
+                && $method->getNumberOfParameters() >= $parameters
+            ) {
                 return true;
             }
         }

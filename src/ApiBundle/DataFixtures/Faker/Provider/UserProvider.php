@@ -12,7 +12,6 @@
 namespace ApiBundle\DataFixtures\Faker\Provider;
 
 use ApiBundle\Utils\UserRoles;
-use Faker\Generator;
 use Faker\Provider\Base as BaseProvider;
 
 /**

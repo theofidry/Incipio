@@ -15,7 +15,7 @@ use ApiBundle\DataFixtures\Faker\Provider\UserProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * TODO: mock services instead using a KernelTestCase
+ * TODO: mock services instead using a KernelTestCase.
  *
  * @coversDefaultClass ApiBundle\DataFixtures\Faker\Provider\UserProvider
  *

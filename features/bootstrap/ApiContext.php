@@ -13,13 +13,11 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManagerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * Defines application features from the specific context.
- *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 class ApiContext extends RawMinkContext implements Context, SnippetAcceptingContext, KernelAwareContext
 {
-    /**
+    /*
      * Hook to implement KernelAwareContext
      */
     use KernelDictionary;
@@ -103,7 +101,7 @@ class ApiContext extends RawMinkContext implements Context, SnippetAcceptingCont
     public function authenticateAs(User $user)
     {
         $client = $this->getSession()->getDriver()->getClient();
-        $token  = $this->jwtManager->create($user);
+        $token = $this->jwtManager->create($user);
         $client->setServerParameter('HTTP_AUTHORIZATION', sprintf('Bearer %s', $token));
     }
 
@@ -122,7 +120,7 @@ class ApiContext extends RawMinkContext implements Context, SnippetAcceptingCont
             throw new \InvalidArgumentException(sprintf('No user with username %s can be found', $username));
         }
         $encoder = $this->encoderFactory->getEncoder($user);
-        $valid   = $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
+        $valid = $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
         if (false === $valid) {
             throw new \Exception(sprintf('The password for user %s does not match %s', $username, $password));
         }

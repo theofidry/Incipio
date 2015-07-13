@@ -5,8 +5,6 @@ use Sanpi\Behatch\Json\Json;
 use Sanpi\Behatch\Json\JsonInspector;
 
 /**
- * Class JsonContext.
- *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 class JsonContext extends \Sanpi\Behatch\Context\JsonContext
@@ -36,7 +34,7 @@ class JsonContext extends \Sanpi\Behatch\Context\JsonContext
      */
     public function theJsonNodeShouldBeHigher($node, $value)
     {
-        $json   = $this->getJson();
+        $json = $this->getJson();
         $actual = $this->inspector->evaluate($json, $node);
 
         if ($actual < $value) {
@@ -56,7 +54,7 @@ class JsonContext extends \Sanpi\Behatch\Context\JsonContext
      */
     public function theJsonNodeShouldBeLower($node, $value)
     {
-        $json   = $this->getJson();
+        $json = $this->getJson();
         $actual = $this->inspector->evaluate($json, $node);
 
         if ($actual > $value) {

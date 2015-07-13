@@ -23,7 +23,7 @@ use Faker\Provider\Base as BaseProvider;
 class JobProvider
 {
     /**
-     * Sources: {@link http://siliconvalleyjobtitlegenerator.tumblr.com/}
+     * Sources: {@link http://siliconvalleyjobtitlegenerator.tumblr.com/}.
      *
      * @var array List of job titles.
      */
@@ -274,7 +274,7 @@ class JobProvider
     ];
 
     /**
-     * Sources: {@link http://sos.uhrs.indiana.edu/Job_Code_Title_Abbreviation_List.htm}
+     * Sources: {@link http://sos.uhrs.indiana.edu/Job_Code_Title_Abbreviation_List.htm}.
      *
      * @var array List of job abbreviations.
      */

@@ -58,15 +58,15 @@ class ApiClientTest extends KernelTestCase
      */
     public function testOverriddenMethod($uriOrRouteName, $token, $options, $expectedUrl)
     {
-        $tokenValue = (true === $token)? 'MyToken': null;
+        $tokenValue = (true === $token) ? 'MyToken' : null;
 
         $requests = [
-            'get'    => $this->service->get($uriOrRouteName, $tokenValue, $options),
-            'head'   => $this->service->head($uriOrRouteName, $tokenValue, $options),
+            'get' => $this->service->get($uriOrRouteName, $tokenValue, $options),
+            'head' => $this->service->head($uriOrRouteName, $tokenValue, $options),
             'delete' => $this->service->delete($uriOrRouteName, $tokenValue, null, $options),
-            'put'    => $this->service->put($uriOrRouteName, $tokenValue, null, $options),
-            'patch'  => $this->service->patch($uriOrRouteName, $tokenValue, null, $options),
-            'post'   => $this->service->post($uriOrRouteName, $tokenValue, null, $options),
+            'put' => $this->service->put($uriOrRouteName, $tokenValue, null, $options),
+            'patch' => $this->service->patch($uriOrRouteName, $tokenValue, null, $options),
+            'post' => $this->service->post($uriOrRouteName, $tokenValue, null, $options),
         ];
 
         foreach ($requests as $request) {
@@ -78,7 +78,7 @@ class ApiClientTest extends KernelTestCase
             $headerCount = 2;
             if (null !== $tokenValue) {
                 $this->assertTrue($request->getHeader('authorization')->hasValue('Bearer MyToken'));
-                $headerCount++;
+                ++$headerCount;
             }
 
             if (isset($options['headers'])) {
@@ -111,7 +111,7 @@ class ApiClientTest extends KernelTestCase
                 'users_cget',
                 false,
                 [
-                    'query'   => ['random' => 'test'],
+                    'query' => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test',
@@ -133,7 +133,7 @@ class ApiClientTest extends KernelTestCase
                 'users_cget',
                 true,
                 [
-                    'query'   => ['random' => 'test'],
+                    'query' => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test',
@@ -155,7 +155,7 @@ class ApiClientTest extends KernelTestCase
                 '/api/users',
                 false,
                 [
-                    'query'   => ['random' => 'test'],
+                    'query' => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test',
@@ -177,7 +177,7 @@ class ApiClientTest extends KernelTestCase
                 '/api/users',
                 true,
                 [
-                    'query'   => ['random' => 'test'],
+                    'query' => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test',
@@ -199,7 +199,7 @@ class ApiClientTest extends KernelTestCase
                 '/api/users?lol',
                 false,
                 [
-                    'query'   => ['random' => 'test'],
+                    'query' => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test&lol',
@@ -221,7 +221,7 @@ class ApiClientTest extends KernelTestCase
                 '/api/users?lol',
                 true,
                 [
-                    'query'   => ['random' => 'test'],
+                    'query' => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test&lol',

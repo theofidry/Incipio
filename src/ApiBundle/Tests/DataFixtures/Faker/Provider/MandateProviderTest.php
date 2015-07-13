@@ -121,7 +121,6 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
             'Expected a name with the mask \'Mandate startYear/endYear\''
         );
 
-
         // With two dates of the same year years
         $startDate = new \DateTime();
         $startDate->setDate(2000, 01, 01);

@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
  * PHP API client. For now is a Guzzle client which has been extended to allow to pass route names instead of just
- * the URI and easily pass the token
+ * the URI and easily pass the token.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */

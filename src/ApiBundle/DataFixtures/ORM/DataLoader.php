@@ -11,7 +11,6 @@
 
 namespace ApiBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Hautelook\AliceBundle\Doctrine\DataFixtures\AbstractDataFixtureLoader;
 
 /**

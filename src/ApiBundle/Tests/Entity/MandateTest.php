@@ -87,8 +87,8 @@ class MandateTest extends AbstractEntityTestCase
             [
                 [
                     'startAt' => new \DateTime('2015-03-02'),
-                    'endAt'   => new \DateTime('2016-03-02'),
-                    'job'     => new Job(),
+                    'endAt' => new \DateTime('2016-03-02'),
+                    'job' => new Job(),
                 ],
             ],
         ];

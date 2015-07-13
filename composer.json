@@ -56,8 +56,8 @@
         "vipsoft/doctrine-data-fixtures-extension": "dev-master"
     },
     "scripts": {
-        "style:check": "php bin/php-cs-fixer fix --no-interaction --dry-run --diff -vvvv src/",
-        "style:fix": "php bin/php-cs-fixer fix -vvvv src/",
+        "style:check": "php bin/php-cs-fixer fix --no-interaction --dry-run --diff -vvv src && php bin/php-cs-fixer fix --no-interaction --dry-run --diff -vvv features",
+        "style:fix": "php bin/php-cs-fixer fix -vvv src && php bin/php-cs-fixer fix -vvv features",
         "test": "composer test:db && composer test:phpunit && composer test:behat && composer test:security",
         "test:db": "php app/console doctrine:schema:validate --ansi",
         "test:security": "php bin/security-checker security:check",

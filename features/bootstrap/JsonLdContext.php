@@ -3,8 +3,6 @@
 use Sanpi\Behatch\HttpCall\HttpCallResultPool;
 
 /**
- * Class JsonLdContext.
- *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 class JsonLdContext extends \Sanpi\Behatch\Context\RestContext
@@ -15,12 +13,10 @@ class JsonLdContext extends \Sanpi\Behatch\Context\RestContext
     protected $jsonContext;
 
     /**
-     * Constructor
-     *
      * @param string             $evaluationMode
      * @param HttpCallResultPool $httpCallResultPool
      */
-    function __construct($evaluationMode = 'javascript', HttpCallResultPool $httpCallResultPool)
+    public function __construct($evaluationMode = 'javascript', HttpCallResultPool $httpCallResultPool)
     {
         $this->jsonContext = new JsonContext($evaluationMode, $httpCallResultPool);
     }
