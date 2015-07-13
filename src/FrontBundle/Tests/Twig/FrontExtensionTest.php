@@ -14,8 +14,6 @@ namespace FrontBundle\Tests\Twig;
 use FrontBundle\Twig\FrontExtension;
 
 /**
- * Class FrontExtensionTest.
- *
  * @coversDefaultClass FrontBundle\Twig\FrontExtension
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -36,7 +34,7 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if the filter is properly returned.
+     * @testdox Test if the filter is properly returned.
      *
      * @covers ::getFilters
      */
@@ -48,7 +46,7 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test FrontExtension::uriIdFilter().
+     * @testdox  Test FrontExtension::uriIdFilter().
      *
      * @dataProvider uriIdProvider
      * @covers       ::uriIdFilter
@@ -63,7 +61,7 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test FrontExtension::roleFilter().
+     * @testdox  Test FrontExtension::roleFilter().
      *
      * @dataProvider roleProvider
      *

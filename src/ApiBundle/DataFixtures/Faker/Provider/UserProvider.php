@@ -16,7 +16,9 @@ use Faker\Generator;
 use Faker\Provider\Base as BaseProvider;
 
 /**
- * Class UserProvider.
+ * Faker provider for users.
+ *
+ * @see    ApiBundle\Entity\User
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
@@ -28,8 +30,6 @@ class UserProvider
     private $userRoles;
 
     /**
-     * Constructor.
-     *
      * @param UserRoles $userRoles
      */
     public function __construct(UserRoles $userRoles)

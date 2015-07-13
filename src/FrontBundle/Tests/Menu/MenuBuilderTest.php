@@ -12,8 +12,6 @@
 namespace FrontBundle\Tests\Menu;
 
 /**
- * Class MenuBuilderTest.
- *
  * @coversDefaultClass FrontBundle\Menu\MenuBuilder
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>

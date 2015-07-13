@@ -19,9 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Mandate.
- *
- * @ORM\Table()
+ * @ORM\Table
  * @ORM\Entity(repositoryClass="ApiBundle\Entity\MandateRepository")
  * @UniqueEntity("name")
  *
@@ -79,17 +77,12 @@ class Mandate
      */
     private $startAt;
 
-    /**
-     * Default constructor.
-     */
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
     }
 
     /**
-     * Get id.
-     *
      * @return int
      */
     public function getId()
@@ -98,8 +91,6 @@ class Mandate
     }
 
     /**
-     * Set endAt.
-     *
      * @param \DateTime|null $endAt
      *
      * @return $this
@@ -112,8 +103,6 @@ class Mandate
     }
 
     /**
-     * Get endAt.
-     *
      * @return \DateTime|null
      */
     public function getEndAt()
@@ -156,8 +145,6 @@ class Mandate
     }
 
     /**
-     * Gets Jobs.
-     *
      * @return ArrayCollection<Job>
      */
     public function getJobs()
@@ -166,8 +153,6 @@ class Mandate
     }
 
     /**
-     * Sets Name.
-     *
      * @param \DateTime $name
      *
      * @return $this
@@ -180,8 +165,6 @@ class Mandate
     }
 
     /**
-     * Gets Name.
-     *
      * @return \DateTime|null
      */
     public function getName()
@@ -190,8 +173,6 @@ class Mandate
     }
 
     /**
-     * Set startAt.
-     *
      * @param \DateTime $startAt
      *
      * @return $this
@@ -204,8 +185,6 @@ class Mandate
     }
 
     /**
-     * Get startAt.
-     *
      * @return \DateTime|null
      */
     public function getStartAt()

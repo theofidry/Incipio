@@ -15,7 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Hautelook\AliceBundle\Doctrine\DataFixtures\AbstractDataFixtureLoader;
 
 /**
- * Class DataLoader: register faker providers and load registered fixtures.
+ * Load registered fixtures.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */

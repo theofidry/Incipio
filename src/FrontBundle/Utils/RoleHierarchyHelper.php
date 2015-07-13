@@ -22,9 +22,9 @@ class RoleHierarchyHelper
      * @var array List of roles ordered in descending order of level access granted.
      */
     private $roles = [
-        'ROLE_SUPER_ADMIN',
-        'ROLE_ADMIN',
-        'ROLE_USER',
+        'ROLE_SUPER_ADMIN' => null,
+        'ROLE_ADMIN'       => null,
+        'ROLE_USER'        => null,
     ];
 
     /**
@@ -36,14 +36,14 @@ class RoleHierarchyHelper
      */
     public function getTopLevelRole(array $roles)
     {
-        $roles = array_values($roles);
+        $roles = array_flip(array_values($roles));
 
-        foreach ($this->roles as $topRole) {
-            if (in_array($topRole, $roles)) {
+        foreach ($this->roles as $topRole => $null) {
+            if (isset($roles[$topRole])) {
                 return $topRole;
             }
         }
 
-        return;
+        return null;
     }
 }

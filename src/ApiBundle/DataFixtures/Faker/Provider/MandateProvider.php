@@ -14,7 +14,9 @@ namespace ApiBundle\DataFixtures\Faker\Provider;
 use Faker\Provider\DateTime as DateTimeProvider;
 
 /**
- * Class MandateProvider.
+ * Faker provider for mandates.
+ *
+ * @see    ApiBundle\Entity\Mandate
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
@@ -46,7 +48,7 @@ class MandateProvider extends DateTimeProvider
      *
      * @example
      *  mandate of two different years: "Mandate startYear/endYear"
-     *  mandate of the same year: "Mandate startMonth startYear"
+     *  mandate of the same year: "Mandate startMonth Year"
      *
      * @param \DateTime $startDate
      * @param \DateTime $endDate

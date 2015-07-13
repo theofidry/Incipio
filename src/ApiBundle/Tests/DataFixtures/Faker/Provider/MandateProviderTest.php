@@ -14,8 +14,6 @@ namespace ApiBundle\Tests\DataFixtures\Faker\Provider;
 use ApiBundle\DataFixtures\Faker\Provider\MandateProvider;
 
 /**
- * Class JobProviderTest.
- *
  * @coversDefaultClass ApiBundle\DataFixtures\Faker\Provider\MandateProvider
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -43,7 +41,7 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test MandateProvider::startMandateDateTime() with invalid input.
+     * @testdox Test MandateProvider::startMandateDateTime() with invalid input.
      * Expect to get a datetime with current year.
      *
      * @covers       ::startMandateDateTime
@@ -56,12 +54,12 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
         $date = new \DateTime();
         $currentYear = $date->format('Y');
 
-        $date = $this->provider->startMandateDateTime();
+        $date = $this->provider->startMandateDateTime($data);
         $this->assertEquals($currentYear, $date->format('Y'), 'Expected date of current year.');
     }
 
     /**
-     * Test MandateProvider::startMandateDateTime() with valid input.
+     * @testdox Test MandateProvider::startMandateDateTime() with valid input.
      * Expect to get a datetime with the specified year.
      *
      * @covers ::startMandateDateTime
@@ -78,7 +76,7 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test MandateProvider::endMandateDateTime() with valid input.
+     * @testdox Test MandateProvider::endMandateDateTime() with valid input.
      * Expect to get a datetime with the specified year.
      *
      * Note: not tested with invalid input since it has been designed to be used with the result of
@@ -101,6 +99,41 @@ class MandateProviderTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThan($expectedStartDate->getTimestamp(), $date->getTimestamp());
             $this->assertLessThan($expectedEndDate->getTimestamp(), $date->getTimestamp());
         }
+    }
+
+    /**
+     * @testdox Test MandateProvider::nameFromDates()
+     *
+     * @covers ::nameFromDates
+     */
+    public function testNameFromDates()
+    {
+        // With two dates of different years
+        $startDate = new \DateTime();
+        $startDate->setDate(2000, 01, 01);
+
+        $endDate = new \DateTime();
+        $endDate->setDate(2001, 01, 01);
+
+        $this->assertEquals(
+            'Mandate 2000/2001',
+            $this->provider->nameFromDates($startDate, $endDate),
+            'Expected a name with the mask \'Mandate startYear/endYear\''
+        );
+
+
+        // With two dates of the same year years
+        $startDate = new \DateTime();
+        $startDate->setDate(2000, 01, 01);
+
+        $endDate = new \DateTime();
+        $endDate->setDate(2000, 05, 01);
+
+        $this->assertEquals(
+            'Mandate 01 2000',
+            $this->provider->nameFromDates($startDate, $endDate),
+            'Expected a name with the mask \'Mandate startMonth Year\''
+        );
     }
 
     /**

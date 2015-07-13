@@ -12,8 +12,6 @@
 namespace ApiBundle\Utils;
 
 /**
- * Class UserRoles.
- *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 class UserRoles

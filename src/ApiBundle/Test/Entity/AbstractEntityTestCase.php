@@ -64,7 +64,7 @@ abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implem
     }
 
     /**
-     * Test the entity property accessors (getters, setters, hassers, issers).
+     * @testdox Test the entity property accessors (getters, setters, hassers, issers).
      *
      * @param array $data
      *

@@ -14,8 +14,6 @@ namespace ApiBundle\Tests\Utils;
 use ApiBundle\Utils\UserRoles;
 
 /**
- * Class UserRolesTest.
- *
  * @coversDefaultClass ApiBundle\Utils\UserRoles
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -23,10 +21,13 @@ use ApiBundle\Utils\UserRoles;
 class UserRolesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the service's methods.
+     * @testdox Test the service's methods.
      *
      * @covers ::getRoles
      * @dataProvider hierarchyProvider
+     *
+     * @param array $hierarchy
+     * @param array $expected
      */
     public function testService(array $hierarchy, array $expected)
     {

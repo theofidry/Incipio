@@ -16,8 +16,6 @@ use ApiBundle\Entity\Mandate;
 use ApiBundle\Test\Entity\AbstractEntityTestCase;
 
 /**
- * Class MandateTest.
- *
  * @coversDefaultClass ApiBundle\Entity\Mandate
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -89,8 +87,8 @@ class MandateTest extends AbstractEntityTestCase
             [
                 [
                     'startAt' => new \DateTime('2015-03-02'),
-                    'endAt' => new \DateTime('2016-03-02'),
-                    'job' => new Job(),
+                    'endAt'   => new \DateTime('2016-03-02'),
+                    'job'     => new Job(),
                 ],
             ],
         ];

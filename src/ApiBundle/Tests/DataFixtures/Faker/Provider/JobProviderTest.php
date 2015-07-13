@@ -14,8 +14,6 @@ namespace ApiBundle\Tests\DataFixtures\Faker\Provider;
 use ApiBundle\DataFixtures\Faker\Provider\JobProvider;
 
 /**
- * Class JobProviderTest.
- *
  * @coversDefaultClass ApiBundle\DataFixtures\Faker\Provider\JobProvider
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -43,7 +41,7 @@ class JobProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the provider's methods.
+     * @testdox Test the JobProvider::jobTitle() and JobProvider::jobAbbreviation()
      *
      * @covers ::jobTitle
      * @covers ::jobAbbreviation

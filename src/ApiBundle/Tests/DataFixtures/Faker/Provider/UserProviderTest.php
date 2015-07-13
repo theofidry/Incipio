@@ -15,7 +15,7 @@ use ApiBundle\DataFixtures\Faker\Provider\UserProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * Class UserProviderTest.
+ * TODO: mock services instead using a KernelTestCase
  *
  * @coversDefaultClass ApiBundle\DataFixtures\Faker\Provider\UserProvider
  *
@@ -51,11 +51,11 @@ class UserProviderTest extends KernelTestCase
     }
 
     /**
-     * Test the provider's methods.
+     * @testdox Test the UserProvider::userRole
      *
      * @covers ::userRole
      */
-    public function testProvider()
+    public function testUserRoles()
     {
         for ($i = 0; $i <= self::N; ++$i) {
             $this->assertTrue(in_array($this->provider->userRole(), $this->roles), 'Expected to generate a known role');

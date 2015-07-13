@@ -16,8 +16,6 @@ use ApiBundle\Entity\User;
 use ApiBundle\Test\Entity\AbstractEntityTestCase;
 
 /**
- * Class UserTest.
- *
  * @coversDefaultClass ApiBundle\Entity\User
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -112,13 +110,13 @@ class UserTest extends AbstractEntityTestCase
         return [
             [
                 [
-                    'username' => 'john.doe',
-                    'fullname' => 'John Doe',
-                    'email' => 'john.doe@incipio.fr',
-                    'roles' => ['ROLE_SUPER_ADMIN'],
+                    'username'      => 'john.doe',
+                    'fullname'      => 'John Doe',
+                    'email'         => 'john.doe@incipio.fr',
+                    'roles'         => ['ROLE_SUPER_ADMIN'],
                     'plainPassword' => 'password',
-                    'enabled' => true,
-                    'job' => new Job(),
+                    'enabled'       => true,
+                    'job'           => new Job(),
                 ],
             ],
         ];

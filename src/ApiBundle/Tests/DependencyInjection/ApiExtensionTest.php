@@ -15,8 +15,6 @@ use ApiBundle\DependencyInjection\ApiExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 
 /**
- * Class ApiExtensionTest.
- *
  * @coversDefaultClass ApiBundle\DependencyInjection\ApiExtension
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
@@ -24,7 +22,7 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 class ApiExtensionTest extends AbstractExtensionTestCase
 {
     /**
-     * Ensure that the Bundle extension load properly.
+     * @testdox Ensure that the Bundle extension load properly.
      *
      * @covers ::load
      */
@@ -38,8 +36,8 @@ class ApiExtensionTest extends AbstractExtensionTestCase
      */
     protected function getContainerExtensions()
     {
-        return array(
+        return [
             new ApiExtension(),
-        );
+        ];
     }
 }

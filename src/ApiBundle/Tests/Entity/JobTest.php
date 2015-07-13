@@ -17,8 +17,6 @@ use ApiBundle\Entity\User;
 use ApiBundle\Test\Entity\AbstractEntityTestCase;
 
 /**
- * Class JobTest.
- *
  * @coversDefaultClass ApiBundle\Entity\Job
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>

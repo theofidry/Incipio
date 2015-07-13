@@ -17,8 +17,6 @@ use Guzzle\Http\Message\EntityEnclosingRequestInterface;
 use Guzzle\Http\Message\RequestInterface;
 
 /**
- * Interface ApiClientInterface.
- *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 interface ApiClientInterface

@@ -14,8 +14,6 @@ namespace FrontBundle\Tests\Utils;
 use FrontBundle\Utils\RoleHierarchyHelper;
 
 /**
- * Class RoleHierarchyHelperTest.
- *
  * @coversDefaultClass FrontBundle\Utils\RoleHierarchyHelper
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>

@@ -14,8 +14,6 @@ namespace ApiBundle\DataFixtures\Faker\Provider;
 use Faker\Provider\Base as BaseProvider;
 
 /**
- * Class JobProvider.
- *
  * Faker provider for jobs.
  *
  * @see    ApiBundle\Entity\Job
@@ -25,8 +23,9 @@ use Faker\Provider\Base as BaseProvider;
 class JobProvider
 {
     /**
+     * Sources: {@link http://siliconvalleyjobtitlegenerator.tumblr.com/}
+     *
      * @var array List of job titles.
-     *            Sources: {@link http://siliconvalleyjobtitlegenerator.tumblr.com/}
      */
     private $titleProvider = [
         'firstname' => [
@@ -275,8 +274,9 @@ class JobProvider
     ];
 
     /**
+     * Sources: {@link http://sos.uhrs.indiana.edu/Job_Code_Title_Abbreviation_List.htm}
+     *
      * @var array List of job abbreviations.
-     *            Sources: {@link http://sos.uhrs.indiana.edu/Job_Code_Title_Abbreviation_List.htm}
      */
     private $abbreviationProvider = [
         'ABATE',
