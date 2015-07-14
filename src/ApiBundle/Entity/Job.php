@@ -36,17 +36,6 @@ class Job
     private $id;
 
     /**
-     * @var string
-     *
-     * @Iri("http://schema.org/roleName")
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
-     * @Assert\Length(min=2, max=100)
-     * @Groups({"job", "user"})
-     */
-    private $title;
-
-    /**
      * @var string Job title abbreviation.
      *
      * @Iri("https://schema.org/alternateName")
@@ -67,15 +56,6 @@ class Job
     private $enabled = true;
 
     /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
-     * @ORM\JoinColumn(referencedColumnName="id")
-     * @Groups({"job"})
-     */
-    private $user;
-
-    /**
      * @var Mandate
      *
      * @ORM\ManyToOne(targetEntity="Mandate", inversedBy="jobs")
@@ -85,31 +65,31 @@ class Job
     private $mandate;
 
     /**
+     * @var string
+     *
+     * @Iri("http://schema.org/roleName")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(min=2, max=100)
+     * @Groups({"job", "user"})
+     */
+    private $title;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     * @Groups({"job"})
+     */
+    private $user;
+
+    /**
      * @return int|null
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     /**
@@ -153,32 +133,6 @@ class Job
     }
 
     /**
-     * @param User|null $user
-     *
-     * @return $this
-     */
-    public function setUser(User $user = null)
-    {
-        if (null === $user && null !== $this->user) {
-            $this->user->removeJob($this);
-        } elseif (null !== $user && !$user->getJobs()->contains($this)) {
-            $user->addJob($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return User|null
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
      * @param Mandate|null $mandate
      *
      * @return $this
@@ -202,5 +156,52 @@ class Job
     public function getMandate()
     {
         return $this->mandate;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
+    public function setUser(User $user = null)
+    {
+        if (null === $user && null !== $this->user) {
+            $this->user->removeJob($this);
+        } elseif (null !== $user && !$user->getJobs()->contains($this)) {
+            $user->addJob($this);
+        }
+
+        $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * @return User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

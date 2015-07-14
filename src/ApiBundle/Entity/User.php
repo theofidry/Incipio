@@ -48,17 +48,6 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * {@inheritdoc}
-     *
-     * @Assert\Type("string")
-     * @Assert\NotBlank
-     * @Groups({"job", "user"})
-     *
-     * @TODO: validation for username!
-     */
-    protected $username;
-
-    /**
      * @var string
      *
      * @Iri("https://schema.org/name")
@@ -96,6 +85,17 @@ class User extends BaseUser
      * @Groups({"user"})
      */
     protected $roles;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Assert\Type("string")
+     * @Assert\NotBlank
+     * @Groups({"job", "user"})
+     *
+     * @TODO: validation for username!
+     */
+    protected $username;
 
     /**
      * @var ArrayCollection|Job[] List of job for this mandate.
