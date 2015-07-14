@@ -40,7 +40,7 @@ class JsonLdContext extends \Sanpi\Behatch\Context\RestContext
     /**
      * Check if the response is an hydra paginated collection. 
      * 
-     * @Then I get a page collection with the context :context
+     * @Then I get a paged collection with the context :context
      *
      * @param string $context
      */
@@ -53,5 +53,20 @@ class JsonLdContext extends \Sanpi\Behatch\Context\RestContext
         $this->jsonContext->theJsonNodeShouldBeEqualTo('@type', 'hydra:PagedCollection');
         $this->jsonContext->theJsonNodeShouldExist('hydra:totalItems');
         $this->jsonContext->theJsonNodeShouldExist('hydra:itemsPerPage');
+    }
+
+    /**
+     * Check if the response is an hydra resource page.
+     *
+     * @Then I get a resource page with the context :context
+     *
+     * @param string $context
+     */
+    public function iGetAResourcePageWithContext($context)
+    {
+        // Response should be in JSON-LD
+        $this->jsonLdResponse();
+
+        $this->jsonContext->theJsonNodeShouldBeEqualTo('@context', $context);
     }
 }

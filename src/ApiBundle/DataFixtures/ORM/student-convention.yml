@@ -1,0 +1,25 @@
+ApiBundle\Entity\StudentConvention:
+    ce_president:
+        dateOfSignature: <date('2015-07-11')>
+        reference:       <generateReference(@self->dateOfSignature, 'Président TENDISERP')>
+
+    ce_admin:
+        dateOfSignature: <date('2013-01-12')>
+        reference:       <generateReference(@self->dateOfSignature, 'Admin NIMDA')>
+
+    ce_ca:
+        dateOfSignature: <date('2013-08-18')>
+        reference:       <generateReference(@self->dateOfSignature, 'Ca AC')>
+
+    ce_guest:
+        dateOfSignature: <date('2015-02-01')>
+        reference:       <generateReference(@self->dateOfSignature, 'Guest TSEUG')>
+
+    ce_guest_contractor:
+        dateOfSignature: <date('2015-02-01')>
+        reference:       <generateReference(@self->dateOfSignature, 'Contractor ROTCARTNOC')>
+
+    ce_user__{0..60}:
+        dateOfSignature: <dateTimeBetween('-10 years', 'now')>
+        reference:       <generateReference(@self->dateOfSignature)>
+

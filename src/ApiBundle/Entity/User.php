@@ -19,9 +19,12 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class User: user that have an account in the application.
+ *
+ * In this class, the term "organization" refers either to a Junior-Entreprise, Creation and such or a company.
  *
  * @Iri("https://schema.org/Person")
  * @ORM\Table
@@ -33,6 +36,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User extends BaseUser
 {
+    const TYPE_CONTRACTOR = 0;
+    const TYPE_MEMBER = 1;
+
     /*
      * Hook timestampable behavior: updates `createdAt` and `updatedAt fields
      */
@@ -47,6 +53,34 @@ class User extends BaseUser
      */
     protected $id;
 
+    private $address;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Iri("https://schema.org/email")
+     * @Assert\Email
+     * @Assert\NotBlank
+     * @Groups({"user"})
+     */
+    protected $email;
+
+    /**
+     * @var int
+     *
+     * @Iri("https://schema.org/name")
+     * @ORM\Column(type="smallint", nullable=true)
+     * @Assert\Range(
+     *      min=1900,
+     *      max=2100,
+     *      minMessage="The ending school year must be a valid year.",
+     *      maxMessage="The ending school year must be a valid year.",
+     *      invalidMessage="The ending school year must be a valid year."
+     * )
+     * @Groups({"user"})
+     */
+    private $endingSchoolYear;
+
     /**
      * @var string
      *
@@ -60,14 +94,26 @@ class User extends BaseUser
     protected $fullname;
 
     /**
-     * {@inheritdoc}
+     * @var string Professional email.
      *
      * @Iri("https://schema.org/email")
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Email
      * @Assert\NotBlank
      * @Groups({"user"})
      */
-    protected $email;
+    private $organizationEmail;
+
+    /**
+     * @var string Professional email lowercased for search and string comparison; cf emailCanonical & passwordCanonical
+     *
+     * @Iri("https://schema.org/email")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Email
+     * @Assert\NotBlank
+     * @Groups({"user"})
+     */
+    private $organizationEmailCanonical;
 
     /**
      * {@inheritdoc}
@@ -79,12 +125,33 @@ class User extends BaseUser
      */
     protected $password;
 
+    private $phones;
+
     /**
      * {@inheritdoc}
      *
      * @Groups({"user"})
      */
     protected $roles;
+
+    /**
+     * Validated via ::validate()
+     *
+     * @var array
+     *
+     * @ORM\Column(type="array")
+     * @Groups({"user"})
+     */
+    private $types = [];
+
+    /**
+     * @var StudentConvention
+     *
+     * @ORM\OneToOne(targetEntity="StudentConvention")
+     * @ORM\JoinColumn(referencedColumnName="reference")
+     * @Groups({"user"})
+     */
+    private $studentConvention;
 
     /**
      * {@inheritdoc}
@@ -112,6 +179,26 @@ class User extends BaseUser
         parent::__construct();
 
         $this->jobs = new ArrayCollection();
+    }
+
+    /**
+     * @param int $endingSchoolYear
+     *
+     * @return $this
+     */
+    public function setEndingSchoolYear($endingSchoolYear)
+    {
+        $this->endingSchoolYear = $endingSchoolYear;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getEndingSchoolYear()
+    {
+        return $this->endingSchoolYear;
     }
 
     /**
@@ -174,5 +261,133 @@ class User extends BaseUser
     public function getJobs()
     {
         return $this->jobs;
+    }
+
+    /**
+     * @param string $organizationEmail
+     *
+     * @return $this
+     */
+    public function setOrganizationEmail($organizationEmail)
+    {
+        $this->organizationEmail = $organizationEmail;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrganizationEmail()
+    {
+        return $this->organizationEmail;
+    }
+
+    /**
+     * @param string $organizationEmailCanonical
+     *
+     * @return $this
+     */
+    public function setOrganizationEmailCanonical($organizationEmailCanonical)
+    {
+        $this->organizationEmailCanonical = $organizationEmailCanonical;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrganizationEmailCanonical()
+    {
+        return $this->organizationEmailCanonical;
+    }
+
+    /**
+     * @param StudentConvention $studentConvention
+     *
+     * @return $this
+     */
+    public function setStudentConvention(StudentConvention $studentConvention)
+    {
+        $this->studentConvention = $studentConvention;
+
+        return $this;
+    }
+
+    /**
+     * @return StudentConvention|null
+     */
+    public function getStudentConvention()
+    {
+        return $this->studentConvention;
+    }
+
+    /**
+     * Add the given type if is not already present.
+     *
+     * @param string $type See ::getAllowedTypes() for valid values
+     *
+     * @return $this
+     */
+    public function addType($type)
+    {
+        if (!in_array($type, $this->types)) {
+            $this->types[] = $type;
+        }
+
+        return $this;
+    }
+
+    /**
+     * See ::getAllowedTypes() for valid values.
+     *
+     * @param array $types
+     *
+     * @return $this
+     */
+    public function setTypes(array $types)
+    {
+        $this->types = $types;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
+    /**
+     * @return array Array of all valid values for the ::type property.
+     */
+    public static function getAllowedTypes()
+    {
+        return [
+            'contractor' => self::TYPE_CONTRACTOR,
+            'member'     => self::TYPE_MEMBER,
+        ];
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     *
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        $allowedTypes = array_flip($this->getAllowedTypes());
+
+        foreach ($this->getTypes() as $type) {
+            if (!isset($allowedTypes[$type])) {
+                $context
+                    ->buildViolation('This type is not a valid type')
+                    ->atPath('types')
+                    ->addViolation();
+            }
+        }
     }
 }

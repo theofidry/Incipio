@@ -11,6 +11,7 @@
 
 namespace ApiBundle\DataFixtures\Faker\Provider;
 
+use ApiBundle\Entity\User;
 use ApiBundle\Utils\UserRoles;
 use Faker\Provider\Base as BaseProvider;
 
@@ -46,5 +47,26 @@ class UserProvider
     public function userRole()
     {
         return BaseProvider::randomElement($this->userRoles->getRoles());
+    }
+
+    /**
+     * @param string|null $type If specified, return the type value. See {@see User::getAllowedTypes()} to see valid
+     *                          type names; if is invalid will return en empty array. Otherwise return an array with a
+     *                          random of types.
+     *
+     * @return array Array of user types.
+     */
+    public function userTypes($type = null)
+    {
+        $allowedTypes = User::getAllowedTypes();
+
+        if (null === $type) {
+            return BaseProvider::randomElements($allowedTypes, BaseProvider::numberBetween(1, count($allowedTypes)));
+        }
+
+        return (isset($allowedTypes[$type]))
+            ? [$allowedTypes[$type]]
+            : []
+        ;
     }
 }

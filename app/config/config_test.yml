@@ -10,11 +10,11 @@ framework:
 
 doctrine:
     dbal:
-        default_connection: test
+        dbname:   %database_name%
 
 stof_doctrine_extensions:
     orm:
-        test:
+        default:
             timestampable: true
 
 swiftmailer:
