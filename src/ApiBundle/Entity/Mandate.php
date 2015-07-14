@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table
- * @ORM\Entity(repositoryClass="ApiBundle\Entity\MandateRepository")
+ * @ORM\Entity
  * @UniqueEntity("name")
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
@@ -30,8 +30,8 @@ class Mandate
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -40,7 +40,7 @@ class Mandate
      * @var \DateTime
      *
      * @Iri("https://schema.org/endDate")
-     * @ORM\Column(name="end_at", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      * @Assert\Date
      * @Groups({"user"})
      */
@@ -59,9 +59,9 @@ class Mandate
      * @var string
      *
      * @Iri("https://schema.org/name")
-     * @ORM\Column(name="name", type="string")
+     * @ORM\Column(type="string")
      * @Assert\Type("string")
-     * @Assert\Length(min="5", max="30")
+     * @Assert\Length(min=5, max=30)
      * @Groups({"user"})
      */
     private $name;
@@ -70,7 +70,7 @@ class Mandate
      * @var \DateTime
      *
      * @Iri("https://schema.org/startDate")
-     * @ORM\Column(name="start_at", type="datetime")
+     * @ORM\Column(type="datetime")
      * @Assert\Date
      * @Assert\NotNull
      * @Groups({"user"})

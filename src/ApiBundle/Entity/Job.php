@@ -29,8 +29,8 @@ class Job
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -39,12 +39,9 @@ class Job
      * @var string
      *
      * @Iri("http://schema.org/roleName")
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
-     * @Assert\Length(
-     *  min = 2,
-     *  max = 100
-     * )
+     * @Assert\Length(min=2, max=100)
      * @Groups({"job", "user"})
      */
     private $title;
@@ -53,9 +50,9 @@ class Job
      * @var string Job title abbreviation.
      *
      * @Iri("https://schema.org/alternateName")
-     * @ORM\Column(name="abbreviation", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
-     * @Assert\Length(max = 20)
+     * @Assert\Length(max=20)
      * @Groups({"job", "user"})
      */
     private $abbreviation;
@@ -63,7 +60,7 @@ class Job
     /**
      * @var bool If false the job cannot be used anymore.
      *
-     * @ORM\Column(name="enabled", type="boolean")
+     * @ORM\Column(type="boolean")
      * @Assert\Type("bool")
      * @Assert\NotNull
      */
@@ -73,7 +70,7 @@ class Job
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id")
      * @Groups({"job"})
      */
     private $user;
@@ -82,7 +79,7 @@ class Job
      * @var Mandate
      *
      * @ORM\ManyToOne(targetEntity="Mandate", inversedBy="jobs")
-     * @ORM\JoinColumn(name="mandate_id", referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id")
      * @Groups({"job", "user"})
      */
     private $mandate;

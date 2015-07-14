@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class User: user that have an account in the application.
  *
  * @Iri("https://schema.org/Person")
- * @ORM\Table(name="fos_user")
+ * @ORM\Table
  * @ORM\Entity
  * @UniqueEntity("username")
  * @UniqueEntity("email")
@@ -44,7 +44,6 @@ class User extends BaseUser
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"user"})
      */
     protected $id;
 
@@ -63,7 +62,7 @@ class User extends BaseUser
      * @var string
      *
      * @Iri("https://schema.org/name")
-     * @ORM\Column(name="fullname", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
      * @Groups({"user"})
      *
@@ -101,7 +100,7 @@ class User extends BaseUser
     /**
      * @var ArrayCollection|Job[] List of job for this mandate.
      *
-     * @ORM\OneToMany(targetEntity="ApiBundle\Entity\Job", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Job", mappedBy="user")
      * @Groups({"user"})
      *
      * @TODO: validation: may have no user
