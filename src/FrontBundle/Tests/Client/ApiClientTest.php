@@ -12,7 +12,10 @@
 namespace FrontBundle\Tests\Client;
 
 use FrontBundle\Client\ApiClient;
+use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Query;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Since the client heavily relies on Guzzle client, we only tests the added functionalities which are the token
@@ -51,39 +54,44 @@ class ApiClientTest extends KernelTestCase
      *
      * @dataProvider getMethodProvider
      *
-     * @param string $uriOrRouteName
+     * @param string $url
      * @param bool   $token
      * @param array  $options
      * @param string $expectedUrl
      */
-    public function testOverriddenMethod($uriOrRouteName, $token, $options, $expectedUrl)
+    public function testOverriddenMethod($url, $token, $options, $expectedUrl)
     {
         $tokenValue = (true === $token) ? 'MyToken' : null;
 
         $requests = [
-            'get' => $this->service->get($uriOrRouteName, $tokenValue, $options),
-            'head' => $this->service->head($uriOrRouteName, $tokenValue, $options),
-            'delete' => $this->service->delete($uriOrRouteName, $tokenValue, null, $options),
-            'put' => $this->service->put($uriOrRouteName, $tokenValue, null, $options),
-            'patch' => $this->service->patch($uriOrRouteName, $tokenValue, null, $options),
-            'post' => $this->service->post($uriOrRouteName, $tokenValue, null, $options),
+            'get'    => $this->service->createRequest('GET', $url, $tokenValue, $options),
+            'head'   => $this->service->createRequest('HEAD', $url, $tokenValue, $options),
+            'delete' => $this->service->createRequest('DELETE', $url, $tokenValue, $options),
+            'put'    => $this->service->createRequest('PUT', $url, $tokenValue, $options),
+            'post'   => $this->service->createRequest('POST', $url, $tokenValue, $options),
         ];
 
         foreach ($requests as $request) {
+            $this->assertTrue($request instanceof RequestInterface);
+
             $this->assertEquals(
                 sprintf('http://localhost%s', $expectedUrl),
-                $request->getUrl()
+                urldecode($request->getUrl())
             );
 
             $headerCount = 2;
             if (null !== $tokenValue) {
-                $this->assertTrue($request->getHeader('authorization')->hasValue('Bearer MyToken'));
+                $this->assertTrue($request->hasHeader('authorization'));
+                $this->assertEquals('Bearer MyToken', $request->getHeader('authorization'));
                 ++$headerCount;
+            } else {
+                $this->assertFalse($request->hasHeader('authorization'));
             }
 
             if (isset($options['headers'])) {
                 foreach ($options['headers'] as $header => $value) {
-                    $this->assertTrue($request->getHeader($header)->hasValue($value));
+                    $this->assertTrue($request->hasHeader($header));
+                    $this->assertEquals($value, $request->getHeader($header));
                 }
                 $headerCount += count($options['headers']);
             }
@@ -95,6 +103,25 @@ class ApiClientTest extends KernelTestCase
     public function getMethodProvider()
     {
         return [
+            [
+                null,
+                false,
+                [
+                    'parameters' => ['id' => 14]
+                ],
+                '',
+            ],
+            // route name with parameters
+            // no token
+            // no options
+            [
+                'users_get',
+                false,
+                [
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users/14',
+            ],
             // route name
             // no token
             // no options
@@ -111,12 +138,23 @@ class ApiClientTest extends KernelTestCase
                 'users_cget',
                 false,
                 [
-                    'query' => ['random' => 'test'],
+                    'query'   => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test',
             ],
 
+            // route name with parameters
+            // token
+            // no options
+            [
+                'users_get',
+                true,
+                [
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users/14',
+            ],
             // route name
             // token
             // no options
@@ -126,6 +164,19 @@ class ApiClientTest extends KernelTestCase
                 [],
                 '/api/users',
             ],
+            // route name with parameters
+            // no token
+            // no options
+            [
+                'users_get',
+                false,
+                [
+                    'query'      => ['random' => 'test'],
+                    'headers'    => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users/14?random=test',
+            ],
             // route name
             // token
             // options
@@ -133,7 +184,7 @@ class ApiClientTest extends KernelTestCase
                 'users_cget',
                 true,
                 [
-                    'query' => ['random' => 'test'],
+                    'query'   => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test',
@@ -155,7 +206,7 @@ class ApiClientTest extends KernelTestCase
                 '/api/users',
                 false,
                 [
-                    'query' => ['random' => 'test'],
+                    'query'   => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test',
@@ -177,7 +228,7 @@ class ApiClientTest extends KernelTestCase
                 '/api/users',
                 true,
                 [
-                    'query' => ['random' => 'test'],
+                    'query'   => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?random=test',
@@ -199,10 +250,10 @@ class ApiClientTest extends KernelTestCase
                 '/api/users?lol',
                 false,
                 [
-                    'query' => ['random' => 'test'],
+                    'query'   => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
-                '/api/users?random=test&lol',
+                '/api/users?lol&random=test',
             ],
 
             // URI with params
@@ -221,10 +272,101 @@ class ApiClientTest extends KernelTestCase
                 '/api/users?lol',
                 true,
                 [
+                    'query'   => ['random' => 'test'],
+                    'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                ],
+                '/api/users?lol&random=test',
+            ],
+            // URI with params
+            // token
+            // options with ignored parameters
+            [
+                '/api/users?lol',
+                true,
+                [
+                    'query'      => ['random' => 'test'],
+                    'headers'    => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users?lol&random=test',
+            ],
+
+            // URL with params
+            // token
+            // options
+            [
+                'http://localhost/api/users?lol',
+                true,
+                [
                     'query' => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
-                '/api/users?random=test&lol',
+                '/api/users?lol&random=test',
+            ],
+            // URL with params
+            // token
+            // options with ignored parameters
+            [
+                'http://localhost/api/users?lol',
+                true,
+                [
+                    'query'      => ['random' => 'test'],
+                    'headers'    => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users?lol&random=test',
+            ],
+
+            // URL with params inline
+            // token
+            // options with ignored parameters
+            // Full array
+            [
+                'http://localhost/api/users?lol',
+                true,
+                [
+                    'query'      => ['id' => 14, 'filter' => ['order' => ['startAt' => 'desc']]],
+                    'headers'    => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users?lol&id=14&filter[order][startAt]=desc',
+            ],
+            // Partial array
+            [
+                'http://localhost/api/users?lol',
+                true,
+                [
+                    'query'      => ['id' => 14, 'filter[order][startAt]=desc' => null],
+                    'headers'    => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users?lol&id=14&filter[order][startAt]=desc',
+            ],
+            // Conflicting partials
+            [
+                'http://localhost/api/users?lol',
+                true,
+                [
+                    'query'      => [
+                        'id' => 14,
+                        'filter[order][startAt]=desc' => null,
+                        'filter' => ['order' => ['endAt' => 'asc']]
+                    ],
+                    'headers'    => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users?lol&id=14&filter[order][startAt]=desc&filter[order][endAt]=asc',
+            ],
+            // Query is string
+            [
+                'http://localhost/api/users?lol',
+                true,
+                [
+                    'query'      => 'filter[order][startAt]=desc',
+                    'headers'    => ['Foo' => 'Bar', 'Baz' => 'Bam'],
+                    'parameters' => ['id' => 14]
+                ],
+                '/api/users?lol&filter[order][startAt]=desc',
             ],
         ];
     }

@@ -47,6 +47,10 @@ dunglas_api:
 
 # CsaGuzzleBundle
 csa_guzzle:
+    clients:
+        local_api:
+            config:
+                base_url: http://localhost
     profiler: %kernel.debug%
     logger:   %kernel.debug%
 

@@ -11,9 +11,8 @@
 
 namespace FrontBundle\Client;
 
-use Guzzle\Common\Collection;
-use Guzzle\Common\Exception\RuntimeException;
-use Guzzle\Http\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Query;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
@@ -22,107 +21,103 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class ApiClient extends GuzzleClient implements ApiClientInterface
+class ApiClient implements ApiClientInterface
 {
+    /**
+     * @var string Base URL used. Is guaranteed of not having an trailing slash unlike the client baseUrl (which is
+     *             not changeable after instantiation.
+     */
+    private $baseUrl;
+
+    /**
+     * @var GuzzleClientInterface
+     */
+    private $client;
+
     /**
      * @var Router
      */
     private $router;
 
     /**
-     * @param Router $router  Component used to generate URI from route names
+     * @param GuzzleClientInterface $client Adapted service: guzzle client
+     * @param Router                $router Component used to generate URI from route names
      */
-    public function setRouter(Router $router)
+    public function __construct(GuzzleClientInterface $client, Router $router)
     {
+        $this->client = $client;
+
+        // Check for base URL to remove trailing slash if present
+        $baseUrl = $this->client->getBaseUrl();
+        $lastCharacter = strlen($baseUrl) - 1;
+        if ('/' === $baseUrl[$lastCharacter]) {
+            $baseUrl = substr($baseUrl, $lastCharacter);
+        }
+        $this->baseUrl = $baseUrl;
+
         $this->router = $router;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get($uriOrRouterName = null, $token = null, $options = [])
+    public function createRequest($method, $url = null, $token = null, array $options = [])
     {
-        return parent::get($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function head($uriOrRouterName = null, $token = null, array $options = [])
-    {
-        return parent::head($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($uriOrRouterName = null, $token = null, $body = null, array $options = array())
-    {
-        return parent::delete($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $body, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function put($uriOrRouterName = null, $token = null, $body = null, array $options = array())
-    {
-        return parent::put($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $body, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function patch($uriOrRouterName = null, $token = null, $body = null, array $options = array())
-    {
-        return parent::patch($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $body, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function post($uriOrRouterName = null, $token = null, $postBody = null, array $options = array())
-    {
-        return parent::post($this->getUri($uriOrRouterName), $this->extractHeaders($token, $options), $postBody, $options);
-    }
-
-    /**
-     * For the API client, headers are not often set it have been removed from the most of the client functions
-     * signature and have been moved in the query options. However as they are still used for the call of the Guzzle
-     * client, this helper extract it form the options to return only the query headers.
-     *
-     * In the process the helper also set the bearer token header.
-     *
-     * @param string|null $token   API token
-     * @param array       $options Request options
-     *
-     * @return array Request headers
-     */
-    private function extractHeaders($token = null, array &$options = [])
-    {
-        // Extract header from options
-        $headers = [];
-        if (isset($options['headers'])) {
-            $headers = $options['headers'];
-            unset($options['headers']);
+        // Extract parameters
+        $parameters = [];
+        if (isset($options['parameters'])) {
+            $parameters = $options['parameters'];
+            unset($options['parameters']);
         }
 
         // Add authorization token
         if (null !== $token) {
-            $headers['authorization'] = sprintf('Bearer %s', $token);
+            $options['headers']['authorization'] = sprintf('Bearer %s', $token);
         }
 
-        return $headers;
+        // If Query is a string cast it
+        if (isset($options['query']) && is_string($options['query'])) {
+            $options['query'] = Query::fromString($options['query']);
+        }
+
+        return $this->client->createRequest($method, $this->buildUrl($url, $parameters), $options);
     }
 
     /**
-     * If the input parameter is an URI, the URI is returned unchanged. If is a route, return its matching URI.
-     * 
-     * @param string $uriOrRouterName
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    private function getUri($uriOrRouterName)
+    public function request($method, $url = null, $token = null, $options = [])
     {
-        return (false !== strpos($uriOrRouterName, '/')) ? $uriOrRouterName : $this->router->generate($uriOrRouterName);
+        return $this->client->send($this->createRequest($method, $url, $token, $options));
+    }
+
+    /**
+     * Expand a URI template and inherit from the base URL if it's relative
+     *
+     * @param string|null $url       URL or an array of the URI template to expand
+     *                          followed by a hash of template varnames.
+     * @param array $parameters route name parameters. If $url parameter passed is not a route name, this parameter
+     *                          is ignored.
+     *
+     * @return string URL
+     */
+    private function buildUrl($url = null, array $parameters = [])
+    {
+        if (null === $url) {
+            return $this->baseUrl;
+        }
+
+        // Is absolute URL, left unchanged
+        if (false !== strpos($url, '://')) {
+            return $url;
+        }
+
+        // Is URI
+        if (false !== strpos($url, '/')) {
+            return sprintf('%s%s', $this->baseUrl, $url);
+        }
+
+        // Is a route name
+        return $this->buildUrl($this->router->generate($url, $parameters));
     }
 }

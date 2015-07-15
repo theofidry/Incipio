@@ -165,7 +165,7 @@ class User extends BaseUser
     protected $username;
 
     /**
-     * @var ArrayCollection|Job[] List of job for this mandate.
+     * @var ArrayCollection|Job[] List of job for this user.
      *
      * @ORM\OneToMany(targetEntity="Job", mappedBy="user")
      * @Groups({"user"})
