@@ -11,13 +11,16 @@
 
 - name:  Download Symfony2 auto-complete script
   shell: >
-    git clone https://github.com/KnpLabs/symfony2-autocomplete.git
+    cd ~
+    && git clone https://github.com/KnpLabs/symfony2-autocomplete.git
     && cp symfony2-autocomplete/symfony2-autocomplete.bash .symfony2-autocomplete.bash
     && rm -rf symfony2-autocomplete
   ignore_errors: true
 
 - name: Download Git auto-complete script
-  shell: curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o .git-completion.bash
+  shell: >
+    cd ~
+    && curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o .git-completion.bash
 
 - name:  Correct user permissions
   sudo:  yes

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "deb60b72f21de3d3f4563bacd522e1b5",
+    "hash": "75a84ca0ac6620a97f9b6c88b3f179c1",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -872,12 +872,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dunglas/DunglasApiBundle.git",
-                "reference": "b811e4c87dba3cd7181801b33344a02473e389c0"
+                "reference": "2229fcf0a32c17af89732fac58d47854a10a5214"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/b811e4c87dba3cd7181801b33344a02473e389c0",
-                "reference": "b811e4c87dba3cd7181801b33344a02473e389c0",
+                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/2229fcf0a32c17af89732fac58d47854a10a5214",
+                "reference": "2229fcf0a32c17af89732fac58d47854a10a5214",
                 "shasum": ""
             },
             "require": {
@@ -890,7 +890,7 @@
                 "phpdocumentor/reflection": "^1.0.7",
                 "symfony/framework-bundle": "~2.6|~3.0",
                 "symfony/proxy-manager-bridge": "~2.3",
-                "symfony/serializer": "~2.7|~3.0",
+                "symfony/serializer": "^2.7.2|~3.0",
                 "symfony/validator": "~2.5|~3.0"
             },
             "require-dev": {
@@ -938,7 +938,7 @@
                 "json",
                 "rest"
             ],
-            "time": "2015-07-13 11:56:58"
+            "time": "2015-07-15 14:19:51"
         },
         {
             "name": "dunglas/php-property-info",
@@ -1069,16 +1069,16 @@
         },
         {
             "name": "friendsofsymfony/http-cache-bundle",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSHttpCacheBundle.git",
-                "reference": "b048546bfcdef0c0cc0d196b1a62d821f429b8e7"
+                "reference": "ae7aca769497cd68ddf611caff11f22ddf420aba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSHttpCacheBundle/zipball/b048546bfcdef0c0cc0d196b1a62d821f429b8e7",
-                "reference": "b048546bfcdef0c0cc0d196b1a62d821f429b8e7",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSHttpCacheBundle/zipball/ae7aca769497cd68ddf611caff11f22ddf420aba",
+                "reference": "ae7aca769497cd68ddf611caff11f22ddf420aba",
                 "shasum": ""
             },
             "require": {
@@ -1142,7 +1142,7 @@
                 "purge",
                 "varnish"
             ],
-            "time": "2015-06-11 11:19:02"
+            "time": "2015-07-13 06:45:45"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -1613,12 +1613,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/theofidry/AliceBundle.git",
-                "reference": "031168fd2ed189ffb30fe62c0c6f539a74c18464"
+                "reference": "08e7f7e9a12fe1544866212fb5c89f2165e0527f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theofidry/AliceBundle/zipball/031168fd2ed189ffb30fe62c0c6f539a74c18464",
-                "reference": "031168fd2ed189ffb30fe62c0c6f539a74c18464",
+                "url": "https://api.github.com/repos/theofidry/AliceBundle/zipball/08e7f7e9a12fe1544866212fb5c89f2165e0527f",
+                "reference": "08e7f7e9a12fe1544866212fb5c89f2165e0527f",
                 "shasum": ""
             },
             "require": {
@@ -1675,7 +1675,7 @@
                 "source": "https://github.com/theofidry/AliceBundle/tree/master",
                 "issues": "https://github.com/theofidry/AliceBundle/issues"
             },
-            "time": "2015-07-13 13:35:57"
+            "time": "2015-07-14 11:31:12"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -3123,16 +3123,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.7.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "932b6e7499c670f4db6d0b871477a4a3ca161e74"
+                "reference": "969d709ad428076bf1084e386dc26dd904d9fb84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/932b6e7499c670f4db6d0b871477a4a3ca161e74",
-                "reference": "932b6e7499c670f4db6d0b871477a4a3ca161e74",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/969d709ad428076bf1084e386dc26dd904d9fb84",
+                "reference": "969d709ad428076bf1084e386dc26dd904d9fb84",
                 "shasum": ""
             },
             "require": {
@@ -3241,7 +3241,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-06-11 21:15:28"
+            "time": "2015-07-13 19:27:49"
         },
         {
             "name": "theofidry/loopback-api-bundle",
@@ -4403,16 +4403,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "1.4.3",
+            "version": "1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "44adc6f25592c6990409607c95537f577861f9b1"
+                "reference": "8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/44adc6f25592c6990409607c95537f577861f9b1",
-                "reference": "44adc6f25592c6990409607c95537f577861f9b1",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce",
+                "reference": "8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce",
                 "shasum": ""
             },
             "require": {
@@ -4465,7 +4465,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2015-07-13 05:06:53"
+            "time": "2015-07-14 16:29:50"
         },
         {
             "name": "matthiasnoback/symfony-config-test",
@@ -5525,16 +5525,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v2.7.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "d3c39dccb646eb2f6593d6a1a3911260dc6b1620"
+                "reference": "d01f81ca48d76f5af818017f81b2ef93e892e425"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/d3c39dccb646eb2f6593d6a1a3911260dc6b1620",
-                "reference": "d3c39dccb646eb2f6593d6a1a3911260dc6b1620",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/d01f81ca48d76f5af818017f81b2ef93e892e425",
+                "reference": "d01f81ca48d76f5af818017f81b2ef93e892e425",
                 "shasum": ""
             },
             "require": {
@@ -5573,7 +5573,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2015-06-03 21:50:52"
+            "time": "2015-06-30 08:16:45"
         },
         {
             "name": "vipsoft/doctrine-data-fixtures-extension",

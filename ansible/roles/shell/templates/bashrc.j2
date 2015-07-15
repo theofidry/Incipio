@@ -140,24 +140,24 @@ extract () {
 }
 
 # edit aliases configuration
-alias config='editor ~/.bashrc'
+alias config='${EDITOR} ~/.bashrc'
 alias reload='source ~/.bashrc'
 alias update='sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove && sudo composer self-update'
 
 # Symfony2
-alias sf='php app/console'
-alias sf2='php app/console'
+APP_DIR='/var/www/{{ symfony_src_dir }}/app'
+alias sf='php ${APP_DIR}/console'
 alias cdw='cd /var/www/{{ symfony_src_dir }}'
 alias ..='cd ..'
 alias ...='cd ...'
-alias sfcch='sudo chmod -R 777 app/cache app/log'
+alias sfcch='sudo chmod -R 777 ${APP_DIR}/cache ${APP_DIR}/logs'
 alias sfchc='sfcch'
-alias sfcc='sudo chmod -R 777 app/cache app/log && php app/console cache:clear && sudo chmod -R 777 app/cache app/log'
-alias sfcrm='sudo rm -rf app/cache/* app/log/* && sudo chmod -R 777 app/cache app/log'
+alias sfcc='sudo chmod -R 777 ${APP_DIR}/cache ${APP_DIR}/logs && php ${APP_DIR}/console cache:clear && sudo chmod -R 777 ${APP_DIR}/cache app/logs'
+alias sfcrm='sudo rm -rf ${APP_DIR}/cache/* ${APP_DIR}/logs/* && sudo chmod -R 777 ${APP_DIR}/cache ${APP_DIR}/logs'
 alias sfrmc='sfcrm'
 alias sft='composer test'
 alias sfdb='composer db'
 alias ngerr='sudo -u www-data tail -f /var/log/nginx/error.log'
 alias ngacc='sudo -u www-data tail -f /var/log/nginx/access.log'
-alias sfdevl='tail -f {{ symfony_src_dir }}/app/log/dev.log'
-alias sfprodl='tail -f {{ symfony_src_dir }}/app/log/prod.log'
+alias sfdevl='tail -f ${APP_DIR}/logs/dev.log'
+alias sfprodl='tail -f ${APP_DIR}/logs/prod.log'
