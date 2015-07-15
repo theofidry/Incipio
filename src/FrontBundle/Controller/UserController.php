@@ -51,6 +51,7 @@ class UserController extends BaseController
             $this->client->get('users_cget', $request->getSession()->get('api_token'))->send()->getBody(true),
             'json'
         );
+
         $users = $decodedResponse['hydra:member'];
         while (isset($decodedResponse['hydra:nextPage'])) {
             $decodedResponse = $this->serializer->decode(

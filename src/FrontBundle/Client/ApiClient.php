@@ -30,16 +30,10 @@ class ApiClient extends GuzzleClient implements ApiClientInterface
     private $router;
 
     /**
-     * @param Router           $router  Component used to generate URI from route names
-     * @param string           $baseUrl Base URL of the web service
-     * @param array|Collection $config  Configuration settings
-     *
-     * @throws RuntimeException if cURL is not installed
+     * @param Router $router  Component used to generate URI from route names
      */
-    public function __construct(Router $router, $baseUrl = '', $config = null)
+    public function setRouter(Router $router)
     {
-        parent::__construct($baseUrl, $config);
-
         $this->router = $router;
     }
 

@@ -26,7 +26,6 @@ interface ApiClientInterface
      *
      * @example
      *  ::get(users, $token, ['query' => 'filter' => 'where' => ['name' => 'john'])
-     *  ::get(users, $token, ['query' => 'filter[where][name]=john'])
      *  ::get(/users?filter[where][name]=john, $token)
      *
      * Will all yield: GET /users?filter[where][name]=john

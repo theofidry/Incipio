@@ -3,11 +3,10 @@ parameters:
 
 services:
     api.client:
-        class: FrontBundle\Client\ApiClient
-        arguments:
-            - @router
-            - http://localhost/api
-#        tags: [ { name: csa_guzzle.client } ]
+        class:     FrontBundle\Client\ApiClient
+        arguments: [ { base_uri: http://localhost/ } ]
+        calls:     [ [ setRouter, [ @router ] ] ]
+        tags:      [ { name: csa_guzzle.client } ]
 
     front.security.roles.helper:
         class: FrontBundle\Utils\RoleHierarchyHelper
