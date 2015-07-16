@@ -12,6 +12,7 @@
 namespace ApiBundle\Tests\DataFixtures\Faker\Provider;
 
 use ApiBundle\DataFixtures\Faker\Provider\UserProvider;
+use ApiBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -60,5 +61,31 @@ class UserProviderTest extends KernelTestCase
         for ($i = 0; $i <= self::N; ++$i) {
             $this->assertTrue(in_array($this->provider->userRole(), $this->roles), 'Expected to generate a known role');
         }
+    }
+
+    /**
+     * @testdox Test the UserProvider::userTypes
+     *
+     * @covers ::userTypes
+     */
+    public function testUserTypes()
+    {
+        $allowedTypes = User::getAllowedTypes();
+
+        // Test random generation
+        for ($i = 0; $i <= self::N; ++$i) {
+            $types = $this->provider->userTypes();
+            foreach ($types as $type) {
+                $this->assertTrue(in_array($type, $allowedTypes), 'Expected to generate a valid type');
+            }
+
+        }
+
+        // Test get specified type
+        $this->assertEquals([User::TYPE_CONTRACTOR], $this->provider->userTypes('contractor'));
+        $this->assertEquals([User::TYPE_MEMBER], $this->provider->userTypes('member'));
+
+        // Test get invalid type
+        $this->assertEquals([], $this->provider->userTypes('unknown'));
     }
 }

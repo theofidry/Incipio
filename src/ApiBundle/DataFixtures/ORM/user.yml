@@ -7,41 +7,62 @@ ApiBundle\Entity\User:
         plainPassword: guest
         enabled:       true
         jobs:          <numberBetween(0, 12)>x @job__*
+        types:         <userTypes()>
 
     # Keep this user as the first one so that he get the ID #1.
     user_president (extends user):
-        username: president.tendiserp
-        fullname: Président TENDISERP
-        email:    president.tendiserp@incipio.fr
-        roles:    [ ROLE_ADMIN ]
-        jobs:     [ @job_president ]
+        username:          president.tendiserp
+        fullname:          Président TENDISERP
+        email:             president.tendiserp@incipio.fr
+        roles:             [ ROLE_ADMIN ]
+        jobs:              [ @job_president ]
+        studentConvention: @ce_president
+        types:             [ 'member' ]
 
     admin_user:
-        username:      admin
-        fullname:      Admin NIMDA
-        email:         admin@incipio.fr
-        enabled:       true
-        plainPassword: admin
-        enabled:       true
-        superadmin:    true
+        username:          admin
+        fullname:          Admin NIMDA
+        email:             admin@incipio.fr
+        enabled:           true
+        plainPassword:     admin
+        enabled:           true
+        studentConvention: @ce_admin
+        superadmin:        true
+        types:             [ 'member' ]
 
     ca_user:
-        username:      ca
-        fullname:      Ca AC
-        email:         ca-member@incipio.fr
-        plainPassword: ca
-        enabled:       true
-        roles:         [ ROLE_ADMIN ]
+        username:          ca
+        fullname:          Ca AC
+        email:             ca-member@incipio.fr
+        plainPassword:     ca
+        enabled:           true
+        roles:             [ ROLE_ADMIN ]
+        studentConvention: @ce_ca
+        types:             [ 'member' ]
 
     guest_user:
-        username:      guest
-        fullname:      Guest TSEUG
-        email:         guest@incipio.fr
-        plainPassword: guest
-        enabled:       true
-        roles:         [ ROLE_USER ]
+        username:          guest
+        fullname:          Guest TSEUG
+        email:             guest@incipio.fr
+        plainPassword:     guest
+        enabled:           true
+        roles:             [ ROLE_USER ]
+        studentConvention: @ce_guest
+        types:             [ 'member' ]
 
-    user__{0..50} (extends user): {}
+    guest_contractor:
+        username:          contractor
+        fullname:          Contractor ROTCARTNOC
+        email:             contractor@incipio.fr
+        plainPassword:     contractor
+        enabled:           true
+        roles:             [ ROLE_USER ]
+        studentConvention: @ce_guest_contractor
+        types:             [ 'contractor' ]
 
-    user__{0..10} (extends user):
-        enabled: false
+    user__{0..49} (extends user):
+        studentConvention: @ce_user__<current()>
+
+    user__{50..60} (extends user):
+        enabled:           false
+        studentConvention: @ce_user__<current()>

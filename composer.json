@@ -19,7 +19,7 @@
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/orm": "~2.5",
         "dunglas/api-bundle": "dev-master",
-        "csa/guzzle-bundle": "2.0.x-dev",
+        "csa/guzzle-bundle": "~1.3",
         "friendsofsymfony/http-cache-bundle": "~1.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "hautelook/alice-bundle": "dev-master",

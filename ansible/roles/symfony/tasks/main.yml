@@ -1,23 +1,25 @@
 ---
-- name: Correct files permission
-  file: path={{ item.path }} owner={{ item.owner }} recurse=yes state=directory
-  with_items:
-    - path:  /var/www/{{ symfony_src_dir }}
-      owner: "{{ symfony_owner }}"
-    - path:  /var/www/{{ symfony_src_dir }}/app/cache
-      owner: www-data
-    - path:  /var/www/{{ symfony_src_dir }}/app/log
-      owner: www-data
+# Task ignored as with current provision the permissions are handled by Vagrant/the VM provisioner
+#- name: Correct files permission
+#  file: path={{ item.path }} owner={{ item.owner }} recurse=yes state=directory
+#  with_items:
+#    - path:  /var/www/{{ symfony_src_dir }}
+#      owner: "{{ symfony_owner }}"
+#    - path:  /var/www/{{ symfony_src_dir }}/app/cache
+#      owner: www-data
+#    - path:  /var/www/{{ symfony_src_dir }}/app/logs
+#      owner: www-data
 
-- name: Initialize optional Symfony JWT public key
-  copy:
-    content: "{{ symfony_jwt_public_key }}"
-    dest:    "{{ symfony_src_dir }}/app/config/jwt/public.pem"
-
-- name: Initialize optional Synfony JWT private key
-  copy:
-    content: "{{ symfony_jwt_private_key }}"
-    dest:    "{{ symfony_src_dir }}/app/config/jwt/private.pem"
+# Somehow make this work to avoid to commit the certificate files
+#- name: Initialize optional Symfony JWT public key
+#  copy:
+#    content: "{{ symfony_jwt_public_key }}"
+#    dest:    "/var/www/{{ symfony_src_dir }}/app/config/jwt/public.pem"
+#
+#- name: Initialize optional Synfony JWT private key
+#  copy:
+#    content: "{{ symfony_jwt_private_key }}"
+#    dest:    "/var/www/{{ symfony_src_dir }}/app/config/jwt/private.pem"
 
 # Is disabled at the moment since takes too much time
 #- name:  Install composer dependencies
@@ -31,28 +33,28 @@
 # If already exists, try to update it and if fails drop it to recreate it
 # Fixtures are reloaded
 - name:     Create database
-  shell:    php app/console doctrine:database:create
+  shell:    php /var/www/{{ symfony_src_dir }}/app/console doctrine:database:create
   register: database_result
   ignore_errors: true
 
 - name:  Create database schema
-  shell: php app/console doctrine:schema:create
+  shell: php /var/www/{{ symfony_src_dir }}/app/console doctrine:schema:create
   when:  database_result|success
   ignore_errors: true
 
 - name:     Update database schema
-  shell:    php app/console doctrine:schema:update --force
+  shell:    php /var/www/{{ symfony_src_dir }}/app/console doctrine:schema:update --force
   when:     database_result|failed
   register: database_schema
   ignore_errors: true
 
 - name:  Drop database and recreate it
   shell: >
-    php app/console doctrine:schema:create
-    && php app/console doctrine:schema:create
+    php /var/www/{{ symfony_src_dir }}/app/console doctrine:schema:create
+    && php /var/www/{{ symfony_src_dir }}/app/console doctrine:schema:create
   when:  database_schema|failed
   ignore_errors: true
 
 - name:  Reload fixtures
-  shell: php app/console doctrine:fixtures:load -n
+  shell: php /var/www/{{ symfony_src_dir }}/app/console doctrine:fixtures:load -n
   ignore_errors: true

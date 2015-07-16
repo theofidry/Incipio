@@ -37,7 +37,7 @@ class JobProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->provider = new JobProvider(\Faker\Factory::create());
+        $this->provider = new JobProvider();
     }
 
     /**

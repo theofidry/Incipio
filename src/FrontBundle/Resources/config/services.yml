@@ -5,9 +5,8 @@ services:
     api.client:
         class: FrontBundle\Client\ApiClient
         arguments:
-            - @router
-            - http://localhost/api
-#        tags: [ { name: csa_guzzle.client } ]
+            -  @csa_guzzle.client.local_api
+            -  @router
 
     front.security.roles.helper:
         class: FrontBundle\Utils\RoleHierarchyHelper

@@ -25,10 +25,25 @@ services:
         arguments: [ @hautelook_alice.faker ]
         tags:      [ { name: hautelook_alice.faker.provider } ]
 
+    faker.provider.student_convention:
+        class:     ApiBundle\DataFixtures\Faker\Provider\StudentConventionProvider
+        tags:      [ { name: hautelook_alice.faker.provider } ]
+
     faker.provider.user:
         class:     ApiBundle\DataFixtures\Faker\Provider\UserProvider
         arguments: [ @api.user.roles ]
         tags:      [ { name: hautelook_alice.faker.provider } ]
+
+
+    # FOSUserBundle manager
+    fos_user.user_manager.default:
+        class: ApiBundle\Doctrine\UserManager
+        arguments:
+            -  @security.encoder_factory
+            -  @fos_user.util.username_canonicalizer
+            -  @fos_user.util.email_canonicalizer
+            -  @fos_user.entity_manager
+            -  %fos_user.model.user.class%
 
 
     #
@@ -53,6 +68,19 @@ services:
     resource.mandate:
         parent:    api.resource
         arguments: [ ApiBundle\Entity\Mandate ]
+        calls:
+            - method:    initFilters
+              arguments:
+                -
+                    -    @api.filter.order_filter
+                    -    @api.filter.where_filter
+        tags:      [ { name: api.resource } ]
+
+
+    # StudentConvention resource
+    resource.student_convention:
+        parent:    api.resource
+        arguments: [ ApiBundle\Entity\StudentConvention ]
         calls:
             - method:    initFilters
               arguments:

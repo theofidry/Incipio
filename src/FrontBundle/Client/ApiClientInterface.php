@@ -11,10 +11,8 @@
 
 namespace FrontBundle\Client;
 
-use Guzzle\Common\Collection;
-use Guzzle\Http\EntityBodyInterface;
-use Guzzle\Http\Message\EntityEnclosingRequestInterface;
-use Guzzle\Http\Message\RequestInterface;
+use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Message\ResponseInterface;
 
 /**
  * @author Théo FIDRY <theo.fidry@gmail.com>
@@ -22,95 +20,55 @@ use Guzzle\Http\Message\RequestInterface;
 interface ApiClientInterface
 {
     /**
-     * Create a GET request for the client.
+     * Create and return a new {@see RequestInterface} object. All get, head, etc. methods are generated via this
+     * method.
      *
      * @example
-     *  ::get(users, $token, ['query' => 'filter' => 'where' => ['name' => 'john'])
-     *  ::get(users, $token, ['query' => 'filter[where][name]=john'])
-     *  ::get(/users?filter[where][name]=john, $token)
+     *  If URL is empty, only the base URL will be used:
+     *  ::createRequest('GET')
+     *  => http://localhost
      *
-     * Will all yield: GET /users?filter[where][name]=john
+     *  If URI is used, add the base URL to generate the proper URL to request
+     *  ::createRequest('GET', '/api/users')
+     *  => http://localhost/api/users
      *
-     * @param string|null $uriOrRouterName URI or route name. Is considered as URI when the string starts with a  `/`
-     *                                     character.
-     * @param string|null $token           API token
-     * @param array       $options         Options to apply to the request {@see
-     *                                     Guzzle\Http\Message\RequestFactoryInterface::applyOptions()}
+     *  If route name is used, will first generate the URI before applying the base URL; can use parameters
+     *  ::createRequest('GET', 'users_cget')
+     *  => http://localhost/api/users
+     *
+     *  ::createRequest('GET', 'users_get', null, ['parameters' => ['id' => 14]])
+     *  => http://localhost/api/users/14
+     *
+     *  Can also apply other options
+     *  ::createRequest('GET', null, null, ['query' => ['id' => 14, 'filter' => ['order' => ['startAt' => 'desc']]])
+     *  => http://localhost?id=14&filter[where][name]=john
+     *
+     *  But passing queries this way might be simpler
+     *  ::createRequest('GET', null, null, ['query' => ['id' => 14, 'filter[where][name]=john' => null])
+     *  => http://localhost?id=14&filter[where][name]=john
+     *
+     *  Or if you have just one query
+     *  ::createRequest('GET', null, null, ['query' => 'filter[where][name]=john')
+     *  => http://localhost?filter[where][name]=john
+     *
+     * @param string      $method  HTTP method.
+     * @param string|null $url     URL,  URL, URI or route name.
+     * @param string|null $token   API token.
+     * @param array       $options Array of request options to apply.
      *
      * @return RequestInterface
      */
-    public function get($uriOrRouterName = null, $token = null, $options = []);
+    public function createRequest($method, $url = null, $token = null, array $options = []);
 
     /**
-     * Create a HEAD request for the client.
+     * Send a GET request for the client.
      *
-     * @param string|null $uriOrRouterName URI or route name. Is considered as URI when the string starts with a  `/`
-     *                                     character.
-     * @param string|null $token           API token
-     * @param array       $options         Options to apply to the request {@see
-     *                                     Guzzle\Http\Message\RequestFactoryInterface::applyOptions()}
+     * @param string      $method  HTTP method
+     * @param string|null $url     URL, URI or route name.
+     * @param string|null $token   API token.
+     * @param array       $options Options applied to the request.
      *
-     * @return RequestInterface
+     * @return ResponseInterface
      */
-    public function head($uriOrRouterName = null, $token = null, array $options = []);
-
-    /**
-     * Create a DELETE request for the client.
-     *
-     * @param string|null                         $uriOrRouterName URI or route name. Is considered as URI when the
-     *                                                             string starts with a  `/` character.
-     * @param string|null                         $token           API token
-     * @param string|resource|EntityBodyInterface $body            Body to send in the request
-     * @param array                               $options         Options to apply to the request {@see
-     *                                                             Guzzle\Http\Message\RequestFactoryInterface::applyOptions()}
-     *
-     * @return EntityEnclosingRequestInterface
-     */
-    public function delete($uriOrRouterName = null, $token = null, $body = null, array $options = []);
-
-    /**
-     * Create a PUT request for the client.
-     *
-     * @param string|null                         $uriOrRouterName URI or route name. Is considered as URI when the
-     *                                                             string starts with a  `/` character.
-     * @param string|null                         $token           API token
-     * @param string|resource|EntityBodyInterface $body            Body to send in the request
-     * @param array                               $options         Options to apply to the request {@see
-     *                                                             Guzzle\Http\Message\RequestFactoryInterface::applyOptions()}
-     *
-     * @return EntityEnclosingRequestInterface
-     */
-    public function put($uriOrRouterName = null, $token = null, $body = null, array $options = []);
-
-    /**
-     * Create a PATCH request for the client.
-     *
-     * @param string|null                         $uriOrRouterName URI or route name. Is considered as URI when the
-     *                                                             string starts with a  `/` character.
-     * @param string|null                         $token           API token
-     * @param string|resource|EntityBodyInterface $body            Body to send in the request
-     * @param array                               $options         Options to apply to the request {@see
-     *                                                             Guzzle\Http\Message\RequestFactoryInterface::applyOptions()}
-     *
-     * @return EntityEnclosingRequestInterface
-     */
-    public function patch($uriOrRouterName = null, $token = null, $body = null, array $options = []);
-
-    /**
-     * Create a PATCH request for the client.
-     *
-     * @param string|null                                 $uriOrRouterName URI or route name. Is considered as URI when
-     *                                                                     the string starts with a  `/` character.
-     * @param string|null                                 $token           API token
-     * @param array|Collection|string|EntityBodyInterface $postBody        POST body. Can be a string, EntityBody, or
-     *                                                                     associative array of POST fields to send in
-     *                                                                     the body of the request. Prefix a value in
-     *                                                                     the array with the @ symbol to reference a
-     *                                                                     file.
-     * @param array                                       $options         Options to apply to the request {@see
-     *                                                                     Guzzle\Http\Message\RequestFactoryInterface::applyOptions()}
-     *
-     * @return EntityEnclosingRequestInterface
-     */
-    public function post($uriOrRouterName = null, $token = null, $postBody = null, array $options = []);
+    public function request($method, $url = null, $token = null, $options = []);
 }

@@ -29,33 +29,19 @@ class Job
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var string
-     *
-     * @Iri("http://schema.org/roleName")
-     * @ORM\Column(name="title", type="string", length=255)
-     * @Assert\Type("string")
-     * @Assert\Length(
-     *  min = 2,
-     *  max = 100
-     * )
-     * @Groups({"job", "user"})
-     */
-    private $title;
-
-    /**
      * @var string Job title abbreviation.
      *
      * @Iri("https://schema.org/alternateName")
-     * @ORM\Column(name="abbreviation", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
-     * @Assert\Length(max = 20)
+     * @Assert\Length(max=20)
      * @Groups({"job", "user"})
      */
     private $abbreviation;
@@ -63,29 +49,40 @@ class Job
     /**
      * @var bool If false the job cannot be used anymore.
      *
-     * @ORM\Column(name="enabled", type="boolean")
+     * @ORM\Column(type="boolean")
      * @Assert\Type("bool")
      * @Assert\NotNull
      */
     private $enabled = true;
 
     /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * @Groups({"job"})
-     */
-    private $user;
-
-    /**
      * @var Mandate
      *
      * @ORM\ManyToOne(targetEntity="Mandate", inversedBy="jobs")
-     * @ORM\JoinColumn(name="mandate_id", referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id")
      * @Groups({"job", "user"})
      */
     private $mandate;
+
+    /**
+     * @var string
+     *
+     * @Iri("http://schema.org/roleName")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(min=2, max=100)
+     * @Groups({"job", "user"})
+     */
+    private $title;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     * @Groups({"job"})
+     */
+    private $user;
 
     /**
      * @return int|null
@@ -93,26 +90,6 @@ class Job
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     /**
@@ -156,32 +133,6 @@ class Job
     }
 
     /**
-     * @param User|null $user
-     *
-     * @return $this
-     */
-    public function setUser(User $user = null)
-    {
-        if (null === $user && null !== $this->user) {
-            $this->user->removeJob($this);
-        } elseif (null !== $user && !$user->getJobs()->contains($this)) {
-            $user->addJob($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return User|null
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
      * @param Mandate|null $mandate
      *
      * @return $this
@@ -205,5 +156,52 @@ class Job
     public function getMandate()
     {
         return $this->mandate;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
+    public function setUser(User $user = null)
+    {
+        if (null === $user && null !== $this->user) {
+            $this->user->removeJob($this);
+        } elseif (null !== $user && !$user->getJobs()->contains($this)) {
+            $user->addJob($this);
+        }
+
+        $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * @return User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

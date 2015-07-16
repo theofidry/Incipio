@@ -48,17 +48,19 @@ class UserController extends BaseController
 
         // Retrieve users
         $decodedResponse = $this->serializer->decode(
-            $this->client->get('users_cget', $request->getSession()->get('api_token'))->send()->getBody(true),
+            $this->client->request('GET', 'users_cget', $request->getSession()->get('api_token'))->getBody(),
             'json'
         );
+
         $users = $decodedResponse['hydra:member'];
         while (isset($decodedResponse['hydra:nextPage'])) {
             $decodedResponse = $this->serializer->decode(
-                $this->client->get(
+                $this->client->request(
+                    'GET',
                     'users_cget',
                     $request->getSession()->get('api_token'),
                     ['query' => $decodedResponse['hydra:nextPage']]
-                )->send()->getBody(true),
+                )->getBody(),
                 'json'
             );
 
@@ -72,22 +74,23 @@ class UserController extends BaseController
 
         // Retrieve mandates
         $decodedResponse = $this->serializer->decode(
-            $this->client->get(
+            $this->client->request(
+                'GET',
                 'mandates_cget',
                 $request->getSession()->get('api_token'),
                 ['query' => 'filter[order][startAt]=desc']
-            )->send()
-                ->getBody(true),
+            )->getBody(),
             'json'
         );
         $mandates = $decodedResponse['hydra:member'];
         while (isset($decodedResponse['hydra:nextPage'])) {
             $decodedResponse = $this->serializer->decode(
-                $this->client->get(
+                $this->client->request(
+                    'GET',
                     $decodedResponse['@id'],
                     $request->getSession()->get('api_token'),
                     ['query' => $decodedResponse['hydra:nextPage']]
-                )->send()->getBody(true),
+                )->getBody(),
                 'json'
             );
 
@@ -162,19 +165,18 @@ class UserController extends BaseController
      */
     public function showAction(Request $request, $id)
     {
-        $client = $this->get('api.client');
-        $serializer = $this->get('serializer');
-
-        $response = $client->get(
-            $this->get('router')->generate('users_get', ['id' => $id]),
-            $request->getSession()->get('api_token')
-        )->send();
+        $response = $this->client->request(
+            'GET',
+            'users_get',
+            $request->getSession()->get('api_token'),
+            ['parameters' => ['id' => $id]]
+        );
 
         if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $user = $serializer->decode($response->getBody(true), 'json');
+        $user = $this->serializer->decode($response->getBody(), 'json');
 
         return ['user' => $user];
     }
@@ -194,16 +196,18 @@ class UserController extends BaseController
      */
     public function editAction(Request $request, $id)
     {
-        $response = $this->client->get(
-            $this->get('router')->generate('users_get', ['id' => $id]),
-            $request->getSession()->get('api_token')
-        )->send();
+        $response = $this->client->request(
+            'GET',
+            'users_get',
+            $request->getSession()->get('api_token'),
+            ['parameters' => ['id' => $id]]
+        );
 
         if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $user = $this->serializer->decode($response->getBody(true), 'json');
+        $user = $this->serializer->decode($response->getBody(), 'json');
 
         return [
             'user' => $user,
@@ -221,52 +225,48 @@ class UserController extends BaseController
      */
     public function updateAction(Request $request, $id)
     {
-        $response = $this->client->get(
-            'users_cget',
-            $request->getSession()->get('api_token'),
-            ['query' => [
-                '',
-                ],
-            ]
-        )->send();
+//        $response = $this->client->get(
+//            'users_cget',
+//            $request->getSession()->get('api_token')
+//        )->send();
+//
+//        if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
+//            throw $this->createNotFoundException('Unable to find User entity.');
+//        }
+//
+//        $jsonContent = $response->getBody(true);
+//        $user = $this->serializer->decode($jsonContent, 'json');
 
-        if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $jsonContent = $response->getBody(true);
-        $user = $this->serializer->decode($jsonContent, 'json');
-
-        dump($user);
-        die();
-
-//        return [
-//            'user' => $user,
-//            'form' => $this->createEditForm($user)->createView(),
-//        ];
-        //TODO
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('ApiUserBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('users_edit', array('id' => $id)));
-        }
+//        dump($user);
+//        die();
+//
+////        return [
+////            'user' => $user,
+////            'form' => $this->createEditForm($user)->createView(),
+////        ];
+//        //TODO
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $entity = $em->getRepository('ApiUserBundle:User')->find($id);
+//
+//        if (!$entity) {
+//            throw $this->createNotFoundException('Unable to find User entity.');
+//        }
+//
+//        $deleteForm = $this->createDeleteForm($id);
+//        $editForm = $this->createEditForm($entity);
+//        $editForm->handleRequest($request);
+//
+//        if ($editForm->isValid()) {
+//            $em->flush();
+//
+//            return $this->redirect($this->generateUrl('users_edit', array('id' => $id)));
+//        }
 
         return array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+//            'entity' => $entity,
+//            'edit_form' => $editForm->createView(),
+//            'delete_form' => $deleteForm->createView(),
         );
     }
 
