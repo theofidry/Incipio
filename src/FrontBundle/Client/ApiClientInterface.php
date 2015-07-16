@@ -12,7 +12,6 @@
 namespace FrontBundle\Client;
 
 use GuzzleHttp\Message\RequestInterface;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\ResponseInterface;
 
 /**
@@ -54,7 +53,7 @@ interface ApiClientInterface
      *
      * @param string      $method  HTTP method.
      * @param string|null $url     URL,  URL, URI or route name.
-     * @param null        $token   API token.
+     * @param string|null $token   API token.
      * @param array       $options Array of request options to apply.
      *
      * @return RequestInterface
