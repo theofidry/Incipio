@@ -11,6 +11,8 @@
 
 namespace FrontBundle\Twig;
 
+use FrontBundle\Utils\RoleHierarchyHelper;
+
 /**
  * Class FrontExtension: class used to create custom Twig functionalities and filters.
  *
@@ -25,7 +27,7 @@ class FrontExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('uriId', [$this, 'uriIdFilter']),
-            new \Twig_SimpleFilter('role', [$this, 'roleFilter']),
+            new \Twig_SimpleFilter('userTopRole', [$this, 'userTopRoleFilter']),
         ];
     }
 
@@ -50,24 +52,31 @@ class FrontExtension extends \Twig_Extension
     }
 
     /**
-     * Reformat role in a clean way.
+     * Reformat role in a clean way. This filter assumes that the roles passed are known to {@see
+     * RoleHierarchyHelper} and formatted following the ROLE_%s mask.
      *
      * @example
-     *  roleFilter('ROLE_USER')         // "user"
-     *  roleFilter('ROLE_ADMIN')        // "admin"
-     *  roleFilter('ROLE_SUPER_ADMIN')  // "root"
+     *  roleFilter(['ROLE_USER'])         // "user"
+     *  roleFilter(['ROLE_ADMIN'])        // "admin"
+     *  roleFilter(['ROLE_SUPER_ADMIN'])  // "root"
      *
-     * @param string $role Valid Symfony role.
+     * @param array $roles Array of valid Symfony roles.
      *
-     * @return string
+     * @return string Formatted top role if role known, empty string otherwise.
      */
-    public function roleFilter($role)
+    public function userTopRoleFilter(array $roles)
     {
-        if ('ROLE_SUPER_ADMIN' === $role) {
+        $topRole = RoleHierarchyHelper::getTopLevelRole($roles);
+
+        if (null === $topRole) {
+            return '';
+        }
+
+        if ('ROLE_SUPER_ADMIN' === $topRole) {
             return 'root';
         }
 
-        return strtolower(substr($role, 5));
+        return strtolower(substr($topRole, 5));
     }
 
     /**

@@ -1,7 +1,7 @@
 {% extends 'FrontBundle:CRUD:index.html.twig' %}
 
 {% block page_header_title -%}
-    <h1>Membres</h1>
+    <h1>Utilisateurs</h1>
 {%- endblock %}
 
 {% block page_header_button -%}
@@ -43,14 +43,7 @@
                 </td>
                 <td>{{ user.email }}</td>
                 <td>
-                    {% if 'ROLE_SUPER_ADMIN' == user.topRole %}
-                        {% set class = 'label label-danger' %}
-                    {% elseif 'ROLE_ADMIN' == user.topRole %}
-                        {% set class = 'label label-primary' %}
-                    {% else %}
-                        {% set class = 'label label-default' %}
-                    {% endif %}
-                    <span class="{{ class }}">{{ user.topRole|role }}</span>
+                    <span class="label label-default">{{ user.roles|userTopRole }}</span>
                 </td>
                 <td>
                     {{ macros.button_entity_show(path('users_show', { 'id': user['@id']|uriId })) }}

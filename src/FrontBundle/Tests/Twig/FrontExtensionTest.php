@@ -48,8 +48,8 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @testdox  Test FrontExtension::uriIdFilter().
      *
-     * @dataProvider uriIdProvider
      * @covers       ::uriIdFilter
+     * @dataProvider uriIdProvider
      *
      * @param string $uri      Input value.
      * @param string $expected Expected output value.
@@ -61,16 +61,17 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox  Test FrontExtension::roleFilter().
+     * @testdox  Test FrontExtension::userTopRoleFilter().
      *
-     * @dataProvider roleProvider
+     * @covers       ::userTopRoleFilter
+     * @dataProvider rolesProvider
      *
-     * @param string $role
+     * @param array  $roles
      * @param string $expected
      */
-    public function testRoleFilter($role, $expected)
+    public function testRoleFilter($roles, $expected)
     {
-        $actual = $this->extension->roleFilter($role);
+        $actual = $this->extension->userTopRoleFilter($roles);
         $this->assertEquals($expected, $actual);
     }
 
@@ -93,14 +94,29 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array List of Symfony role and their expected result.
      */
-    public function roleProvider()
+    public function rolesProvider()
     {
         return [
-            ['ROLE_USER', 'user'],
-            ['ROLE_ADMIN', 'admin'],
-            ['ROLE_SUPER_ADMIN', 'root'],
-            ['ROLE_RANDOM', 'random'],
-            ['ROLE_SUPER_RANDOM', 'super_random'],
+            [['ROLE_USER'], 'user'],
+            [['ROLE_ADMIN'], 'admin'],
+            [['ROLE_SUPER_ADMIN'], 'root'],
+            [['ROLE_UNKNOWN'], ''],
+            [['ROLE_SUPER_UNKNOWN'], ''],
+
+            [['ROLE_USER', 'ROLE_ADMIN'], 'admin'],
+            [['ROLE_ADMIN', 'ROLE_USER'], 'admin'],
+
+            [['ROLE_USER', 'ROLE_SUPER_ADMIN'], 'root'],
+            [['ROLE_SUPER_ADMIN', 'ROLE_USER'], 'root'],
+
+            [['ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], 'root'],
+            [['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'], 'root'],
+
+            [['ROLE_USER', 'ROLE_UNKNOWN'], 'user'],
+            [['ROLE_UNKNOWN', 'ROLE_USER'], 'user'],
+
+            [['ROLE_SUPER_UNKNOWN', 'ROLE_UNKNOWN'], ''],
+            [['ROLE_UNKNOWN', 'ROLE_SUPER_UNKNOWN'], ''],
         ];
     }
 }
