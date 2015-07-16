@@ -135,7 +135,7 @@ class User extends BaseUser
     protected $roles;
 
     /**
-     * Validated via ::validate()
+     * Validated via {@se ::validate()}
      *
      * @var array
      *

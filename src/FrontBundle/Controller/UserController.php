@@ -46,33 +46,31 @@ class UserController extends BaseController
     {
         $roleHelper = $this->get('front.security.roles.helper');
 
-        // Retrieve users
+        // Retrieve users, since it's a paginated collection go through all available pages
+        $users = [];
         $decodedResponse = $this->serializer->decode(
             $this->client->request('GET', 'users_cget', $request->getSession()->get('api_token'))->getBody(),
             'json'
         );
-
-        $users = $decodedResponse['hydra:member'];
+        $users[] = $decodedResponse['hydra:member'];
         while (isset($decodedResponse['hydra:nextPage'])) {
+
             $decodedResponse = $this->serializer->decode(
                 $this->client->request(
                     'GET',
-                    'users_cget',
-                    $request->getSession()->get('api_token'),
-                    ['query' => $decodedResponse['hydra:nextPage']]
+                    $decodedResponse['hydra:nextPage'],
+                    $request->getSession()->get('api_token')
                 )->getBody(),
                 'json'
             );
 
-            $users = array_merge($users, $decodedResponse['hydra:member']);
+            $users[] = $decodedResponse['hydra:member'];
         }
-
-        // Add top level role
-        foreach ($users as $key => $user) {
-            $users[$key]['topRole'] = $roleHelper->getTopLevelRole($user['roles']);
-        }
+        // Flatten array
+        $users = call_user_func_array('array_merge', $users);
 
         // Retrieve mandates
+        $mandates = [];
         $decodedResponse = $this->serializer->decode(
             $this->client->request(
                 'GET',
@@ -82,7 +80,7 @@ class UserController extends BaseController
             )->getBody(),
             'json'
         );
-        $mandates = $decodedResponse['hydra:member'];
+        $mandates[] = $decodedResponse['hydra:member'];
         while (isset($decodedResponse['hydra:nextPage'])) {
             $decodedResponse = $this->serializer->decode(
                 $this->client->request(
@@ -94,8 +92,10 @@ class UserController extends BaseController
                 'json'
             );
 
-            $mandates = array_merge($mandates, $decodedResponse['hydra:member']);
+            $mandates[] = $decodedResponse['hydra:member'];
         }
+        // Flatten array
+        $mandates = call_user_func_array('array_merge', $mandates);
 
         return [
             'mandates' => $mandates,
