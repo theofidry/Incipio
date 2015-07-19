@@ -1,13 +1,13 @@
 ApiBundle\Entity\User:
     user (template):
-        username:      <userName()>
-        fullname:      80%? <name()>
-        email:         <email()>
-        roles:         [ <userRole()> ]
-        plainPassword: guest
-        enabled:       true
-        jobs:          <numberBetween(0, 12)>x @job__*
-        types:         <userTypes()>
+        username (unique): <userName()>
+        fullname (unique): 80%? <name()>
+        email (unique):    <email()>
+        roles:             [ <userRole()> ]
+        plainPassword:     guest
+        enabled:           true
+        jobs:              <numberBetween(0, 12)>x @job__*
+        types:             <userTypes()>
 
     # Keep this user as the first one so that he get the ID #1.
     user_president (extends user):
