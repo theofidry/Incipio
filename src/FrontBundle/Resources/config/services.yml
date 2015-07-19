@@ -8,9 +8,6 @@ services:
             -  @csa_guzzle.client.local_api
             -  @router
 
-    front.security.roles.helper:
-        class: FrontBundle\Utils\RoleHierarchyHelper
-
     front.authentication.success_handler:
         class:     FrontBundle\Security\Http\Authentication\AuthenticationSuccessHandler
         arguments: [ @security.http_utils ]

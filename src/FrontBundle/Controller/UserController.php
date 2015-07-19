@@ -14,6 +14,8 @@ namespace FrontBundle\Controller;
 //TODO: remove reference to User
 use ApiBundle\Entity\User;
 use FrontBundle\Form\Type\UserType;
+use FrontBundle\Form\UserFilteringForm;
+use GuzzleHttp\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -35,26 +37,48 @@ class UserController extends BaseController
      *
      * @Route("/", name="users")
      *
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      * @Template()
      *
      * @param Request $request
      *
-     * @return array Users decoded from JSON.
+     * @return array
      */
     public function indexAction(Request $request)
     {
-        $roleHelper = $this->get('front.security.roles.helper');
+        // Handle filter request
+        $form = $this->createUserFilteringForm($request);
+        $userRequest = $this->client->createRequest('GET', 'api_users_cget', $request->getSession()->get('api_token'));
+
+        // Check if a request has been made to filter the list of users
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $query = '';
+                
+                // Update user request to filter the list of users to match the requested type
+                if (-1 !== $data['user_type']) {
+                    $query .= sprintf('filter[where][type]=%d', $data['user_type']);
+                }
+
+                if (0 !== $data['mandate_id']) {
+                    $query .= sprintf('filter[where][mandate]=%s', $data['mandate_id']);
+                }
+
+                $userRequest->setQuery($query);
+            }
+        }
 
         // Retrieve users, since it's a paginated collection go through all available pages
         $users = [];
         $decodedResponse = $this->serializer->decode(
-            $this->client->request('GET', 'users_cget', $request->getSession()->get('api_token'))->getBody(),
+            $this->client->send($userRequest)->getBody(),
             'json'
         );
         $users[] = $decodedResponse['hydra:member'];
         while (isset($decodedResponse['hydra:nextPage'])) {
-
             $decodedResponse = $this->serializer->decode(
                 $this->client->request(
                     'GET',
@@ -66,40 +90,11 @@ class UserController extends BaseController
 
             $users[] = $decodedResponse['hydra:member'];
         }
-        // Flatten array
         $users = call_user_func_array('array_merge', $users);
 
-        // Retrieve mandates
-        $mandates = [];
-        $decodedResponse = $this->serializer->decode(
-            $this->client->request(
-                'GET',
-                'mandates_cget',
-                $request->getSession()->get('api_token'),
-                ['query' => 'filter[order][startAt]=desc']
-            )->getBody(),
-            'json'
-        );
-        $mandates[] = $decodedResponse['hydra:member'];
-        while (isset($decodedResponse['hydra:nextPage'])) {
-            $decodedResponse = $this->serializer->decode(
-                $this->client->request(
-                    'GET',
-                    $decodedResponse['@id'],
-                    $request->getSession()->get('api_token'),
-                    ['query' => $decodedResponse['hydra:nextPage']]
-                )->getBody(),
-                'json'
-            );
-
-            $mandates[] = $decodedResponse['hydra:member'];
-        }
-        // Flatten array
-        $mandates = call_user_func_array('array_merge', $mandates);
-
         return [
-            'mandates' => $mandates,
             'users' => $users,
+            'filter' => $form->createView(),
         ];
     }
 
@@ -352,6 +347,47 @@ class UserController extends BaseController
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
+        ;
+    }
+
+    private function createUserFilteringForm(Request $request)
+    {
+        // Retrieve mandates, since it's a paginated collection go through all available pages
+        $mandates = [];
+        $decodedResponse = $this->serializer->decode(
+            $this->client->request(
+                'GET',
+                'api_mandates_cget',
+                $request->getSession()->get('api_token'),
+                ['query' => 'filter[order][startAt]=desc']
+            )->getBody(),
+            'json'
+        );
+        foreach ($decodedResponse['hydra:member'] as $mandate) {
+            $mandates[$mandate['name']] = $mandate['@id'];
+        }
+        while (isset($decodedResponse['hydra:nextPage'])) {
+            $decodedResponse = $this->serializer->decode(
+                $this->client->request(
+                    'GET',
+                    $decodedResponse['@id'],
+                    $request->getSession()->get('api_token'),
+                    ['query' => $decodedResponse['hydra:nextPage']]
+                )->getBody(),
+                'json'
+            );
+
+            foreach ($decodedResponse['hydra:member'] as $mandate) {
+                $mandates[$mandate['name']] = $mandate['@id'];
+            }
+        }
+
+        return $this->createForm(new UserFilteringForm($mandates),
+            [
+                'action' => $this->generateUrl('users'),
+                'method' => 'POST'
+            ])
+            ->add('submit', 'submit', ['label' => 'Filtrer'])
         ;
     }
 }
