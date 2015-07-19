@@ -12,6 +12,8 @@
 namespace FrontBundle\Client;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Query;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
@@ -89,6 +91,14 @@ class ApiClient implements ApiClientInterface
     public function request($method, $url = null, $token = null, $options = [])
     {
         return $this->client->send($this->createRequest($method, $url, $token, $options));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function send(RequestInterface $request)
+    {
+        return $this->client->send($request);
     }
 
     /**

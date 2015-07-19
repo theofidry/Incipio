@@ -11,6 +11,7 @@
 
 namespace FrontBundle\Client;
 
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Message\ResponseInterface;
 
@@ -71,4 +72,15 @@ interface ApiClientInterface
      * @return ResponseInterface
      */
     public function request($method, $url = null, $token = null, $options = []);
+
+    /**
+     * Sends a single request
+     *
+     * @param RequestInterface $request Request to send
+     *
+     * @return \GuzzleHttp\Message\ResponseInterface
+     * @throws \LogicException When the handler does not populate a response
+     * @throws RequestException When an error is encountered
+     */
+    public function send(RequestInterface $request);
 }
