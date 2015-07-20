@@ -2,7 +2,6 @@
 
 namespace FrontBundle\Controller;
 
-use FrontBundle\Client\ApiClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\RequestInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,14 +51,20 @@ interface ApiControllerInterface
      * @see FrontBundle\Client\ApiClientInterface::request()
      * @see $this::decode
      *
-     * @param string              $method  HTTP method
-     * @param string|null         $url     URL, URI or route name.
-     * @param Request|string|null $token   API token. If request, will look into the session for the API token.
-     * @param array               $options Options applied to the request.
+     * @param string                               $method          HTTP method
+     * @param string|null                          $url             URL, URI or route name.
+     * @param Request|RequestInterface|string|null $token           API token. If request, will look into the session
+     *                                                              for the API token.
+     * @param array                                $options         Options applied to the request.
+     * @param bool                                 $wholeCollection If set to true, will consider the response is a
+     *                                                              paginated collection and will go through all pages
+     *                                                              to return the complete list of entities. This
+     *                                                              parameters is ignored if the response is not a
+     *                                                              collection.
      *
      * @return array
      */
-    public function requestAndDecode($method, $url = null, $token = null, $options = []);
+    public function requestAndDecode($method, $url = null, $token = null, $options = [], $wholeCollection = false);
 
     /**
      * Sends a single request and decode its response body.
@@ -67,12 +72,16 @@ interface ApiControllerInterface
      * @see FrontBundle\Client\ApiClientInterface::send()
      * @see $this::decode
      *
-     * @param RequestInterface $request Request to send
+     * @param RequestInterface $request         Request to send
+     * @param bool             $wholeCollection If set to true, will consider the response is a paginated
+     *                                          collection and will go through all pages to return the complete list of
+     *                                          entities. This parameters is ignored if the response is not a
+     *                                          collection.
      *
      * @return array
      * @throws \LogicException When the handler does not populate a response
      * @throws RequestException When an error is encountered
      * @throws UnexpectedValueException
      */
-    public function sendAndDecode(RequestInterface $request);
+    public function sendAndDecode(RequestInterface $request, $wholeCollection = false);
 }

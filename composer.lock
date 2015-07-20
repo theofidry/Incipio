@@ -871,12 +871,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dunglas/DunglasApiBundle.git",
-                "reference": "2229fcf0a32c17af89732fac58d47854a10a5214"
+                "reference": "8548def06ef7b83f973bb7af23a1294d6d011a67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/2229fcf0a32c17af89732fac58d47854a10a5214",
-                "reference": "2229fcf0a32c17af89732fac58d47854a10a5214",
+                "url": "https://api.github.com/repos/dunglas/DunglasApiBundle/zipball/8548def06ef7b83f973bb7af23a1294d6d011a67",
+                "reference": "8548def06ef7b83f973bb7af23a1294d6d011a67",
                 "shasum": ""
             },
             "require": {
@@ -937,7 +937,7 @@
                 "json",
                 "rest"
             ],
-            "time": "2015-07-15 14:19:51"
+            "time": "2015-07-17 10:14:15"
         },
         {
             "name": "dunglas/php-property-info",
@@ -3284,12 +3284,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/theofidry/LoopBackApiBundle.git",
-                "reference": "132a4e15486678f7dee4f4ceb15964e836f9607e"
+                "reference": "b840b475decaf4446b6bf00da117aca094f97342"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theofidry/LoopBackApiBundle/zipball/132a4e15486678f7dee4f4ceb15964e836f9607e",
-                "reference": "132a4e15486678f7dee4f4ceb15964e836f9607e",
+                "url": "https://api.github.com/repos/theofidry/LoopBackApiBundle/zipball/b840b475decaf4446b6bf00da117aca094f97342",
+                "reference": "b840b475decaf4446b6bf00da117aca094f97342",
                 "shasum": ""
             },
             "require": {
@@ -3337,7 +3337,7 @@
                 "json",
                 "rest"
             ],
-            "time": "2015-07-08 09:31:42"
+            "time": "2015-07-18 11:18:28"
         },
         {
             "name": "twig/extensions",
@@ -3503,20 +3503,20 @@
         },
         {
             "name": "zendframework/zend-eventmanager",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-eventmanager.git",
-                "reference": "d94a16039144936f107f906896349900fd634443"
+                "reference": "135af03d07fd048c322259aab6611d2be290475c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/d94a16039144936f107f906896349900fd634443",
-                "reference": "d94a16039144936f107f906896349900fd634443",
+                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/135af03d07fd048c322259aab6611d2be290475c",
+                "reference": "135af03d07fd048c322259aab6611d2be290475c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.23",
+                "php": ">=5.5",
                 "zendframework/zend-stdlib": "~2.5"
             },
             "require-dev": {
@@ -3544,7 +3544,7 @@
                 "eventmanager",
                 "zf2"
             ],
-            "time": "2015-06-03 15:32:01"
+            "time": "2015-07-16 19:00:49"
         },
         {
             "name": "zendframework/zend-stdlib",
