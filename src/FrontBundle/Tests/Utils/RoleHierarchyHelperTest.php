@@ -21,31 +21,17 @@ use FrontBundle\Utils\RoleHierarchyHelper;
 class RoleHierarchyHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var RoleHierarchyHelper
-     */
-    private $helper;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        $this->helper = new RoleHierarchyHelper();
-    }
-
-    /**
-     * Test RoleHierarchyHelper::getTopLevelRole().
+     * @testdox Test RoleHierarchyHelper::getTopLevelRole().
      *
-     * @dataProvider rolesProvider
      * @covers       ::getTopLevelRole
+     * @dataProvider rolesProvider
      *
      * @param array       $roles    List of roles.
      * @param string|null $expected Expected value returned by the method.
      */
     public function testGetTopLevelRole(array $roles, $expected)
     {
-        $actual = $this->helper->getTopLevelRole($roles);
-        $this->assertEquals($expected, $actual, 'Top level role returned is not the expected one.');
+        $this->assertEquals($expected, RoleHierarchyHelper::getTopLevelRole($roles));
     }
 
     /**

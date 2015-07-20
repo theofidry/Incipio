@@ -12,7 +12,7 @@
 namespace FrontBundle\Utils;
 
 /**
- * Class RoleHierarchyHelper.
+ * Helper to manipulate Symfony's roles.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
