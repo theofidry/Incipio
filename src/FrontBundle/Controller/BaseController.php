@@ -11,67 +11,107 @@
 
 namespace FrontBundle\Controller;
 
+use FrontBundle\Client\ApiClientInterface;
+use FrontBundle\Utils\IriHelper;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Message\RequestInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class BaseController.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class BaseController extends Controller
+class BaseController extends Controller implements ApiControllerInterface
 {
     /**
-     * @var \FrontBundle\Client\ApiClient
+     * @var ApiClientInterface
      */
     protected $client;
 
     /**
-     * @var \Symfony\Component\Serializer\Serializer
+     * @var SerializerInterface|NormalizerInterface|DecoderInterface
      */
     protected $serializer;
 
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        parent::setContainer($container);
-
-        if (null !== $container) {
-            $this->client = $container->get('api.client');
-            $this->serializer = $container->get('serializer');
+        if (array_key_exists('id', $parameters)) {
+            $parameters['id'] = IriHelper::extractId($parameters['id']);
         }
+
+        return parent::generateUrl($route, $parameters, $referenceType);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function decode($data, array $context = [])
+    {
+        $this->serializer->decode($data, 'json', $context);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function requestAndDecode($method, $url = null, $token = null, $options = [])
+    {
+        if ($token instanceof Request) {
+            $token = $token->getSession()->get('api_token');
+        }
+
+        return $this->decode($this->client->request($method, $url, $token, $options));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendAndDecode(RequestInterface $request)
+    {
+        return $this->decode($this->client->send($request));
+    }
+
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated Should return an array with @template instead. {@link
+     *             http://symfony.com/fr/doc/current/bundles/SensioFrameworkExtraBundle/annotations/view.html}
+     */
+    public function renderView($view, array $parameters = [])
+    {
+        return parent::renderView($view, $parameters);
     }
 
     /**
      * {@inheritdoc}
      *
-     * Note: if `id` parameter is passed and its value is an URI, the ID is automatically extracted from it. This is
-     * done my assuming that the ID is the last member of the URI and that and URI begins by `/`.
+     * @deprecated Should return an array with @template instead. {@link
+     *             http://symfony.com/fr/doc/current/bundles/SensioFrameworkExtraBundle/annotations/view.html}
      */
-    public function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function render($view, array $parameters = [], Response $response = null)
     {
-        return parent::generateUrl($route, $this->extractId($parameters), $referenceType);
+        return parent::render($view, $parameters, $response);
     }
 
     /**
-     * If `id` parameter is passed and its value is an URI, the ID is automatically extracted from it. This is
-     * done my assuming that the ID is the last member of the URI and that and URI begins by `/`.
+     * {@inheritdoc}
      *
-     * If the `id` parameter is not an URI, its value is left unchanged.
-     *
-     * @param array $parameters
-     *
-     * @return array $parameters with the new value for the `id` key.
+     * @deprecated Should not have to use Doctrine.
+     * @throws     \LogicException If used.
      */
-    public static function extractId(array $parameters)
+    public function getDoctrine()
     {
-        if (array_key_exists('id', $parameters) && 0 === strpos($parameters['id'], '/')) {
-            $parameters['id'] = substr(strrchr($parameters['id'], '/'), 1);
-        }
-
-        return $parameters;
+        throw new \LogicException('The DoctrineBundle should not be used in the Front application.');
     }
 }
