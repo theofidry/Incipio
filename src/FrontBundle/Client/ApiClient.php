@@ -12,7 +12,6 @@
 namespace FrontBundle\Client;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Query;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
