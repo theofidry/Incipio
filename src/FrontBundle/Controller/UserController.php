@@ -13,9 +13,8 @@ namespace FrontBundle\Controller;
 
 //TODO: remove reference to User
 use ApiBundle\Entity\User;
+use FrontBundle\Form\Type\UserFilteringType;
 use FrontBundle\Form\Type\UserType;
-use FrontBundle\Form\UserFilteringForm;
-use GuzzleHttp\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -346,7 +345,7 @@ class UserController extends BaseController
             $mandateFormValues[$mandate['name']] = $mandate['@id'];
         }
 
-        return $this->createForm(new UserFilteringForm($mandateFormValues),
+        return $this->createForm(new UserFilteringType($mandateFormValues),
             [
                 'action' => $this->generateUrl('users'),
                 'method' => 'POST'
