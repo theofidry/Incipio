@@ -52,6 +52,15 @@ class UserProviderTest extends KernelTestCase
     }
 
     /**
+     * @covers ::__construct
+     */
+    public function testConstructor()
+    {
+        $userRoles = $this->prophesize(\ApiBundle\Utils\UserRoles::class);
+        new UserProvider($userRoles->reveal());
+    }
+
+    /**
      * @testdox Test the UserProvider::userRole
      *
      * @covers ::userRole

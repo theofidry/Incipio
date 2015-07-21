@@ -52,7 +52,7 @@ class ApiClient implements ApiClientInterface
         $baseUrl = $this->client->getBaseUrl();
         $lastCharacter = strlen($baseUrl) - 1;
         if ('/' === $baseUrl[$lastCharacter]) {
-            $baseUrl = substr($baseUrl, $lastCharacter);
+            $baseUrl = substr($baseUrl, 0, $lastCharacter);
         }
         $this->baseUrl = $baseUrl;
 
@@ -112,7 +112,7 @@ class ApiClient implements ApiClientInterface
      */
     private function buildUrl($url = null, array $parameters = [])
     {
-        if (null === $url) {
+        if (null === $url || '' === $url) {
             return $this->baseUrl;
         }
 

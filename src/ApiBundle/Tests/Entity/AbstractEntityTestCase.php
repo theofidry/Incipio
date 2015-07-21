@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ApiBundle\Test\Entity;
+namespace ApiBundle\Tests\Entity;
 
-use ApiBundle\Test\FluentTestCaseInterface;
+use ApiBundle\Tests\FluentTestCaseInterface;
 use Symfony\Component\PropertyAccess\StringUtil;
 
 /**
