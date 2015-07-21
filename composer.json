@@ -61,7 +61,7 @@
         "test": "composer test:db && composer test:phpunit && composer test:behat && composer test:security",
         "test:db": "php app/console doctrine:schema:validate --ansi",
         "test:security": "php bin/security-checker security:check",
-        "test:phpunit": "php bin/phpunit -c app/ --colors=always",
+        "test:phpunit": "php bin/phpunit -c app/phpunit_travis.xml --colors=always",
         "test:behat": "php bin/behat --colors -vvv",
         "db": "composer db:drop && composer db:create && composer db:seed",
         "db:create": "php app/console doctrine:schema:create --ansi",
