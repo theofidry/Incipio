@@ -1,3 +1,6 @@
+# Cache file of PHP-CS Fixer
+.php_cs.cache
+
 # Created by https://www.gitignore.io
 
 ### Vagrant ###
