@@ -34,6 +34,14 @@ class FrontExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * This test is more to ensure that the name is not accidentally modified rather than testing the function itself.
+     */
+    public function testName()
+    {
+        $this->assertEquals('front_extension', $this->extension->getName());
+    }
+
+    /**
      * @testdox Test if the filter is properly returned.
      *
      * @covers ::getFilters

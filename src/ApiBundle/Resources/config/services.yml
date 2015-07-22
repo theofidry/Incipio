@@ -27,6 +27,7 @@ services:
 
     faker.provider.student_convention:
         class:     ApiBundle\DataFixtures\Faker\Provider\StudentConventionProvider
+        arguments: [ @hautelook_alice.faker ]
         tags:      [ { name: hautelook_alice.faker.provider } ]
 
     faker.provider.user:

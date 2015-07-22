@@ -23,7 +23,6 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase
     /**
      * @testdox Test the service's methods.
      *
-     * @covers ::getRoles
      * @dataProvider hierarchyProvider
      *
      * @param array $hierarchy

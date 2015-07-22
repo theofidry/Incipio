@@ -13,14 +13,13 @@ namespace FrontBundle\Controller;
 
 use FrontBundle\Client\ApiClientInterface;
 use FrontBundle\Utils\IriHelper;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\RequestInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -41,6 +40,15 @@ class BaseController extends Controller implements ApiControllerInterface
      */
     protected $serializer;
 
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+
+        $this->client = $this->get('api.client');
+        $this->serializer = $this->get('serializer');
+    }
+
+
     /**
      * {@inheritdoc}
      */
@@ -58,51 +66,44 @@ class BaseController extends Controller implements ApiControllerInterface
      */
     public function decode($data, array $context = [])
     {
-        $this->serializer->decode($data, 'json', $context);
+        return $this->serializer->decode($data, JsonEncoder::FORMAT, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function requestAndDecode($method, $url = null, $token = null, $options = [])
+    public function requestAndDecode($method, $url = null, $token = null, $options = [], $wholeCollection = false)
     {
         if ($token instanceof Request) {
             $token = $token->getSession()->get('api_token');
         }
 
-        return $this->decode($this->client->request($method, $url, $token, $options));
+        $request = $this->client->createRequest($method, $url, $token, $options);
+
+        if ($token instanceof RequestInterface) {
+            $request->setHeader('authorization', $token->getHeader('authorization'));
+        }
+
+        return $this->sendAndDecode($request, $wholeCollection);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function sendAndDecode(RequestInterface $request)
+    public function sendAndDecode(RequestInterface $request, $wholeCollection = false)
     {
-        return $this->decode($this->client->send($request));
+        $decodedResponse = $this->decode($this->client->send($request)->getBody());
+
+        if (false === $wholeCollection) {
+            return $decodedResponse;
+        }
+
+        return $this->getEntitiesFromCollection(
+            $decodedResponse,
+            $request
+        );
     }
 
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated Should return an array with @template instead. {@link
-     *             http://symfony.com/fr/doc/current/bundles/SensioFrameworkExtraBundle/annotations/view.html}
-     */
-    public function renderView($view, array $parameters = [])
-    {
-        return parent::renderView($view, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated Should return an array with @template instead. {@link
-     *             http://symfony.com/fr/doc/current/bundles/SensioFrameworkExtraBundle/annotations/view.html}
-     */
-    public function render($view, array $parameters = [], Response $response = null)
-    {
-        return parent::render($view, $parameters, $response);
-    }
 
     /**
      * {@inheritdoc}
@@ -113,5 +114,34 @@ class BaseController extends Controller implements ApiControllerInterface
     public function getDoctrine()
     {
         throw new \LogicException('The DoctrineBundle should not be used in the Front application.');
+    }
+
+    /**
+     * Helper to retrieve all resources from a paginated collection. If the decoded response is not a collection,
+     * will return the decoded response.
+     *
+     * @param array $decodedResponse
+     * @param Request|string|null  $token
+     *
+     * @return array Decoded response or all entities of the paginated collection.
+     */
+    private function getEntitiesFromCollection(array $decodedResponse, $token = null)
+    {
+        if ('hydra:PagedCollection' !== $decodedResponse['@type']) {
+            return $decodedResponse;
+        }
+
+        $resources = [$decodedResponse['hydra:member']];
+        while (isset($decodedResponse['hydra:nextPage'])) {
+            $decodedResponse = $this->requestAndDecode(
+                'GET',
+                $decodedResponse['hydra:nextPage'],
+                $token
+            );
+
+            $resources[] = $decodedResponse['hydra:member'];
+        }
+
+        return call_user_func_array('array_merge', $resources);
     }
 }

@@ -1,8 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Incipio package.
+ *
+ * (c) Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiBundle\Tests\DataFixtures\Faker\Provider;
 
 use ApiBundle\DataFixtures\Faker\Provider\StudentConventionProvider;
+use ApiBundle\Tests\Mocks\Faker\GeneratorMock;
+use Faker\Factory;
+use Faker\Generator;
 
 /**
  * @coversDefaultClass ApiBundle\DataFixtures\Faker\Provider\StudentConventionProvider
@@ -21,13 +33,23 @@ class StudentConventionTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->provider = new StudentConventionProvider();
+        $this->provider = new StudentConventionProvider(new GeneratorMock());
+    }
+
+    /**
+     * @covers ::__construct
+     */
+    public function testConstructor()
+    {
+        $fakerGenerator = Factory::create();
+        new StudentConventionProvider($fakerGenerator);
     }
 
     /**
      * @testdox Test the UserProvider::generateReference
      *
      * @covers ::generateReference
+     * @covers ::normalizeString
      * @dataProvider referenceProvider
      *
      * @param           $fullname
@@ -63,11 +85,6 @@ class StudentConventionTest extends \PHPUnit_Framework_TestCase
                 'PIAABC20150131',
             ],
             [
-                '',
-                new \DateTime('2015-01-31'),
-                'ABCDEF20150131',
-            ],
-            [
                 'Jean-Reneau Baptiste',
                 new \DateTime('2015-01-31'),
                 'JEABAP20150131',
@@ -76,6 +93,16 @@ class StudentConventionTest extends \PHPUnit_Framework_TestCase
                 'Dr. Uriah Okuneva',
                 new \DateTime('2015-01-31'),
                 'DRURIO20150131',
+            ],
+            [
+                '',
+                new \DateTime('2015-01-31'),
+                'RANNAM20150131',
+            ],
+            [
+                null,
+                new \DateTime('2015-01-31'),
+                'RANNAM20150131',
             ],
         ];
     }

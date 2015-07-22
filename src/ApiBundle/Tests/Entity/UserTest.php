@@ -13,7 +13,6 @@ namespace ApiBundle\Tests\Entity;
 
 use ApiBundle\Entity\Job;
 use ApiBundle\Entity\User;
-use ApiBundle\Test\Entity\AbstractEntityTestCase;
 
 /**
  * @coversDefaultClass ApiBundle\Entity\User

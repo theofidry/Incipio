@@ -13,9 +13,8 @@ namespace FrontBundle\Controller;
 
 //TODO: remove reference to User
 use ApiBundle\Entity\User;
+use FrontBundle\Form\Type\UserFilteringType;
 use FrontBundle\Form\Type\UserType;
-use FrontBundle\Form\UserFilteringForm;
-use GuzzleHttp\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -46,7 +45,6 @@ class UserController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        // Handle filter request
         $form = $this->createUserFilteringForm($request);
         $userRequest = $this->client->createRequest('GET', 'api_users_cget', $request->getSession()->get('api_token'));
 
@@ -72,28 +70,10 @@ class UserController extends BaseController
         }
 
         // Retrieve users, since it's a paginated collection go through all available pages
-        $users = [];
-        $decodedResponse = $this->serializer->decode(
-            $this->client->send($userRequest)->getBody(),
-            'json'
-        );
-        $users[] = $decodedResponse['hydra:member'];
-        while (isset($decodedResponse['hydra:nextPage'])) {
-            $decodedResponse = $this->serializer->decode(
-                $this->client->request(
-                    'GET',
-                    $decodedResponse['hydra:nextPage'],
-                    $request->getSession()->get('api_token')
-                )->getBody(),
-                'json'
-            );
-
-            $users[] = $decodedResponse['hydra:member'];
-        }
-        $users = call_user_func_array('array_merge', $users);
+        $users = $this->sendAndDecode($userRequest, true);
 
         return [
-            'users' => $users,
+            'users'  => $users,
             'filter' => $form->createView(),
         ];
     }
@@ -220,7 +200,7 @@ class UserController extends BaseController
      */
     public function updateAction(Request $request, $id)
     {
-//        $response = $this->client->get(
+        //        $response = $this->client->get(
 //            'users_cget',
 //            $request->getSession()->get('api_token')
 //        )->send();
@@ -352,37 +332,20 @@ class UserController extends BaseController
 
     private function createUserFilteringForm(Request $request)
     {
-        // Retrieve mandates, since it's a paginated collection go through all available pages
-        $mandates = [];
-        $decodedResponse = $this->serializer->decode(
-            $this->client->request(
-                'GET',
-                'api_mandates_cget',
-                $request->getSession()->get('api_token'),
-                ['query' => 'filter[order][startAt]=desc']
-            )->getBody(),
-            'json'
+        $mandateFormValues = [];
+        $mandates = $this->requestAndDecode(
+            'GET',
+            'api_mandates_cget',
+            $request,
+            ['query' => 'filter[order][startAt]=desc'],
+            true
         );
-        foreach ($decodedResponse['hydra:member'] as $mandate) {
-            $mandates[$mandate['name']] = $mandate['@id'];
-        }
-        while (isset($decodedResponse['hydra:nextPage'])) {
-            $decodedResponse = $this->serializer->decode(
-                $this->client->request(
-                    'GET',
-                    $decodedResponse['@id'],
-                    $request->getSession()->get('api_token'),
-                    ['query' => $decodedResponse['hydra:nextPage']]
-                )->getBody(),
-                'json'
-            );
 
-            foreach ($decodedResponse['hydra:member'] as $mandate) {
-                $mandates[$mandate['name']] = $mandate['@id'];
-            }
+        foreach ($mandates as $mandate) {
+            $mandateFormValues[$mandate['name']] = $mandate['@id'];
         }
 
-        return $this->createForm(new UserFilteringForm($mandates),
+        return $this->createForm(new UserFilteringType($mandateFormValues),
             [
                 'action' => $this->generateUrl('users'),
                 'method' => 'POST'

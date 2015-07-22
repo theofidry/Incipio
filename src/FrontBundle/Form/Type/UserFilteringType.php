@@ -1,16 +1,25 @@
 <?php
 
-namespace FrontBundle\Form;
+/*
+ * This file is part of the Incipio package.
+ *
+ * (c) Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace FrontBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class UserFilteringForm.
+ * FormType used to generate the form for filtering users by their type and mandates.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class UserFilteringForm extends AbstractType
+class UserFilteringType extends AbstractType
 {
     /**
      * @var array
@@ -20,7 +29,7 @@ class UserFilteringForm extends AbstractType
     /**
      * @param array $mandates Array where keys are Mandate IRI and values are their matching name.
      */
-    function __construct(array $mandates)
+    public function __construct(array $mandates)
     {
         $this->mandates = array_merge(['Tous' => -1], $mandates);
     }
