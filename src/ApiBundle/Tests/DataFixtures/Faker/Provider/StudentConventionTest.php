@@ -1,8 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Incipio package.
+ *
+ * (c) Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiBundle\Tests\DataFixtures\Faker\Provider;
 
 use ApiBundle\DataFixtures\Faker\Provider\StudentConventionProvider;
+use ApiBundle\Tests\Mocks\Faker\GeneratorMock;
 use Faker\Factory;
 use Faker\Generator;
 
@@ -23,11 +33,7 @@ class StudentConventionTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        // Use an fresh generator, is enough for testing purposes
-        $fakerGenerator = $this->prophesize(Generator::class);
-        $fakerGenerator->name = 'Random mandate name';
-
-        $this->provider = new StudentConventionProvider($fakerGenerator->reveal());
+        $this->provider = new StudentConventionProvider(new GeneratorMock());
     }
 
     /**
@@ -91,12 +97,12 @@ class StudentConventionTest extends \PHPUnit_Framework_TestCase
             [
                 '',
                 new \DateTime('2015-01-31'),
-                'RANMAN20150131',
+                'RANNAM20150131',
             ],
             [
                 null,
                 new \DateTime('2015-01-31'),
-                'RANMAN20150131',
+                'RANNAM20150131',
             ],
         ];
     }

@@ -47,7 +47,7 @@ class StudentConventionProvider
             // It does not matter if the Faker instance is not based on the application locale as we don't really
             // care of the real value of the name. Keeping this avoid having to inject a faker instance which is
             // more difficul to properly test.
-            $fullname = $this->faker->name;
+            $fullname = $this->faker->name();
         }
 
         $fullnameParts = array_merge(explode(' ', $this->normalizeString($fullname)), ['a', 'b', 'c', 'd', 'e', 'f']);
