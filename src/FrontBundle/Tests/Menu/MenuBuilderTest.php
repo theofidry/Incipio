@@ -74,5 +74,6 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
      * since this method is final.
      */
     public function testUserMenuWithLoggedUser()
-    {}
+    {
+    }
 }

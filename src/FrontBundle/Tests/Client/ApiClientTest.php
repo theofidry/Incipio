@@ -20,7 +20,6 @@ use GuzzleHttp\Message\ResponseInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-
 /**
  * Since the client heavily relies on Guzzle client, we only tests the added functionalities which are the token
  * handling and the generation of request via the route name instead of only the URI.

@@ -200,7 +200,7 @@ class UserController extends BaseController
      */
     public function updateAction(Request $request, $id)
     {
-//        $response = $this->client->get(
+        //        $response = $this->client->get(
 //            'users_cget',
 //            $request->getSession()->get('api_token')
 //        )->send();

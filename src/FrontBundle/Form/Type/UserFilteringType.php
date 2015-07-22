@@ -29,7 +29,7 @@ class UserFilteringType extends AbstractType
     /**
      * @param array $mandates Array where keys are Mandate IRI and values are their matching name.
      */
-    function __construct(array $mandates)
+    public function __construct(array $mandates)
     {
         $this->mandates = array_merge(['Tous' => -1], $mandates);
     }

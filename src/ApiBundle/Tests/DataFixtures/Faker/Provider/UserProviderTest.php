@@ -87,7 +87,6 @@ class UserProviderTest extends KernelTestCase
             foreach ($types as $type) {
                 $this->assertTrue(in_array($type, $allowedTypes), 'Expected to generate a valid type');
             }
-
         }
 
         // Test get specified type
