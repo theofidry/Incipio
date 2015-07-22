@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ApiBundle\Tests\Doctrine;
+namespace ApiBundle\Tests\Doctrine\ORM;
 
-use ApiBundle\Doctrine\UserManager;
+use ApiBundle\Doctrine\ORM\UserManager;
 use ApiBundle\Entity\User;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -19,8 +19,8 @@ use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * @coversDefaultClass ApiBundle\Doctrine\UserManager
-
+ * @coversDefaultClass ApiBundle\Doctrine\ORM\UserManager
+ *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
  */
 class UserManagerTest extends \PHPUnit_Framework_TestCase

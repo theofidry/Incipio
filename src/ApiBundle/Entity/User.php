@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
 use FOS\UserBundle\Model\User as BaseUser;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,8 +26,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *
  * In this class, the term "organization" refers either to a Junior-Entreprise, Creation and such or a company.
  *
- * @Iri("https://schema.org/Person")
- * @ORM\Table
  * @ORM\Entity
  * @UniqueEntity("username")
  * @UniqueEntity("email")
@@ -39,11 +37,6 @@ class User extends BaseUser
     const TYPE_CONTRACTOR = 0;
     const TYPE_MEMBER = 1;
 
-    /*
-     * Hook timestampable behavior: updates `createdAt` and `updatedAt fields
-     */
-    use TimestampableEntity;
-
     /**
      * {@inheritdoc}
      *
@@ -54,6 +47,15 @@ class User extends BaseUser
     protected $id;
 
     private $address;
+
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     * @Groups({"user-read"})
+     */
+    protected $createdAt;
 
     /**
      * {@inheritdoc}
@@ -174,11 +176,40 @@ class User extends BaseUser
      **/
     protected $jobs;
 
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     * @Groups({"user-read"})
+     */
+    protected $updatedAt;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->jobs = new ArrayCollection();
+    }
+
+    /**
+     * @param  \DateTime $createdAt
+     *
+     * @return $this
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -359,6 +390,26 @@ class User extends BaseUser
     public function getTypes()
     {
         return $this->types;
+    }
+
+    /**
+     * @param  \DateTime $updatedAt
+     *
+     * @return $this
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**

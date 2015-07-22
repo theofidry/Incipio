@@ -4,7 +4,10 @@
     "license": "MIT",
     "type": "project",
     "autoload": {
-        "psr-4": { "": "src/", "SymfonyStandard\\": "app/" }
+        "psr-4": { "": "src/", "Incipio\\": "app/" }
+    },
+    "autoload-dev": {
+      "psr-4": { "Incipio\\Tests\\Behat\\": "features/bootstrap" }
     },
     "repositories": [
         {
@@ -60,7 +63,7 @@
         "test:db": "php app/console doctrine:schema:validate --ansi",
         "test:security": "php bin/security-checker security:check",
         "test:phpunit": "php bin/phpunit -c app/phpunit_travis.xml --colors=always",
-        "test:behat": "php bin/behat --colors -vvv",
+        "test:behat": "php bin/behat --colors -vvv --strict",
         "db": "composer db:drop && composer db:create && composer db:seed",
         "db:create": "php app/console doctrine:schema:create --ansi",
         "db:drop": "php app/console doctrine:schema:drop --force --ansi",

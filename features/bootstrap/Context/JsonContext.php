@@ -1,5 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Incipio package.
+ *
+ * (c) Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Incipio\Tests\Behat\Context;
+
+use Behat\Behat\Context\Context;
+use Sanpi\Behatch\Context\JsonContext as SampiJsonContext;
 use Sanpi\Behatch\HttpCall\HttpCallResultPool;
 use Sanpi\Behatch\Json\Json;
 use Sanpi\Behatch\Json\JsonInspector;
@@ -7,7 +20,7 @@ use Sanpi\Behatch\Json\JsonInspector;
 /**
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class JsonContext extends \Sanpi\Behatch\Context\JsonContext
+class JsonContext extends SampiJsonContext implements Context
 {
     /**
      * @var JsonInspector

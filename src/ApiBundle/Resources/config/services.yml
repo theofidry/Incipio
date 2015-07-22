@@ -38,7 +38,7 @@ services:
 
     # FOSUserBundle manager
     fos_user.user_manager.default:
-        class: ApiBundle\Doctrine\UserManager
+        class: ApiBundle\Doctrine\ORM\UserManager
         arguments:
             -  @security.encoder_factory
             -  @fos_user.util.username_canonicalizer
@@ -102,5 +102,7 @@ services:
                     -    @api.filter.order_filter
                     -    @api.filter.where_filter
             - method:    initNormalizationContext
+              arguments: [ { groups: [ user, user-read ] } ]
+            - method:    initDenormalizationContext
               arguments: [ { groups: [ user ] } ]
         tags:      [ { name: api.resource } ]
