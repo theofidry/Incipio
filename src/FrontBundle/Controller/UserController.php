@@ -11,8 +11,6 @@
 
 namespace FrontBundle\Controller;
 
-//TODO: remove reference to User
-use ApiBundle\Entity\User;
 use FrontBundle\Form\Type\UserFilteringType;
 use FrontBundle\Form\Type\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -46,7 +44,7 @@ class UserController extends BaseController
     public function indexAction(Request $request)
     {
         $form = $this->createUserFilteringForm($request);
-        $userRequest = $this->client->createRequest('GET', 'api_users_cget', $request->getSession()->get('api_token'));
+        $userRequest = $this->client->createRequest('GET', 'api_users_cget', $request);
 
         // Check if a request has been made to filter the list of users
         if ('POST' === $request->getMethod()) {
@@ -55,20 +53,20 @@ class UserController extends BaseController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $query = '';
-                
+
                 // Update user request to filter the list of users to match the requested type
-                if (-1 !== $data['user_type']) {
-                    $query .= sprintf('filter[where][type]=%d', $data['user_type']);
+                if (null !== $data['user_type']) {
+                    $query .= sprintf('filter[where][type]=%s', $data['user_type']);
                 }
 
-                if (0 !== $data['mandate_id']) {
-                    $query .= sprintf('filter[where][mandate]=%s', $data['mandate_id']);
+                if (null !== $data['mandate_id']) {
+                    $query .= sprintf('&filter[where][mandate]=%s', $data['mandate_id']);
                 }
 
                 $userRequest->setQuery($query);
             }
         }
-
+        
         // Retrieve users, since it's a paginated collection go through all available pages
         $users = $this->sendAndDecode($userRequest, true);
 
@@ -142,7 +140,7 @@ class UserController extends BaseController
     {
         $response = $this->client->request(
             'GET',
-            'users_get',
+            'api_users_get',
             $request->getSession()->get('api_token'),
             ['parameters' => ['id' => $id]]
         );
@@ -151,7 +149,7 @@ class UserController extends BaseController
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $user = $this->serializer->decode($response->getBody(), 'json');
+        $user = $this->decode($response->getBody());
 
         return ['user' => $user];
     }
@@ -173,7 +171,7 @@ class UserController extends BaseController
     {
         $response = $this->client->request(
             'GET',
-            'users_get',
+            'api_users_get',
             $request->getSession()->get('api_token'),
             ['parameters' => ['id' => $id]]
         );
@@ -182,7 +180,7 @@ class UserController extends BaseController
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $user = $this->serializer->decode($response->getBody(), 'json');
+        $user = $this->decode($response->getBody());
 
         return [
             'user' => $user,
@@ -200,49 +198,44 @@ class UserController extends BaseController
      */
     public function updateAction(Request $request, $id)
     {
-        //        $response = $this->client->get(
-//            'users_cget',
-//            $request->getSession()->get('api_token')
-//        )->send();
-//
-//        if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
-//            throw $this->createNotFoundException('Unable to find User entity.');
-//        }
-//
-//        $jsonContent = $response->getBody(true);
-//        $user = $this->serializer->decode($jsonContent, 'json');
-
-//        dump($user);
-//        die();
-//
-////        return [
-////            'user' => $user,
-////            'form' => $this->createEditForm($user)->createView(),
-////        ];
-//        //TODO
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $entity = $em->getRepository('ApiUserBundle:User')->find($id);
-//
-//        if (!$entity) {
-//            throw $this->createNotFoundException('Unable to find User entity.');
-//        }
-//
-//        $deleteForm = $this->createDeleteForm($id);
-//        $editForm = $this->createEditForm($entity);
-//        $editForm->handleRequest($request);
-//
-//        if ($editForm->isValid()) {
-//            $em->flush();
-//
-//            return $this->redirect($this->generateUrl('users_edit', array('id' => $id)));
-//        }
-
-        return array(
-//            'entity' => $entity,
-//            'edit_form' => $editForm->createView(),
-//            'delete_form' => $deleteForm->createView(),
+        $response = $this->client->request(
+            'GET',
+            'api_users_get',
+            $request->getSession()->get('api_token'),
+            ['parameters' => ['id' => $id]]
         );
+
+        if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $user = $this->decode($response->getBody());
+
+        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($user);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid()) {
+            $updateResponse = $this->requestAndDecode('PUT',
+                'api_users_put',
+                $request,
+                [
+                    'body'       => json_encode($editForm->getData()),
+                    'parameters' => ['id' => $id]
+                ]
+            );
+
+            \Symfony\Component\VarDumper\VarDumper::dump($updateResponse);
+            die('TODO: update dude');
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('users_edit', array('id' => $id)));
+        }
+
+        return [
+            'entity'      => $user,
+            'delete_form' => $deleteForm->createView(),
+        ];
     }
 
     /**
@@ -330,6 +323,11 @@ class UserController extends BaseController
         ;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
     private function createUserFilteringForm(Request $request)
     {
         $mandateFormValues = [];
@@ -342,7 +340,7 @@ class UserController extends BaseController
         );
 
         foreach ($mandates as $mandate) {
-            $mandateFormValues[$mandate['name']] = $mandate['@id'];
+            $mandateFormValues[$mandate['@id']] = $mandate['name'];
         }
 
         return $this->createForm(new UserFilteringType($mandateFormValues),

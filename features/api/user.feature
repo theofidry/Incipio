@@ -11,55 +11,55 @@ Feature: User management
     And I should get a paged collection with the context "/api/contexts/User"
 
   Scenario: Get a resource
-    Given I have "admin" which is a "ApiBundle\Entity\User" with the following properties:
-      | property                           | value                                      | type   |
-      | createdAt                          | ~                                          | scalar |
-      | endingSchoolYear                   | null                                       | scalar |
-      | endingSchoolYear                   | null                                       | scalar |
-      | fullname                           | "Admin NIMDA"                              | scalar |
-      | jobs                               |                                            | array  |
-      | organizationEmail                  | null                                       | scalar |
-      | organizationEmailCanonical         | null                                       | scalar |
-      | studentConvention                  |                                            | object |
-      | studentConvention->@id             | "/api/student_conventions/ADMNIM20130112"  | scalar |
-      | studentConvention->@type           | "StudentConvention"                        | scalar |
-      | studentConvention->dateOfSignature | "2013-01-12T00:00:00+01:00"                | scalar |
-      | types                              |                                            | array  |
-      | types[0]                           |  1                                         | scalar |
-      | username                           | "admin"                                    | scalar |
-      | email                              | "admin@incipio.fr"                         | scalar |
-      | roles                              |                                            | array  |
-      | roles[0]                           | "ROLE_SUPER_ADMIN"                         | scalar |
-      | roles[1]                           | "ROLE_USER"                                | scalar |
-      | updatedAt                          | ~                                          | scalar |
-    Given "admin" database identifier is 2
-    Then I send a GET request to "/api/users/2"
-    And the response status code should be 200
-    And I should get a resource page with the context "/api/contexts/User"
-    And I should have the following JSON body:
-      | key                                | value                                      | type   |
-      | @context                           | "/api/contexts/User"                       | scalar |
-      | @id                                | "/api/users/2"                             | scalar |
-      | @type                              | "User"                                     | scalar |
-      | createdAt                          | ~                                          | scalar |
-      | endingSchoolYear                   | null                                       | scalar |
-      | endingSchoolYear                   | null                                       | scalar |
-      | fullname                           | "Admin NIMDA"                              | scalar |
-      | jobs                               |                                            | array  |
-      | organizationEmail                  | null                                       | scalar |
-      | organizationEmailCanonical         | null                                       | scalar |
-      | studentConvention                  |                                            | object |
-      | studentConvention->@id             | "/api/student_conventions/ADMNIM20130112"  | scalar |
-      | studentConvention->@type           | "StudentConvention"                        | scalar |
-      | studentConvention->dateOfSignature | ~                                          | scalar |
-      | types                              |                                            | array  |
-      | types[0]                           |  1                                         | scalar |
-      | username                           | "admin"                                    | scalar |
-      | email                              | "admin@incipio.fr"                         | scalar |
-      | roles                              |                                            | array  |
-      | roles[0]                           | "ROLE_SUPER_ADMIN"                         | scalar |
-      | roles[1]                           | "ROLE_USER"                                | scalar |
-      | updatedAt                          | ~                                          | scalar |
+    When I send a GET request to "/api/users/21"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "@context": "/api/contexts/User",
+      "@id": "/api/users/21",
+      "@type": "User",
+      "createdAt": "2015-01-01T00:00:00+01:00",
+      "endingSchoolYear": null,
+      "fullname": null,
+      "jobs": [
+        {
+            "@id": "/api/jobs/77",
+            "@type": "Job",
+            "abbreviation": "GRND",
+            "mandate": null,
+            "title": "Resident Mastermind"
+        }
+      ],
+      "organizationEmail": null,
+      "studentConvention": {
+        "@id": "/api/student_conventions/GILMIC20100224",
+        "@type": "StudentConvention",
+        "dateOfSignature": "2010-02-24T18:44:07+01:00"
+      },
+      "types": [
+        "TYPE_CONTRACTOR",
+        "TYPE_MEMBER"
+      ],
+      "updatedAt": "2015-06-10T00:00:00+02:00",
+      "username": "Hebert.Paul",
+      "email": "Leconte.Yves@Lenoir.fr",
+      "roles": [
+        "ROLE_USER"
+      ]
+    }
+    """
 
-  Scenario: It should be possible to get users by username or email
-    When I send a "GET" request to "/api/users/1"
+  Scenario: Filter users by type
+    When I send a GET request to "/api/users?filter[where][type]=contractor"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to 44
+    And the JSON node "types" of the objects of the JSON node "hydra:member" should contains "TYPE_CONTRACTOR"
+
+  Scenario: Filter users by mandate
+    When I send a GET request to "/api/users?filter[where][mandate]=/api/mandates/5"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to 8
+    And all the users should have a mandate with the value "/api/mandates/5"

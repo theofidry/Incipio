@@ -31,7 +31,7 @@ class UserFilteringType extends AbstractType
      */
     public function __construct(array $mandates)
     {
-        $this->mandates = array_merge(['Tous' => -1], $mandates);
+        $this->mandates = $mandates;
     }
 
     /**
@@ -44,22 +44,23 @@ class UserFilteringType extends AbstractType
                 'mandate_id',
                 'choice',
                 [
-                    'choices'           => $this->mandates,
-                    'choices_as_values' => true,
-                    'label'             => 'Mandat :'
+                    'choices'     => $this->mandates,
+                    'label'       => 'Mandat :',
+                    'placeholder' => 'Tous',
+                    'required' => false,
                 ]
             )
             ->add(
                 'user_type',
                 'choice',
                 [
-                    'choices'           => [
-                        'Tous'        => -1,
-                        'Membre'      => 0,
-                        'Intervenant' => 1,
+                    'choices'     => [
+                        'TYPE_MEMBER'     => 'Membre',
+                        'TYPE_CONTRACTOR' => 'Intervenant',
                     ],
-                    'choices_as_values' => true,
-                    'label'             => 'Type :'
+                    'label'       => 'Type :',
+                    'placeholder' => 'Tous',
+                    'required' => false,
                 ]
             )
         ;

@@ -39,6 +39,7 @@
                 <directory>../src/*/Bundle/*Bundle/Resources</directory>
                 <directory>../src/*/Bundle/*Bundle/Tests</directory>
                 <directory>../src/*/Bundle/*Bundle/DataFixtures/ORM</directory>
+                <directory>../features/bootstrap/Context</directory>
             </exclude>
         </whitelist>
     </filter>

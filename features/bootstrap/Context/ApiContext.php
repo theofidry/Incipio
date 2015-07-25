@@ -14,15 +14,18 @@ namespace Incipio\Tests\Behat\Context;
 use ApiBundle\Entity\User;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
 use FOS\UserBundle\Doctrine\UserManager;
+use InvalidArgumentException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManagerInterface;
+use PHPUnit_Framework_Assert as PHPUnit;
+use Sanpi\Behatch\Json\Json;
 use Sanpi\Behatch\Json\JsonInspector;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -57,11 +60,6 @@ class ApiContext extends RawMinkContext implements Context, SnippetAcceptingCont
      * @var \Doctrine\ORM\Mapping\ClassMetadata[]|array All class metadata registered by Doctrine.
      */
     private $metadata = [];
-
-    /**
-     * @var array Array for which the key is the alias and the value the entity.
-     */
-    private $aliases = [];
 
     /**
      * Initializes context.
@@ -101,9 +99,7 @@ class ApiContext extends RawMinkContext implements Context, SnippetAcceptingCont
     public function castToUser($name)
     {
         $user = $this->userManager->findUserByUsernameOrEmail($name);
-        if (!$user) {
-            throw new \InvalidArgumentException(sprintf('No user was found.'));
-        }
+        PHPUnit::assertNotNull($user, sprintf('No user %s was found.', $name));
 
         return $user;
     }
@@ -137,8 +133,6 @@ class ApiContext extends RawMinkContext implements Context, SnippetAcceptingCont
      *
      * @param $username
      * @param $password
-     *
-     * @throws Exception
      */
     public function thePasswordForUserShouldBe($username, $password)
     {
@@ -148,9 +142,7 @@ class ApiContext extends RawMinkContext implements Context, SnippetAcceptingCont
         }
         $encoder = $this->encoderFactory->getEncoder($user);
         $valid = $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
-        if (false === $valid) {
-            throw new \Exception(sprintf('The password for user %s does not match %s', $username, $password));
-        }
+        PHPUnit::assertTrue($valid, sprintf('The password for user %s does not match %s', $username, $password));
     }
 
     /**
@@ -165,68 +157,52 @@ class ApiContext extends RawMinkContext implements Context, SnippetAcceptingCont
     }
 
     /**
-     * @Given I have :alias which is a :entityClass with the following properties:
+     * @Given all the users should have a mandate with the value :iri
      *
-     * @param string $alias       alias to use to save the entity. Is stored as an array key.
-     * @param string $entityClass FQCN
-     *                            
-     * @throws InvalidArgumentException When unknown entity
-     * @throws \Exception               When no identifier has been found for the given entity.
+     * @param string $iri
      */
-    public function assertEntityIsEqualTo($alias, $entityClass, TableNode $properties)
+    public function allTheUsersShouldHaveAMandateWithTheValue($iri)
     {
-//
-//
-//
-//
-//        // Add alias
-//        $this->aliases[$alias] = $this->getId($entityClass);
+        $accessor = PropertyAccess::createPropertyAccessor();
+        $json = $this->getSession()->getPage()->getContent();
+        $users = $this->inspector->evaluate(new Json($json), 'hydra:member');
 
-        // Normalize properties
-        $normalizedProperties = $this->normalizeProperties($properties);
-        
+        foreach ($users as $user) {
+            $count = 0;
+            foreach ($user->jobs as $job) {
+                if (isset($job->mandate)) {
+                    if ($iri === $accessor->getValue($job->mandate, '@id')) {
+                        $count++;
+                    }
+                }
+            }
+            PHPUnit::assertGreaterThanOrEqual(
+                1,
+                $count,
+                sprintf(
+                    'Expected user %s to have at least one job with the mandate %s.',
+                    $accessor->getValue($user, '@id'),
+                    $iri
+                )
+            );
+        }
     }
 
     /**
-     * @param array $metadata
-     *
-     * @return mixed                    Doctrine Identifier.
-     * @throws InvalidArgumentException If no metadata has been found for the given entity.
-     * @throws \Exception               When no identifier has been found.
+     * @Given /^the JSON node "([^"]*)" of the objects of the JSON node "([^"]*)" should contains "([^"]*)"$/
+     * 
+     * @param string $node
+     * @param string $collection
+     * @param string $arrayValue
      */
-    private function getId($entityClass)
+    public function theJSONNodeOfTheObjectsOfTheJSONNodeShouldContains($node, $collection, $arrayValue)
     {
-        $metadata = null;
-        foreach ($this->metadata as $classMetadata) {
-            if ($entityClass === $classMetadata->getName()) {
-                $metadata = $classMetadata;
-            }
+        $accessor = PropertyAccess::createPropertyAccessor();
+        $json = $this->getSession()->getPage()->getContent();
+        $collection = $this->inspector->evaluate(new Json($json), $collection);
+
+        foreach ($collection as $element) {
+            in_array($arrayValue, $accessor->getValue($element, $node));
         }
-        if (null === $metadata) {
-            throw new InvalidArgumentException(sprintf('Unkown entity %s.', $entityClass));
-        }
-
-        $identifier = $metadata->getIdentifier();
-
-        if (0 === count($identifier)) {
-            throw new \Exception('No identifier found..');
-        }
-
-        return $identifier[0];
-    }
-    
-    private function normalizeProperties(TableNode $properties)
-    {
-        $normalizedProperties = [];
-
-        $rows = $properties->getRows();
-        foreach ($rows as $row) {
-
-        }
-
-
-        $x = $properties->getColumnsHash();
-
-        echo "lol";
     }
 }

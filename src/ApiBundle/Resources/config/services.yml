@@ -92,6 +92,14 @@ services:
 
 
     # User resource
+    resource.user.filter.mandate_filter:
+        parent: api.filter.where_filter
+        class:  ApiBundle\Doctrine\ORM\Filter\User\UserMandateFilter
+
+    resource.user.filter.type_filter:
+        parent: api.filter.where_filter
+        class:  ApiBundle\Doctrine\ORM\Filter\User\UserTypeFilter
+
     resource.user:
         parent:    api.resource
         arguments: [ ApiBundle\Entity\User ]
@@ -101,8 +109,10 @@ services:
                 -
                     -    @api.filter.order_filter
                     -    @api.filter.where_filter
+                    -    @resource.user.filter.mandate_filter
+                    -    @resource.user.filter.type_filter
             - method:    initNormalizationContext
               arguments: [ { groups: [ user, user-read ] } ]
             - method:    initDenormalizationContext
-              arguments: [ { groups: [ user ] } ]
+              arguments: [ { groups: [ user, user-write ] } ]
         tags:      [ { name: api.resource } ]

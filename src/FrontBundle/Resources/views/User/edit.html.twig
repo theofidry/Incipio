@@ -7,7 +7,7 @@
 {%- endblock %}
 
 {% block page_header_button -%}
-    {{ macros.button_entity_list(path('users'), 'Retour') }}
+    {{ macros.button_entity_list(path('users'), 'Retour à la liste') }}
 {%- endblock %}
 
 {% block sub_body -%}
@@ -16,7 +16,8 @@
         <div class="col-md-6">
             {{ form_start(form) }}
                 {{ form_widget(form) }}
-                <input type="submit" value="Update" class="btn btn-default pull-right" />
+                {{ macros.button_link(path('users_show', { 'id': user['@id']|uriId }), 'Annuler', 'btn-default pull-left') }}
+                <input type="submit" value="Enregistrer" class="btn btn-primary pull-right" />
             {{ form_end(form) }}
         </div>
     </div>

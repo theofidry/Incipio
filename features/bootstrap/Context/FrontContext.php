@@ -26,7 +26,9 @@ class FrontContext extends MinkContext implements Context
      */
     public function authenticateAs()
     {
+        $this->visit('/login');
         $this->fillField('username', 'admin');
         $this->fillField('password', 'admin');
+        $this->pressButton('Se connecter');
     }
 }

@@ -33,7 +33,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $user = (new User())
             ->setEmail('email@example.com')
             ->setUsername('My Username')
-            ->setOrganizationEmail('organization@example.com')
+            ->setOrganisationEmail('organization@example.com')
         ;
         $class = get_class($user);
 
@@ -63,7 +63,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('email@example.com', $user->getEmail());
         $this->assertEquals('canonicalEmail', $user->getEmailCanonical());
-        $this->assertEquals('organization@example.com', $user->getOrganizationEmail());
+        $this->assertEquals('organization@example.com', $user->getOrganisationEmail());
         $this->assertEquals('canonicalOrganisationEmail', $user->getOrganizationEmailCanonical());
         $this->assertEquals('My Username', $user->getUsername());
         $this->assertEquals('canonicalUsername', $user->getUsernameCanonical());

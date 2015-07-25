@@ -91,14 +91,33 @@ class Utils
     }
 
     /**
-     * Extend the PHP ::explode() function to build a multidimensional array instead of a flattened one.
+     * Extend the PHP ::explode() function to build a multidimensional array instead of a flattened one. If a element
+     * uses the array annotation `[index]`, this part will be build as an array.
      *
      * @example
-     *  ::buildTree('_', 'a_b_c', $value)
+     *  ::recursiveExplode('_', 'a_b_c', $value)
      *  => [
      *      'a' => [
      *          'b' => [
      *              'c' => $value
+     *          ]
+     *      ]
+     *  ]
+     *
+     *  ::recursiveExplode('_', 'a_b[0]_c', $value)
+     *  => [
+     *      'a' => [
+     *          'b' => [
+     *              0 => [ 'c' => $value ]
+     *          ]
+     *      ]
+     *  ]
+     *
+     *  ::recursiveExplode('_', 'a_b[index]_c', $value)
+     *  => [
+     *      'a' => [
+     *          'b' => [
+     *              'index' => [ 'c' => $value ]
      *          ]
      *      ]
      *  ]
@@ -123,6 +142,10 @@ class Utils
          */
         $currentArray = null;
         foreach ($explodedString as $index => $keyPart) {
+
+            $indexPart = preg_grep('/a/', $keyPart);
+
+
             if (0 === $index) {
                 $tree[$keyPart] = null;
                 $currentArray = &$tree[$keyPart];

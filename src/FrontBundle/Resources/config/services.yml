@@ -32,12 +32,12 @@ services:
 
     front.menu.header:
         class:     %knp_menu_item.class%
-        factory:   [ front.menu_builder, front.menu_builder ]
+        factory:   [ @front.menu_builder, createHeaderMenu ]
         arguments: [ @request_stack, @knp_menu.factory ]
         tags:      [ { name: knp_menu.menu, alias: header_menu } ]
 
     front.menu.user:
         class:     %knp_menu_item.class%
-        factory:   [ front.menu_builder, front.menu_builder ]
+        factory:   [ @front.menu_builder, createUserMenu ]
         arguments: [ @request_stack, @knp_menu.factory ]
         tags:      [ { name: knp_menu.menu, alias: user_menu } ]

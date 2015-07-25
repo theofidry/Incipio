@@ -12,6 +12,7 @@
 namespace Incipio\Tests\Behat\Context;
 
 use Behat\Behat\Context\Context;
+use PHPUnit_Framework_Assert as PHPUnit;
 use Sanpi\Behatch\Context\JsonContext as SampiJsonContext;
 use Sanpi\Behatch\HttpCall\HttpCallResultPool;
 use Sanpi\Behatch\Json\Json;
@@ -38,43 +39,39 @@ class JsonContext extends SampiJsonContext implements Context
     }
 
     /**
-     * @Then the JSON node :node should be higher than :value
+     * @Then the JSON node :node should be greater than :value
      *
      * @param $node
      * @param $value
-     *
-     * @throws Exception
      */
     public function theJsonNodeShouldBeHigher($node, $value)
     {
         $json = $this->getJson();
         $actual = $this->inspector->evaluate($json, $node);
 
-        if ($actual < $value) {
-            throw new \Exception(
-                sprintf('Expected `%s` to be higher than `%s`.', $value, $actual)
-            );
-        }
+        PHPUnit::assertGreaterThanOrEqual(
+            $value,
+            $actual,
+            sprintf('Expected `%s` to be greater than `%s`.', $value, $actual)
+        );
     }
 
     /**
-     * @Then the JSON node :node should be lower than :value
+     * @Then the JSON node :node should be less than :value
      *
      * @param $node
      * @param $value
-     *
-     * @throws Exception
      */
     public function theJsonNodeShouldBeLower($node, $value)
     {
         $json = $this->getJson();
         $actual = $this->inspector->evaluate($json, $node);
 
-        if ($actual > $value) {
-            throw new \Exception(
-                sprintf('Expected `%s` to be lower than `%s`.', $value, $actual)
-            );
-        }
+        PHPUnit::assertLessThanOrEqual(
+            $value,
+            $actual,
+            sprintf('Expected `%s` to be less than `%s`.', $value, $actual)
+        );
     }
 
     /**

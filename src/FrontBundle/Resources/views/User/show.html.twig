@@ -1,56 +1,102 @@
 {% extends 'FrontBundle:CRUD:show.html.twig' %}
 
+{%- set userId = user['@id']|uriId -%}
+
 {% block page_header_title -%}
-    <h1>User</h1>
+    <h1>#{{ userId }} {{ user.fullname }}</h1>
 {%- endblock %}
 
 {% block page_header_button -%}
-    {{ macros.button_entity_list(path('users'), 'Retour') }}
+    {{ macros.button_link(path('users_edit', { 'id': userId }), 'Éditer', 'btn-warning pull-right', 'fa fa-pencil fa-fw') }}
+    {{ macros.button_entity_list(path('users'), 'Retour à la liste', 'style=margin-right:15px') }}
 {%- endblock %}
 
 {% block sub_body -%}
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>#</th>
-                <td>{{ user['@id']|uriId }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
-                <th>Fullname</th>
-                <td>{{ user.fullname }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Rôles</th>
-                <td>
-                    {% if user.roles|length > 0 -%}
-                        <ul>
-                            {% for role in user.roles %}
-                                <li>{{ role }}</li>
-                            {% endfor %}
-                        </ul>
-                    {%- endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Poste</th>
-                <td>
-                    {% if user.jobs|length > 0 -%}
-                        <ul>
-                            {% for job in user.jobs %}
-                                <li>{{ dump(job) }}</li>
-                            {% endfor %}
-                        </ul>
-                    {%- endif %}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="col-md-6">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Nom d'utilisateur</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Email professionnel</th>
+                    <td>{{ user.organisationEmail }}</td>
+                </tr>
+                <tr>
+                    <th>Activé</th>
+                    <td>
+                        {%- if 1 == user.enabled -%}
+                            Oui
+                        {%- else -%}
+                            Non
+                        {%- endif -%}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Rôle(s)</th>
+                    <td>
+                        {%- set role = user.roles|userTopRole -%}
+                        {%- if 'root' == role -%}
+                            {% set class = 'label label-danger' -%}
+                        {%- elseif 'admin' == role -%}
+                            {% set class = 'label label-primary' -%}
+                        {%- else %}
+                            {% set class = 'label label-default' -%}
+                        {%- endif -%}
+                        <span class="{{ class }}">{{ role }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Promotion</th>
+                    <td>{{ user.endingSchoolYear|date('Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Type(s)</th>
+                    <td>
+                        {%- for type in user.types -%}
+                            {%- if 'TYPE_CONTRACTOR' == type -%} {# 1 === contractor #}
+                                {%- set class = 'label label-info' -%}
+                                {%- set type = 'intervenant' -%}
+                            {%- else %}
+                                {% set class = 'label label-default' -%}
+                                {%- set type = 'membre' -%}
+                            {%- endif -%}
+                            <span class="{{ class }}">{{ type }}</span>
+                        {%- endfor -%}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Poste(s)</th>
+                    <td>
+                        {% if user.jobs|length > 0 -%}
+                            <ul class="list">
+                                {% for job in user.jobs %}
+                                    <li>
+                                        {{ (job.title) }} <span class="badge">{{ job.mandate.name }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {%- endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Date de création</th>
+                    <td>
+                        {{ user.createdAt|date('d/m/Y') }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Dernière mise à jour</th>
+                    <td>
+                        {{ user.updatedAt|date('d/m/Y') }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

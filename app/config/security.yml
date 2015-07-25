@@ -15,18 +15,20 @@ security:
             pattern:   ^/(_(profiler|wdt|error)|css|images|js)/
             security:  false
 
+        # The API login is done via a separated firewall to avoid any redirect to the login form as, for the API,
+        # there is not login form. This way if a user try to access to the API, a 401 response will be returned instead
+        # of a 302.
         api_login:
-            pattern:   ^/api/login
+            pattern:  ^/api/login
             stateless: true
-            logout:    false
             anonymous: true
+            logout:    false
             form_login:
-                login_path:         fos_user_security_login
-                check_path:         api_security_check
-                username_parameter: username
-                password_parameter: password
-                success_handler:    lexik_jwt_authentication.handler.authentication_success
-                failure_handler:    lexik_jwt_authentication.handler.authentication_failure
+                check_path:               /api/login_check
+                username_parameter:       username
+                password_parameter:       password
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
                 require_previous_session: false
 
         api:

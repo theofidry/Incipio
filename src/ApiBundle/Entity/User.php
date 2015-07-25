@@ -34,8 +34,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class User extends BaseUser
 {
-    const TYPE_CONTRACTOR = 0;
-    const TYPE_MEMBER = 1;
+    const TYPE_CONTRACTOR = 'TYPE_CONTRACTOR';
+    const TYPE_MEMBER = 'TYPE_MEMBER';
 
     /**
      * {@inheritdoc}
@@ -66,6 +66,16 @@ class User extends BaseUser
      * @Groups({"user"})
      */
     protected $email;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Assert\NotBlank
+     * @Groups({"user"})
+     *
+     * @TODO: validation for boolean
+     */
+    protected $enabled = false;
 
     /**
      * @var int
@@ -104,7 +114,7 @@ class User extends BaseUser
      * @Assert\NotBlank
      * @Groups({"user"})
      */
-    private $organizationEmail;
+    private $organisationEmail;
 
     /**
      * @var string Professional email lowercased for search and string comparison; cf emailCanonical & passwordCanonical
@@ -113,7 +123,7 @@ class User extends BaseUser
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Email
      * @Assert\NotBlank
-     * @Groups({"user"})
+     * @Groups({"user-write"})
      */
     private $organizationEmailCanonical;
 
@@ -295,13 +305,13 @@ class User extends BaseUser
     }
 
     /**
-     * @param string $organizationEmail
+     * @param string $organisationEmail
      *
      * @return $this
      */
-    public function setOrganizationEmail($organizationEmail)
+    public function setOrganisationEmail($organisationEmail)
     {
-        $this->organizationEmail = $organizationEmail;
+        $this->organisationEmail = $organisationEmail;
 
         return $this;
     }
@@ -309,9 +319,9 @@ class User extends BaseUser
     /**
      * @return string|null
      */
-    public function getOrganizationEmail()
+    public function getOrganisationEmail()
     {
-        return $this->organizationEmail;
+        return $this->organisationEmail;
     }
 
     /**
