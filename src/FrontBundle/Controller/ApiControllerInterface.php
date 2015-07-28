@@ -48,6 +48,21 @@ interface ApiControllerInterface
     /**
      * Send a GET request for the client and decode its response body.
      *
+     * @see FrontBundle\Client\ApiClientInterface::createRequest()
+     *
+     * @param string                               $method  HTTP method
+     * @param string|null                          $url     URL, URI or route name.
+     * @param Request|RequestInterface|string|null $token   API token. If request, will look into the session
+     *                                                      for the API token.
+     * @param array                                $options Options applied to the request.
+     *
+     * @return RequestInterface
+     */
+    public function createRequest($method, $url = null, $token = null, $options = []);
+
+    /**
+     * Send a GET request for the client and decode its response body.
+     *
      * @see FrontBundle\Client\ApiClientInterface::request()
      * @see $this::decode
      *

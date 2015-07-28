@@ -72,7 +72,7 @@ class BaseController extends Controller implements ApiControllerInterface
     /**
      * {@inheritdoc}
      */
-    public function requestAndDecode($method, $url = null, $token = null, $options = [], $wholeCollection = false)
+    public function createRequest($method, $url = null, $token = null, $options = [], $wholeCollection = false)
     {
         // If token is a request, get the token value from the header
         if ($token instanceof RequestInterface) {
@@ -80,12 +80,20 @@ class BaseController extends Controller implements ApiControllerInterface
                 $options['headers'] = [];
             }
             $options['headers']['authorization'] = $token->getHeader('authorization');
+            $token = null;
         } elseif ($token instanceof Request) {
             $token = $token->getSession()->get('api_token');
         }
-        $request = $this->client->createRequest($method, $url, $token, $options);
 
-        return $this->sendAndDecode($request, $wholeCollection);
+        return $this->client->createRequest($method, $url, $token, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function requestAndDecode($method, $url = null, $token = null, $options = [], $wholeCollection = false)
+    {
+        return $this->sendAndDecode($this->createRequest($method, $url, $token, $options), $wholeCollection);
     }
 
     /**

@@ -16,37 +16,38 @@ Feature: User management
     And the JSON should be equal to:
     """
     {
-      "@context": "/api/contexts/User",
-      "@id": "/api/users/21",
-      "@type": "User",
-      "createdAt": "2015-01-01T00:00:00+01:00",
-      "endingSchoolYear": null,
-      "fullname": null,
-      "jobs": [
-        {
-            "@id": "/api/jobs/77",
-            "@type": "Job",
-            "abbreviation": "GRND",
-            "mandate": null,
-            "title": "Resident Mastermind"
-        }
-      ],
-      "organizationEmail": null,
-      "studentConvention": {
-        "@id": "/api/student_conventions/GILMIC20100224",
-        "@type": "StudentConvention",
-        "dateOfSignature": "2010-02-24T18:44:07+01:00"
-      },
-      "types": [
-        "TYPE_CONTRACTOR",
-        "TYPE_MEMBER"
-      ],
-      "updatedAt": "2015-06-10T00:00:00+02:00",
-      "username": "Hebert.Paul",
-      "email": "Leconte.Yves@Lenoir.fr",
-      "roles": [
-        "ROLE_USER"
-      ]
+        "@context": "/api/contexts/User",
+        "@id": "/api/users/21",
+        "@type": "User",
+        "createdAt": "2014-12-31T22:00:00+00:00",
+        "endingSchoolYear": null,
+        "fullname": null,
+        "jobs": [
+            {
+                "@id": "/api/jobs/77",
+                "@type": "Job",
+                "abbreviation": "GRND",
+                "mandate": null,
+                "title": "Resident Mastermind"
+            }
+        ],
+        "organizationEmail": null,
+        "studentConvention": {
+            "@id": "/api/student_conventions/GILMIC20100227",
+            "@type": "StudentConvention",
+            "dateOfSignature": "2010-02-26T22:36:59+00:00"
+        },
+        "types": [
+            "TYPE_CONTRACTOR",
+            "TYPE_MEMBER"
+        ],
+        "updatedAt": "2015-06-09T20:00:00+00:00",
+        "username": "Hebert.Paul",
+        "email": "Leconte.Yves@Lenoir.fr",
+        "roles": [
+            "ROLE_USER"
+        ],
+        "enabled": true
     }
     """
 

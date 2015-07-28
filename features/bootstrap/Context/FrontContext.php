@@ -29,6 +29,6 @@ class FrontContext extends MinkContext implements Context
         $this->visit('/login');
         $this->fillField('username', 'admin');
         $this->fillField('password', 'admin');
-        $this->pressButton('Se connecter');
+        $this->pressButton('_submit');
     }
 }

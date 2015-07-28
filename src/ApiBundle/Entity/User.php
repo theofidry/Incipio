@@ -114,7 +114,7 @@ class User extends BaseUser
      * @Assert\NotBlank
      * @Groups({"user"})
      */
-    private $organisationEmail;
+    private $organizationEmail;
 
     /**
      * @var string Professional email lowercased for search and string comparison; cf emailCanonical & passwordCanonical
@@ -305,13 +305,13 @@ class User extends BaseUser
     }
 
     /**
-     * @param string $organisationEmail
+     * @param string $organizationEmail
      *
      * @return $this
      */
-    public function setOrganisationEmail($organisationEmail)
+    public function setOrganizationEmail($organizationEmail)
     {
-        $this->organisationEmail = $organisationEmail;
+        $this->organizationEmail = $organizationEmail;
 
         return $this;
     }
@@ -319,9 +319,9 @@ class User extends BaseUser
     /**
      * @return string|null
      */
-    public function getOrganisationEmail()
+    public function getOrganizationEmail()
     {
-        return $this->organisationEmail;
+        return $this->organizationEmail;
     }
 
     /**

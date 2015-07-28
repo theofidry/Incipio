@@ -44,7 +44,7 @@ class UserController extends BaseController
     public function indexAction(Request $request)
     {
         $form = $this->createUserFilteringForm($request);
-        $userRequest = $this->client->createRequest('GET', 'api_users_cget', $request);
+        $userRequest = $this->createRequest('GET', 'api_users_cget', $request);
 
         // Check if a request has been made to filter the list of users
         if ('POST' === $request->getMethod()) {

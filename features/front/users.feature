@@ -30,9 +30,9 @@ Feature: Filter users
     And I should see "2015"
     And I should see "Innovation Connector"
     And I should see "User Experience Directress"
-    And I should see "01/01/2015"
-    And I should see "01/01/2015"
-    And I should see "10/06/2015"
+    And I should see "01/01/2014"
+    And I should see "01/01/2014"
+    And I should see "09/06/2015"
 
   Scenario: Access to the edit page
     Given I am on "/users/30"

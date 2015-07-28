@@ -28,7 +28,7 @@ class UserType extends AbstractType
             ->add('username', 'text', [ 'label' => 'Nom d\'utilisateur' ])
             ->add('fullname', 'text', [ 'label' => 'Nom complet'])
             ->add('email', 'email', [ 'label' => 'Email' ])
-            ->add('organisationEmail', 'email', [ 'label' => 'Email professionnel' ])
+            ->add('organizationEmail', 'email', [ 'label' => 'Email professionnel' ])
             ->add('endingSchoolYear', 'date', [ 'label' => 'Promotion' ])
             ->add('enabled', 'checkbox', [ 'label' => 'Activé' ])
             // convention étudiante

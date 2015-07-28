@@ -32,7 +32,6 @@ Feature: Authenticate users
     Given I am on "/users"
     Then I am on "/login"
     When I authenticate myself as admin
-    And I press "Se connecter"
     Then I should be on "/users/"
 
   Scenario: Try to log in with wrong credentials.

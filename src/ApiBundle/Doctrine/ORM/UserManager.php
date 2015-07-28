@@ -28,7 +28,7 @@ class UserManager extends BaseUserManager
         parent::updateCanonicalFields($user);
 
         if ($user instanceof User) {
-            $user->setOrganizationEmailCanonical($this->canonicalizeEmail($user->getOrganisationEmail()));
+            $user->setOrganizationEmailCanonical($this->canonicalizeEmail($user->getOrganizationEmail()));
         }
     }
 }

@@ -7,7 +7,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
 /**
- * @coversDefaultClass ApiBundle\Doctrine\DBAL\UTCDateTimeType
+ * @coversDefaultClass ApiBundle\Doctrine\DBAL\Type\UTCDateTimeType
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
