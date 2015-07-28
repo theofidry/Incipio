@@ -18,6 +18,8 @@ use Doctrine\DBAL\Types\DateTimeType;
  * Class UTCDateTimeType: used to set the timezone of any date to UTC.
  *
  * @link https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/timestampable.md#creating-a-utc-datetime-type-that-stores-your-datetimes-in-utc
+ *
+ * @author Théo FIDRY <theo.fidry@gmail.com>
  */
 class UTCDateTimeType extends DateTimeType
 {

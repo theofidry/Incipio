@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FrontBundle\Tests\Form\Type;
+namespace FrontBundle\Tests\Form;
 
-use FrontBundle\Form\Type\UserFilteringType;
+use FrontBundle\Form\UserFilteringType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
- * @coversDefaultClass FrontBundle\Form\Type\UserFilteringType
+ * @coversDefaultClass FrontBundle\Form\UserFilteringType
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */

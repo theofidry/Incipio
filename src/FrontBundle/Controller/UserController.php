@@ -11,8 +11,8 @@
 
 namespace FrontBundle\Controller;
 
-use FrontBundle\Form\Type\UserFilteringType;
-use FrontBundle\Form\Type\UserType;
+use FrontBundle\Form\UserFilteringType;
+use FrontBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
