@@ -47,7 +47,7 @@ class UserFilteringType extends AbstractType
                     'choices'     => $this->mandates,
                     'label'       => 'Mandat :',
                     'placeholder' => 'Tous',
-                    'required' => false,
+                    'required'    => false,
                 ]
             )
             ->add(
@@ -60,7 +60,7 @@ class UserFilteringType extends AbstractType
                     ],
                     'label'       => 'Type :',
                     'placeholder' => 'Tous',
-                    'required' => false,
+                    'required'    => false,
                 ]
             )
         ;
