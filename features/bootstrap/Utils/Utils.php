@@ -142,7 +142,6 @@ class Utils
          */
         $currentArray = null;
         foreach ($explodedString as $index => $keyPart) {
-
             $indexPart = preg_grep('/a/', $keyPart);
 
 

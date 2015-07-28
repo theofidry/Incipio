@@ -47,8 +47,7 @@ abstract class AbstractResourceSearchFilter extends DunglasSearchFilter
         IriConverterInterface $iriConverter,
         PropertyAccessorInterface $propertyAccessor,
         array $properties = null
-    )
-    {
+    ) {
         parent::__construct($managerRegistry, $iriConverter, $propertyAccessor, $properties);
 
         $this->iriConverter = $iriConverter;

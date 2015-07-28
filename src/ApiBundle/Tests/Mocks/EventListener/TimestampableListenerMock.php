@@ -39,7 +39,6 @@ class TimestampableListenerMock extends TimestampableListener
      */
     protected function updateField($object, $ea, $meta, $field)
     {
-
         $property = $meta->getReflectionProperty($field);
         $oldValue = $property->getValue($object);
         $newValue = $ea->getDateValue($meta, $field);
