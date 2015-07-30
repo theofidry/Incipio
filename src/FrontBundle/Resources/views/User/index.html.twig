@@ -11,21 +11,21 @@
 {% block sub_body -%}
 
     <div class="row">
-        {{ form_start(filter) }}
+        {{ form_start(filter_form) }}
         <div class="pull-left">
             <div class="form-inline">
-                {{ form_label(filter.mandate_id) }}
-                {{ form_widget(filter.mandate_id, {'attr': {'class': 'form-control'} }) }}
+                {{ form_label(filter_form.mandate_id) }}
+                {{ form_widget(filter_form.mandate_id, {'attr': {'class': 'form-control'} }) }}
             </div>
         </div>
         <div class="pull-left" style="margin-left: 10px">
             <div class="form-inline">
-                {{ form_label(filter.user_type) }}
-                {{ form_widget(filter.user_type, {'attr': {'class': 'form-control'} }) }}
+                {{ form_label(filter_form.user_type) }}
+                {{ form_widget(filter_form.user_type, {'attr': {'class': 'form-control'} }) }}
             </div>
         </div>
-        {{ form_widget(filter.submit, { 'attr': { 'class': 'btn btn-primary', 'style': 'margin-left: 10px' } }) }}
-        {{ form_end(filter) }}
+        {{ form_widget(filter_form.submit, { 'attr': { 'class': 'btn btn-primary', 'style': 'margin-left: 10px' } }) }}
+        {{ form_end(filter_form) }}
     </div>
     <br />
     <div class="row">

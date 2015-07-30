@@ -9,10 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace FrontBundle\Form;
+namespace FrontBundle\Form\Type;
 
+use FrontBundle\Form\DataMapper\StudentConventionMapper;
+use FrontBundle\Form\DataTransformer\StudentConventionTransformer;
+use FrontBundle\Utils\IriHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * @author Théo FIDRY <theo.fidry@gmail.com>
@@ -35,7 +40,7 @@ class UserType extends AbstractType
                     'attr'  => [
                         'placeholder' => 'prenom.nom',
                     ],
-                    'label' => 'Nom d\'utilisateur',
+                    'label' => 'Nom d\'utilisateur :',
                 ])
             ->add(
                 'fullname',
@@ -44,7 +49,7 @@ class UserType extends AbstractType
                     'attr'  => [
                         'placeholder' => 'Prénom NOM',
                     ],
-                    'label' => 'Nom complet',
+                    'label' => 'Nom complet :',
                 ])
             ->add(
                 'email',
@@ -53,27 +58,28 @@ class UserType extends AbstractType
                     'attr'  => [
                         'placeholder' => 'email@example.com',
                     ],
-                    'label' => 'Email',
+                    'label' => 'Email :',
                 ])
             ->add(
                 'organizationEmail',
                 'email',
                 [
-                    'label'    => 'Email professionnel',
                     'attr'     => [
                         'placeholder' => 'email@example.com',
                     ],
+                    'label'    => 'Email professionnel :',
                     'required' => false,
                 ])
             ->add(
                 'endingSchoolYear',
                 'integer',
                 [
-                    'attr'      => [
+                    'attr'     => [
                         'placeholder' => 2015,
                     ],
-                    'precision' => 0,
-                    'required'  => false,
+                    'label' => 'Promotion :',
+                    'required' => false,
+                    'scale'    => 0,
                 ])
             ->add(
                 'user_type',
@@ -89,10 +95,41 @@ class UserType extends AbstractType
                     'data'     => $types
                 ]
             )
-            ->add('enabled', 'checkbox', ['label' => 'Activé'])
-            // convention étudiante
-            // mandate
+            ->add(
+                'enabled',
+                'checkbox',
+                [
+                    'label'    => 'Activé',
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'studentConvention',
+                new StudentConventionType(),
+                [
+                    'label' => 'Convention étudiante :'
+                ]
+            )
+            // job
         ;
+
+//        $builder->addEventListener(
+//            FormEvents::PRE_SET_DATA,
+//            [$this, 'onPreSetData']
+//        );
+    }
+
+    public function onPreSetData(FormEvent $event)
+    {
+        $data = $event->getData();
+
+        $data['@id'] = IriHelper::extractId($data['@id']);
+
+        if (isset($data['studentConvention']['@id'])) {
+            $data['studentConvention']['@id'] = IriHelper::extractId($data['studentConvention']['@id']);
+        }
+
+        $event->setData($data);
     }
 
     /**

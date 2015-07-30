@@ -12,91 +12,121 @@
 {%- endblock %}
 
 {% block sub_body -%}
-    <div class="col-md-6">
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th>Nom d'utilisateur</th>
-                    <td>{{ user.username }}</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <th>Email professionnel</th>
-                    <td>{{ user.organizationEmail }}</td>
-                </tr>
-                <tr>
-                    <th>Activé</th>
-                    <td>
-                        {%- if 1 == user.enabled -%}
-                            Oui
-                        {%- else -%}
-                            Non
-                        {%- endif -%}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Rôle(s)</th>
-                    <td>
-                        {%- set role = user.roles|userTopRole -%}
-                        {%- if 'root' == role -%}
-                            {% set class = 'label label-danger' -%}
-                        {%- elseif 'admin' == role -%}
-                            {% set class = 'label label-primary' -%}
-                        {%- else %}
-                            {% set class = 'label label-default' -%}
-                        {%- endif -%}
-                        <span class="{{ class }}">{{ role }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Promotion</th>
-                    <td>{{ user.endingSchoolYear|date('Y') }}</td>
-                </tr>
-                <tr>
-                    <th>Type(s)</th>
-                    <td>
-                        {%- for type in user.types -%}
-                            {%- if 'TYPE_CONTRACTOR' == type -%} {# 1 === contractor #}
-                                {%- set class = 'label label-info' -%}
-                                {%- set type = 'intervenant' -%}
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Nom d'utilisateur</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email professionnel</th>
+                        <td>{{ user.organizationEmail }}</td>
+                    </tr>
+                    <tr>
+                        <th>Activé</th>
+                        <td>
+                            {%- if 1 == user.enabled -%}
+                                Oui
+                            {%- else -%}
+                                Non
+                            {%- endif -%}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Rôle(s)</th>
+                        <td>
+                            {%- set role = user.roles|userTopRole -%}
+                            {%- if 'root' == role -%}
+                                {% set class = 'label label-danger' -%}
+                            {%- elseif 'admin' == role -%}
+                                {% set class = 'label label-primary' -%}
                             {%- else %}
                                 {% set class = 'label label-default' -%}
-                                {%- set type = 'membre' -%}
                             {%- endif -%}
-                            <span class="{{ class }}">{{ type }}</span>
-                        {%- endfor -%}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Poste(s)</th>
-                    <td>
-                        {% if user.jobs|length > 0 -%}
-                            <ul class="list">
-                                {% for job in user.jobs %}
-                                    <li>
-                                        {{ (job.title) }} <span class="badge">{{ job.mandate.name }}</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {%- endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Date de création</th>
-                    <td>
-                        {{ user.createdAt|date('d/m/Y') }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Dernière mise à jour</th>
-                    <td>
-                        {{ user.updatedAt|date('d/m/Y') }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                            <span class="{{ class }}">{{ role }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Promotion</th>
+                        <td>{{ user.endingSchoolYear|date('Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Type(s)</th>
+                        <td>
+                            {%- for type in user.types -%}
+                                {%- if 'TYPE_CONTRACTOR' == type -%} {# 1 === contractor #}
+                                    {%- set class = 'label label-info' -%}
+                                    {%- set type = 'intervenant' -%}
+                                {%- else %}
+                                    {% set class = 'label label-default' -%}
+                                    {%- set type = 'membre' -%}
+                                {%- endif -%}
+                                <span class="{{ class }}">{{ type }}</span>
+                            {%- endfor -%}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Poste(s)</th>
+                        <td>
+                            {% if user.jobs|length > 0 -%}
+                                <ul class="list">
+                                    {% for job in user.jobs %}
+                                        <li>
+                                            {{ (job.title) }}
+                                            {%- if job.mandate is not null -%}
+                                                &nbsp;<span class="badge">{{ job.mandate.name }}</span>
+                                            {%- endif -%}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {%- endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Convention Étudiante</th>
+                        <td>
+                            {% if user.studentConvention is not null -%}
+                                <ul class="list-unstyled">
+                                    <li>Signée :<input title="Convention signée" type="checkbox" checked disabled/></li>
+                                    <li>Référence : <span style="text-decoration: underline">{{ user.studentConvention['@id']|uriId }}</span></li>
+                                    {% if user.studentConvention.dateOfSignature is not null %}
+                                        <li>Date de signature : {{ user.studentConvention.dateOfSignature|date('d/m/Y') }}</li>
+                                    {% else %}
+                                        <li>Signé : <input type="checkbox" disabled/></li>
+                                    {% endif %}
+                                </ul>
+                            {% else %}
+                                <input title="Convention non signée" type="checkbox" disabled/>
+                            {%- endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Date de création</th>
+                        <td>
+                            {{ user.createdAt|date('d/m/Y') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Dernière mise à jour</th>
+                        <td>
+                            {{ user.updatedAt|date('d/m/Y') }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        {{ form(delete_form) }}
+
+        {#{{ form_start(delete_form) }}#}
+            {#{{ macros.button_entity_delete(path('users_delete', { 'id': userId }), 'Supprimer') }}#}
+        {#{{ form_end(delete_form) }}#}
     </div>
 {% endblock %}

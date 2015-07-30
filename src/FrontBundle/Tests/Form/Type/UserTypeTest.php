@@ -9,30 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace FrontBundle\Tests\Form;
+namespace FrontBundle\Tests\Form\Type;
 
-use FrontBundle\Form\UserFilteringType;
+use FrontBundle\Form\Type\UserType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
- * @coversDefaultClass FrontBundle\Form\UserFilteringType
+ * @coversDefaultClass FrontBundle\Form\Type\UserType
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class UserFilteringTypeTest extends TypeTestCase
+class UserTypeTest extends TypeTestCase
 {
     public function testSubmitValidData()
     {
-        $formData = [
-            'mandate_id' => '/api/mandates/1',
-            'user_type'  => '0',
-        ];
+        //TODO
+        $formData = [];
 
         // Check that the form compiles
-        $type = new UserFilteringType([
-            'Mandate 2014/2015' => '/api/mandates/1',
-            'Mandate 11 2013'   => '/api/mandates/2',
-        ]);
+        $type = new UserType();
         $form = $this->factory->create($type);
 
         // Submit the data to the form directly
@@ -48,6 +43,5 @@ class UserFilteringTypeTest extends TypeTestCase
         foreach (array_keys($formData) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
-        $this->assertEquals(count($formData), count($children));
     }
 }

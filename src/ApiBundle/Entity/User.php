@@ -70,7 +70,7 @@ class User extends BaseUser
     /**
      * {@inheritdoc}
      *
-     * @Assert\NotBlank
+     * @Assert\NotNull
      * @Groups({"user"})
      *
      * @TODO: validation for boolean
@@ -111,7 +111,6 @@ class User extends BaseUser
      * @Iri("https://schema.org/email")
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Email
-     * @Assert\NotBlank
      * @Groups({"user"})
      */
     private $organizationEmail;
@@ -122,7 +121,6 @@ class User extends BaseUser
      * @Iri("https://schema.org/email")
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Email
-     * @Assert\NotBlank
      * @Groups({"user-write"})
      */
     private $organizationEmailCanonical;
@@ -345,11 +343,11 @@ class User extends BaseUser
     }
 
     /**
-     * @param StudentConvention $studentConvention
+     * @param StudentConvention|null $studentConvention
      *
      * @return $this
      */
-    public function setStudentConvention(StudentConvention $studentConvention)
+    public function setStudentConvention(StudentConvention $studentConvention = null)
     {
         $this->studentConvention = $studentConvention;
 

@@ -61,8 +61,8 @@ ApiBundle\Entity\User:
         types:             <userTypes('contractor')>
 
     user__{0..49} (extends user):
-        studentConvention: @ce_user__<current()>
+        studentConvention: 80%? @ce_user__<current()>
 
     user__{50..60} (extends user):
         enabled:           false
-        studentConvention: @ce_user__<current()>
+        studentConvention: 80%? @ce_user__<current()>

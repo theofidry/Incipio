@@ -11,8 +11,9 @@
 
 namespace FrontBundle\Controller;
 
-use FrontBundle\Form\UserFilteringType;
-use FrontBundle\Form\UserType;
+use FrontBundle\Form\Type\UserFilteringType;
+use FrontBundle\Form\Type\UserType;
+use GuzzleHttp\Exception\ServerException as GuzzleServerException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -43,15 +44,16 @@ class UserController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        $form = $this->createUserFilteringForm($request);
+        $filterForm = $this->createUserFilteringForm($request);
         $userRequest = $this->createRequest('GET', 'api_users_cget', $request);
+        $users = [];
 
         // Check if a request has been made to filter the list of users
         if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+            $filterForm->handleRequest($request);
 
-            if ($form->isValid()) {
-                $data = $form->getData();
+            if ($filterForm->isValid()) {
+                $data = $filterForm->getData();
                 $query = '';
 
                 // Update user request to filter the list of users to match the requested type
@@ -68,11 +70,15 @@ class UserController extends BaseController
         }
         
         // Retrieve users, since it's a paginated collection go through all available pages
-        $users = $this->sendAndDecode($userRequest, true);
+        try {
+            $users = $this->sendAndDecode($userRequest, true);
+        } catch (GuzzleServerException $exception) {
+            $this->handleGuzzleException($exception);
+        }
 
         return [
-            'users'  => $users,
-            'filter' => $form->createView(),
+            'users'       => $users,
+            'filter_form' => $filterForm->createView(),
         ];
     }
 
@@ -90,22 +96,48 @@ class UserController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $entity = new User();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
+        $createForm = $this->createCreateForm();
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+        $createForm->handleRequest($request);
+        if ($createForm->isValid()) {
+            $createRequest = $this->createRequest('POST',
+                'api_users_cpost',
+                $request,
+                [
+                    'json' => $createForm->getData()
+                ]
+            );
+            $createResponse = $this->client->send($createRequest);
+            $decodedResponse = $createResponse->json();
 
-            return $this->redirect($this->generateUrl('users_show', array('id' => $entity->getId())));
+            if (202 !== $createResponse->getStatusCode()) {
+                $message = (true === empty($decodedResponse))
+                    ? 'Une erreur est survenue.'
+                    : $decodedResponse
+                ;
+                $this->addFlash('error', $message);
+
+                return $this->redirect($this->generateUrl('users'));
+            }
+
+            try {
+                $createResponse = $this->client->send($createRequest);
+
+                if (202 !== $createResponse->getStatusCode()) {
+                    $this->handleGuzzleException($createResponse);
+
+                    return $this->redirect($this->generateUrl('users'));
+                }
+            } catch (GuzzleServerException $exception) {
+                $this->handleGuzzleException($exception);
+            }
+
+            return $this->redirect($this->generateUrl('users_show', ['id' => $decodedResponse['@id']]));
         }
 
-        return array(
-            'entity' => $entity,
-            'form' => $form->createView(),
-        );
+        return [
+            'create_form' => $createForm->createView(),
+        ];
     }
 
     /**
@@ -118,9 +150,7 @@ class UserController extends BaseController
      */
     public function newAction()
     {
-        $form = $this->createCreateForm();
-
-        return ['form' => $form->createView()];
+        return ['new_form' => $this->createCreateForm()->createView()];
     }
 
     /**
@@ -132,7 +162,7 @@ class UserController extends BaseController
      * @Template()
      *
      * @param Request $request
-     * @param         $id
+     * @param int     $id
      *
      * @return array
      */
@@ -151,7 +181,10 @@ class UserController extends BaseController
 
         $user = $this->decode($response->getBody());
 
-        return ['user' => $user];
+        return [
+            'delete_form' => $this->createDeleteForm($id)->createView(),
+            'user'        => $user,
+        ];
     }
 
     /**
@@ -163,29 +196,35 @@ class UserController extends BaseController
      * @Template()
      *
      * @param Request $request
-     * @param         $id
+     * @param int     $id
      *
      * @return array
      */
     public function editAction(Request $request, $id)
     {
-        $response = $this->client->request(
-            'GET',
-            'api_users_get',
-            $request->getSession()->get('api_token'),
-            ['parameters' => ['id' => $id]]
-        );
+        try {
+            $editResponse = $this->client->send(
+                $this->createRequest(
+                    'GET',
+                    'api_users_get',
+                    $request,
+                    ['parameters' => ['id' => $id]]
+                )
+            );
 
-        if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            if (Response::HTTP_NOT_FOUND === $editResponse->getStatusCode()) {
+                throw $this->createNotFoundException('Unable to find User entity.');
+            }
+
+            $user = $editResponse->json();
+
+            return [
+                'user'      => $user,
+                'edit_form' => $this->createEditForm($user)->createView(),
+            ];
+        } catch (GuzzleServerException $exception) {
+            $this->handleGuzzleException($exception);
         }
-
-        $user = $this->decode($response->getBody());
-
-        return [
-            'user' => $user,
-            'form' => $this->createEditForm($user)->createView(),
-        ];
     }
 
     /**
@@ -195,47 +234,62 @@ class UserController extends BaseController
      *
      * @Method("PUT")
      * @Template("ApiUserBundle:User:edit.html.twig")
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function updateAction(Request $request, $id)
     {
-        $response = $this->client->request(
-            'GET',
-            'api_users_get',
-            $request->getSession()->get('api_token'),
-            ['parameters' => ['id' => $id]]
-        );
+        $user = [];
 
-        if (Response::HTTP_NOT_FOUND === $response->getStatusCode()) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $user = $this->decode($response->getBody());
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($user);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $updateResponse = $this->requestAndDecode('PUT',
-                'api_users_put',
-                $request,
-                [
-                    'body'       => json_encode($editForm->getData()),
-                    'parameters' => ['id' => $id]
-                ]
+        try {
+            // Get the user to check if exist and to retrieve its data
+            $getUserResponse = $this->client->send(
+                $this->createRequest(
+                    'GET',
+                    'api_users_get',
+                    $request,
+                    ['parameters' => ['id' => $id]]
+                )
             );
 
-            \Symfony\Component\VarDumper\VarDumper::dump($updateResponse);
-            die('TODO: update dude');
-            $em->flush();
+            if (Response::HTTP_NOT_FOUND === $getUserResponse->getStatusCode()) {
+                throw $this->createNotFoundException('Unable to find User entity.');
+            }
+            $user = $getUserResponse->json();
 
-            return $this->redirect($this->generateUrl('users_edit', array('id' => $id)));
+
+            // Handle update request
+            $editForm = $this->createEditForm($user);
+            $editForm->handleRequest($request);
+
+            if ($editForm->isValid()) {
+                $updateRequest = $this->createRequest('PUT',
+                    'api_users_put',
+                    $request,
+                    [
+                        'json' => $editForm->getData(),
+                        'parameters' => ['id' => $id]
+                    ]
+                );
+
+                $updateRequest = $this->client->send($updateRequest);
+
+                if (Response::HTTP_OK !== $updateRequest->getStatusCode()) {
+                    $this->handleGuzzleException($updateRequest);
+                } else {
+                    $this->addFlash('success', 'L\'utilisateur a bien été mis à jour.');
+                }
+
+                return $this->redirect($this->generateUrl('users_show', ['id' => $id]));
+            }
+        } catch (GuzzleServerException $exception) {
+            $this->handleGuzzleException($exception);
         }
 
-        return [
-            'entity'      => $user,
-            'delete_form' => $deleteForm->createView(),
-        ];
+        return ['user' => $user];
     }
 
     /**
@@ -244,22 +298,41 @@ class UserController extends BaseController
      * @Route("/{id}", name="users_delete")
      *
      * @Method("DELETE")
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm->handleRequest($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('ApiUserBundle:User')->find($id);
+        if ($deleteForm->isValid()) {
+            $deleteRequest = $this->createRequest('DELETE',
+                'api_users_delete',
+                $request,
+                [
+                    'parameters' => ['id' => $id]
+                ]
+            );
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+            try {
+                $deleteResponse = $this->client->send($deleteRequest);
+
+                if (Response::HTTP_NO_CONTENT !== $deleteResponse->getStatusCode()) {
+                    $this->handleGuzzleException($deleteResponse);
+                } else {
+                    $this->addFlash('success', 'L\'utilisateur a bien été supprimé.');
+                }
+            } catch (GuzzleServerException $exception) {
+                $this->handleGuzzleException($exception);
             }
 
-            $em->remove($entity);
-            $em->flush();
+            return $this->redirect($this->generateUrl('users'));
+        } else {
+            $this->addFlash('error', $deleteForm->getErrors());
         }
 
         return $this->redirect($this->generateUrl('users'));
@@ -309,14 +382,14 @@ class UserController extends BaseController
     /**
      * Creates a form to delete a User entity by id.
      *
-     * @param mixed $id The entity id
+     * @param int $id The entity id
      *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('users_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('users_delete', ['id' => $id]))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
@@ -350,5 +423,31 @@ class UserController extends BaseController
             ])
             ->add('submit', 'submit', ['label' => 'Filtrer'])
         ;
+    }
+
+    /**
+     * Extract the Guzzle exception or the message from the Guzzle response to add a flash error.
+     *
+     * @param GuzzleServerException|\GuzzleHttp\Message\Response $exceptionOrRequest
+     */
+    private function handleGuzzleException($exceptionOrRequest)
+    {
+        if ($exceptionOrRequest instanceof GuzzleServerException) {
+            $message = $exceptionOrRequest->getMessage();
+            $message = (true === empty($message))
+                ? 'Une erreur est survenue.'
+                : $message
+            ;
+            $this->addFlash('error', $message);
+        }
+
+        if ($exceptionOrRequest instanceof \GuzzleHttp\Message\Response) {
+            $message = $exceptionOrRequest->json();
+            $message = (true === empty($message))
+                ? 'Une erreur est survenue.'
+                : $message
+            ;
+            $this->addFlash('error', $message);
+        }
     }
 }

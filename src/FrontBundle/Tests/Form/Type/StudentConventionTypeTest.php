@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace FrontBundle\Tests\Form;
+namespace FrontBundle\Tests\Form\Type;
 
-use FrontBundle\Form\UserType;
+use FrontBundle\Form\Type\StudentConventionType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
- * @coversDefaultClass FrontBundle\Form\UserType
+ * @coversDefaultClass FrontBundle\Form\Type\StudentConventionType
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class UserTypeTest extends TypeTestCase
+class StudentConventionTypeTest extends TypeTestCase
 {
     public function testSubmitValidData()
     {
@@ -27,7 +27,7 @@ class UserTypeTest extends TypeTestCase
         $formData = [];
 
         // Check that the form compiles
-        $type = new UserType();
+        $type = new StudentConventionType();
         $form = $this->factory->create($type);
 
         // Submit the data to the form directly
