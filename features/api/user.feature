@@ -11,56 +11,59 @@ Feature: User management
     And I should get a paged collection with the context "/api/contexts/User"
 
   Scenario: Get a resource
-    When I send a GET request to "/api/users/21"
+    When I send a GET request to "/api/users/1"
     Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-        "@context": "\/api\/contexts\/User",
-        "@id": "\/api\/users\/21",
-        "@type": "User",
-        "createdAt": "2015-01-01T00:00:00+00:00",
-        "endingSchoolYear": null,
-        "fullname": null,
-        "jobs": [
-            {
-                "@id": "\/api\/jobs\/77",
-                "@type": "Job",
-                "abbreviation": "GRND",
-                "mandate": null,
-                "title": "Resident Mastermind"
-            }
-        ],
-        "organizationEmail": null,
-        "studentConvention": {
-            "@id": "\/api\/student_conventions\/GILMIC20100227",
-            "@type": "StudentConvention",
-            "dateOfSignature": "2010-02-27T00:18:01+00:00"
-        },
-        "types": [
-            "TYPE_CONTRACTOR",
-            "TYPE_MEMBER"
-        ],
-        "updatedAt": "2015-06-10T00:00:00+00:00",
-        "username": "hebert.paul",
-        "email": "leconte.yves@lenoir.fr",
-        "roles": [
-            "ROLE_USER"
-        ],
-        "enabled": true
-    }
-    """
+    And the JSON node "createdAt" should be a string
+    And the JSON node "updatedAt" should be a string
+    And the JSON node "jobs" should have 1 element
+    And the JSON node "types" should have 1 element
+    And the JSON node "roles" should have 2 elements
+    Then the JSON response should should have the following nodes:
+      | node                               | value                                   | type    |
+      | @context                           | /api/contexts/User                      |         |
+      | @id                                | /api/users/1                            |         |
+      | @type                              | User                                    |         |
+      | createdAt                          |                                         |         |
+      | endingSchoolYear                   | ~                                       |         |
+      | fullname                           | Président TENDISERP                     |         |
+      | jobs                               |                                         | array   |
+      | jobs[0]                            |                                         | object  |
+      | jobs[0]->@id                       | /api/jobs/1                             |         |
+      | jobs[0]->@type                     | Job                                     |         |
+      | jobs[0]->abbreviation              | PR                                      |         |
+      | jobs[0]->mandate                   |                                         | object  |
+      | jobs[0]->mandate->@id              | /api/mandates/12                        |         |
+      | jobs[0]->mandate->@type            | Mandate                                 |         |
+      | jobs[0]->mandate->endAt            |                                         |         |
+      | jobs[0]->mandate->name             | Mandate 2016/2018                       |         |
+      | jobs[0]->mandate->startAt          |                                         |         |
+      | jobs[0]->title                     | President                               |         |
+      | organizationEmail                  |                                         |         |
+      | studentConvention                  |                                         | object  |
+      | studentConvention->@id             | /api/student_conventions/PRSTEN20150711 |         |
+      | studentConvention->@type           | StudentConvention                       |         |
+      | studentConvention->dateOfSignature |                                         |         |
+      | types                              |                                         | array   |
+      | types[0]                           | TYPE_MEMBER                             |         |
+      | updatedAt                          |                                         |         |
+      | username                           | president.tendiserp                     |         |
+      | email                              | president.tendiserp@incipio.fr          |         |
+      | roles                              |                                         | array   |
+      | roles[0]                           | ROLE_ADMIN                              |         |
+      | roles[1]                           | ROLE_USER                               |         |
+      | enabled                            | true                                    | boolean |
+
 
   Scenario: Filter users by type
     When I send a GET request to "/api/users?filter[where][type]=contractor"
     Then the response status code should be 200
     And I should get a paged collection with the context "/api/contexts/User"
-    And the JSON node "hydra:totalItems" should be equal to 44
+    And the JSON node "hydra:totalItems" should be equal to 45
     And the JSON node "types" of the objects of the JSON node "hydra:member" should contains "TYPE_CONTRACTOR"
 
   Scenario: Filter users by mandate
     When I send a GET request to "/api/users?filter[where][mandate]=/api/mandates/5"
     Then the response status code should be 200
     And I should get a paged collection with the context "/api/contexts/User"
-    And the JSON node "hydra:totalItems" should be equal to 8
+    And the JSON node "hydra:totalItems" should be equal to 6
     And all the users should have a mandate with the value "/api/mandates/5"
