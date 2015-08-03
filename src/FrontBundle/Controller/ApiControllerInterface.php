@@ -3,6 +3,7 @@
 namespace FrontBundle\Controller;
 
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Message\RequestInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -78,6 +79,9 @@ interface ApiControllerInterface
      *                                                              collection.
      *
      * @return array
+     *
+     * @throws \LogicException When the handler does not populate a response
+     * @throws RequestException When an error is encountered
      */
     public function requestAndDecode($method, $url = null, $token = null, $options = [], $wholeCollection = false);
 
@@ -94,9 +98,19 @@ interface ApiControllerInterface
      *                                          collection.
      *
      * @return array
+     *
      * @throws \LogicException When the handler does not populate a response
      * @throws RequestException When an error is encountered
      * @throws UnexpectedValueException
      */
     public function sendAndDecode(RequestInterface $request, $wholeCollection = false);
+
+    /**
+     * Handle Guzzle exceptions. Assumes the exception was thrown while sending a request to the API. For more
+     * information regarding Guzzle exceptions, refer to {@link
+     * http://guzzle.readthedocs.org/en/latest/quickstart.html#exceptions}.
+     *
+     * @param TransferException $exception
+     */
+    public function handleGuzzleException(TransferException $exception);
 }

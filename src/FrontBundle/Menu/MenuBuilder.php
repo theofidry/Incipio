@@ -133,10 +133,15 @@ class MenuBuilder
         // User is authenticated
         $user = $this->tokenStorage->getToken()->getUser();
 
+        $username = $user->getFullname();
+        if (true === empty($username)) {
+            $username = $user->getUsername();
+        }
+
         $menu->addChild(
             'profile',
             [
-                'label' => $user->getUsername(),
+                'label' => $username,
                 'route' => 'users',
             ]
         );

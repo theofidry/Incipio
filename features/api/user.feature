@@ -53,6 +53,12 @@ Feature: User management
       | roles[1]                           | ROLE_USER                               |         |
       | enabled                            | true                                    | boolean |
 
+  Scenario: Create a new user
+    When I send a POST request to "/api/users" with body:
+      | username |  |
+
+  Scenario: Update a resource
+
 
   Scenario: Filter users by type
     When I send a GET request to "/api/users?filter[where][type]=contractor"
@@ -67,3 +73,12 @@ Feature: User management
     And I should get a paged collection with the context "/api/contexts/User"
     And the JSON node "hydra:totalItems" should be equal to 6
     And all the users should have a mandate with the value "/api/mandates/5"
+
+  Scenario: Delete a resource
+  Delete a resource that has a Job
+  Delete a resource that has a student convention
+    When I send a DELETE request to "/api/users/1"
+    Then the response status code should be 202
+  The method should be idempotent
+    When I send a GET request to "/api/users/1"
+    Then the response status code should be 404

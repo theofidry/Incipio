@@ -99,6 +99,7 @@ class UserType extends AbstractType
                 'enabled',
                 'checkbox',
                 [
+                    'data'     => false,
                     'label'    => 'Activé',
                     'required' => false,
                 ]

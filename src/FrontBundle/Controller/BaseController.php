@@ -13,8 +13,10 @@ namespace FrontBundle\Controller;
 
 use FrontBundle\Client\ApiClientInterface;
 use FrontBundle\Utils\IriHelper;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Message\RequestInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,11 +26,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class BaseController.
- *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class BaseController extends Controller implements ApiControllerInterface
+class BaseController extends SymfonyController implements ApiControllerInterface
 {
     /**
      * @var ApiClientInterface
@@ -113,6 +113,53 @@ class BaseController extends Controller implements ApiControllerInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function handleGuzzleException(TransferException $exception)
+    {
+        $message = null;
+
+        if ($exception instanceof RequestException) {
+            $response = $exception->getResponse();
+
+            switch ($response->getHeader('Content-Type')) {
+
+                case 'application/ld+json':
+                    $body = $this->decode($response->getBody());
+                    $type = $body['@type'];
+                    switch ($type) {
+                        case 'Error':
+                            $message = sprintf(
+                                '%s: %s',
+                                $body['hydra:title'],
+                                $body['hydra:description']
+                            );
+                            break;
+
+                        case 'ConstraintViolationList':
+                            //TODO
+                            break;
+                    }
+                    break;
+
+                case 'application/json':
+                    $message = $this->decode($response->getBody());
+                    break;
+            }
+        }
+
+        // Other
+        if (null === $message) {
+            $message = $exception->getMessage();
+            $message = (true === empty($message))
+                ? 'Une erreur est survenue.'
+                : $message
+            ;
+        }
+
+        $this->addFlash('error', $message);
+    }
 
     /**
      * {@inheritdoc}
