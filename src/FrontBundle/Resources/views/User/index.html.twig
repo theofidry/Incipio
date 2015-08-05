@@ -51,6 +51,9 @@
                         {%- else -%}
                             {{ user.username }}
                         {%- endif -%}
+                        {%- if user.enabled == true -%}
+                            &nbsp;<div class="label label-success">Activé</div>
+                        {%- endif -%}
                     </td>
                     <td>{{ user.email }}</td>
                     <td>

@@ -48,9 +48,9 @@ class UserController extends BaseController
         // Check if a request has been made to filter the list of users
         if ('POST' === $request->getMethod()) {
             // Handle filter form
-            // Does not generate errors as we have no means to know if the POST request is for this form or a new user
             $filterForm->handleRequest($request);
-            if ($filterForm->isValid()) {
+
+            if ($filterForm->isSubmitted() && $filterForm->isValid()) {
                 $data = $filterForm->getData();
                 $query = '';
 
@@ -64,9 +64,6 @@ class UserController extends BaseController
                 }
 
                 $userRequest->setQuery($query);
-            } else {
-                // If filter form is invalid, expect a POST request for a new user
-                $this->createAction($request);
             }
         }
         
@@ -85,27 +82,34 @@ class UserController extends BaseController
     }
 
     /**
-     * Creates a new User entity. Should be a dedicated POST endpoint, but as the indexAction handle the filter form
-     * which is a post too, this action can't have a dedicated endpoint. Hence is called by indexAction. Still keep the
-     * route name because is more convenient for generating routes.
-     *
-     * @Route("/", name="users_create")
+     * @Route("/new", name="users_new")
+     * @Method({"GET", "POST"})
+     * @Template()
      *
      * @param Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array
      */
-    public function createAction(Request $request)
+    public function newAction(Request $request)
     {
-        $createForm = $this->createCreateForm();
-        $createForm->handleRequest($request);
+        $newForm = $this->createNewForm();
+        $newForm->handleRequest($request);
 
-        if ($createForm->isValid()) {
-            $createRequest = $this->createRequest('POST',
+        if ($newForm->isSubmitted() && $newForm->isValid()) {
+            $formData = $newForm->getData();
+            if (null === $formData['studentConvention']['dateOfSignature']) {
+                unset($formData['studentConvention']);
+            }
+            // Generate random password
+            $tokenGenerator = $this->container->get('fos_user.util.token_generator');
+            $formData['plainPassword'] = substr($tokenGenerator->generateToken(), 2, 8);
+
+            $createRequest = $this->createRequest(
+                'POST',
                 'api_users_cpost',
                 $request,
                 [
-                    'json' => $createForm->getData()
+                    'json' => $formData
                 ]
             );
 
@@ -113,29 +117,14 @@ class UserController extends BaseController
                 $createResponse = $this->client->send($createRequest);
 
                 // User properly created, redirect to user show view
-                return $this->redirect($this->generateUrl('users_show', ['id' => $createResponse->json()['@id']]));
+
+                return $this->redirectToRoute('users_show', ['id' => $createResponse->json()['@id']]);
             } catch (ClientTransferException $exception) {
                 $this->handleGuzzleException($exception);
             }
         }
 
-        // Redirect to the form
-        return [
-            'create_form' => $createForm->createView(),
-        ];
-    }
-
-    /**
-     * Displays a form to create a new User entity.
-     *
-     * @Route("/new", name="users_new")
-     *
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        return ['new_form' => $this->createCreateForm()->createView()];
+        return ['new_form' => $this->createNewForm()->createView()];
     }
 
     /**
@@ -181,7 +170,7 @@ class UserController extends BaseController
             $this->handleGuzzleException($exception);
         }
 
-        return $this->redirect($this->generateUrl('users'));
+        return $this->redirectToRoute('users');
     }
 
     /**
@@ -190,7 +179,6 @@ class UserController extends BaseController
      * @Route("/{id}/edit", name="users_edit")
      *
      * @Method("GET")
-     * @Template()
      *
      * @param Request $request
      * @param int     $id
@@ -208,17 +196,18 @@ class UserController extends BaseController
                     ['parameters' => ['id' => $id]]
                 )
             );
-
-            if (Response::HTTP_NOT_FOUND === $editResponse->getStatusCode()) {
-                throw $this->createNotFoundException('Unable to find User entity.');
-            }
-
             $user = $editResponse->json();
 
             return [
                 'user'      => $user,
                 'edit_form' => $this->createEditForm($user)->createView(),
             ];
+        } catch (ClientRequestException $exception) {
+            if (Response::HTTP_NOT_FOUND === $exception->getResponse()->getStatusCode()) {
+                throw $this->createNotFoundException('Unable to find User entity.');
+            }
+
+            $this->handleGuzzleException($exception);
         } catch (ClientTransferException $exception) {
             $this->handleGuzzleException($exception);
         }
@@ -230,7 +219,7 @@ class UserController extends BaseController
      * @Route("/{id}", name="users_update")
      *
      * @Method("PUT")
-     * @Template("ApiUserBundle:User:edit.html.twig")
+     * @Template("FrontBundle:User:edit.html.twig")
      *
      * @param Request $request
      * @param int     $id
@@ -272,11 +261,10 @@ class UserController extends BaseController
                     ]
                 );
 
-                $updateRequest = $this->client->send($updateRequest);
-
+                $this->client->send($updateRequest);
                 $this->addFlash('success', 'L\'utilisateur a bien été mis à jour.');
 
-                return $this->redirect($this->generateUrl('users_show', ['id' => $id]));
+                return $this->redirectToRoute('users_show', ['id' => $id]);
             }
         } catch (ClientRequestException $exception) {
             if (Response::HTTP_NOT_FOUND === $exception->getResponse()->getStatusCode()) {
@@ -333,7 +321,7 @@ class UserController extends BaseController
             $this->addFlash('error', $deleteForm->getErrors());
         }
 
-        return $this->redirect($this->generateUrl('users'));
+        return $this->redirectToRoute('users');
     }
 
     /**
@@ -343,12 +331,12 @@ class UserController extends BaseController
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function createCreateForm(array $user = [])
+    private function createNewForm(array $user = [])
     {
         $form = $this->createForm(new UserType(),
             $user,
             [
-                'action' => $this->generateUrl('users_create'),
+                'action' => $this->generateUrl('users_new'),
                 'method' => 'POST',
             ]
         );

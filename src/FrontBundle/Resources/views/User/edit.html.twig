@@ -1,6 +1,6 @@
 {% extends 'FrontBundle:CRUD:show.html.twig' %}
 
-{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block page_header_title -%}
     <h1>Utilisateur</h1>
@@ -14,11 +14,11 @@
 
     <div class="container">
         <div class="col-md-6">
-            {{ form_start(form) }}
-                {{ form_widget(form) }}
+            {{ form_start(edit_form) }}
+                {{ form_widget(edit_form) }}
                 {{ macros.button_link(path('users_show', { 'id': user['@id']|uriId }), 'Annuler', 'btn-default pull-left') }}
                 <input type="submit" value="Enregistrer" class="btn btn-primary pull-right" />
-            {{ form_end(form) }}
+            {{ form_end(edit_form) }}
         </div>
     </div>
 {%- endblock %}

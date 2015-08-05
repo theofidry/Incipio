@@ -21,9 +21,6 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class StudentConventionTransformerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstructor()
     {
         $transformer = new StudentConventionTransformer();

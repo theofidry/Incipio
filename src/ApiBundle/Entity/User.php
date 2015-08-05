@@ -128,9 +128,6 @@ class User extends BaseUser
     /**
      * {@inheritdoc}
      *
-     *
-     * @Assert\NotBlank
-     *
      * @TODO: validation for the password!
      */
     protected $password;

@@ -34,15 +34,6 @@ class UserType extends AbstractType
 
         $builder
             ->add(
-                'username',
-                'text',
-                [
-                    'attr'  => [
-                        'placeholder' => 'prenom.nom',
-                    ],
-                    'label' => 'Nom d\'utilisateur :',
-                ])
-            ->add(
                 'fullname',
                 'text',
                 [
@@ -50,6 +41,15 @@ class UserType extends AbstractType
                         'placeholder' => 'Prénom NOM',
                     ],
                     'label' => 'Nom complet :',
+                ])
+            ->add(
+                'username',
+                'text',
+                [
+                    'attr'  => [
+                        'placeholder' => 'prenom.nom',
+                    ],
+                    'label' => 'Nom d\'utilisateur :',
                 ])
             ->add(
                 'email',

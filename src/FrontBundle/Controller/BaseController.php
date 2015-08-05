@@ -138,8 +138,14 @@ class BaseController extends SymfonyController implements ApiControllerInterface
                             break;
 
                         case 'ConstraintViolationList':
-                            //TODO
-                            break;
+                            foreach ($body['violations'] as $violation) {
+                                $this->addFlash(
+                                    'error',
+                                    sprintf('%s: %s', $violation['propertyPath'], $violation['message'])
+                                );
+                            }
+
+                            return;
                     }
                     break;
 
