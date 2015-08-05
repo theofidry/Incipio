@@ -168,7 +168,7 @@ class User extends BaseUser
      *
      * @Assert\Type("string")
      * @Assert\NotBlank
-     * @Groups({"job", "user"})
+     * @Groups({"user"})
      *
      * @TODO: validation for username!
      */
@@ -177,7 +177,7 @@ class User extends BaseUser
     /**
      * @var ArrayCollection|Job[] List of job for this user.
      *
-     * @ORM\OneToMany(targetEntity="Job", mappedBy="user")
+     * @ORM\ManyToMany(targetEntity="Job", mappedBy="users")
      * @Groups({"user"})
      *
      * @TODO: validation: may have no user
@@ -269,10 +269,15 @@ class User extends BaseUser
      */
     public function addJob(Job $job)
     {
+        // Check for duplicate
         if (false === $this->jobs->contains($job)) {
             $this->jobs->add($job);
         }
-        $job->setUser($this);
+
+        // Ensure the relation is set for both entities
+        if (false === $job->getUsers()->contains($this)) {
+            $job->addUser($this);
+        }
 
         return $this;
     }
@@ -286,9 +291,12 @@ class User extends BaseUser
      */
     public function removeJob(Job $job)
     {
-        if ($this->jobs->contains($job)) {
-            $this->jobs->removeElement($job);
-            $job->setUser(null);
+        $this->jobs->removeElement($job);
+
+        // Ensure the relation is unset for both entities
+        // The check must be done to avoid circular references
+        if (true === $job->getUsers()->contains($this)) {
+            $job->removeUser($this);
         }
 
         return $this;

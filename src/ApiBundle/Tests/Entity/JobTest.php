@@ -24,86 +24,202 @@ class JobTest extends AbstractEntityTestCase
 {
     /**
      * {@inheritdoc}
+     */
+    public function getEntityClassName()
+    {
+        return Job::class;
+    }
+
+    /**
+     * {@inheritdoc}
      *
-     * @covers       ::setTitle
-     * @covers       ::getTitle
-     * @covers       ::setAbbreviation
-     * @covers       ::getAbbreviation
-     * @covers       ::setEnabled
-     * @covers       ::getEnabled
-     * @covers       ::setUser
-     * @covers       ::getUser
-     * @covers       ::setMandate
-     * @covers       ::getMandate
-     * @dataProvider fluentDataProvider
-     *
-     * TODO: test on real database
+     * @covers ::getId
+     * @covers ::setTitle
+     * @covers ::getTitle
+     * @covers ::setAbbreviation
+     * @covers ::getAbbreviation
+     * @covers ::setEnabled
+     * @covers ::getEnabled
+     * @covers ::addUser
+     * @covers ::removeUser
+     * @covers ::getUsers
+     * @covers ::setMandate
+     * @covers ::getMandate
+     * @dataProvider propertyAccessorProvider
      */
     public function testPropertyAccessors(array $data = [])
     {
-        $job = new Job();
+        /** @var Mandate $mandate */
+        $mandate = $data['mandate'];
 
-        $job
+        $job = (new Job())
             ->setTitle($data['title'])
             ->setAbbreviation($data['abbreviation'])
             ->setEnabled($data['enabled'])
-            ->setUser($data['user'])
-            ->setMandate($data['mandate'])
+            ->setMandate($mandate)
         ;
+        foreach ($data['users'] as $user) {
+            // Is added two times to ensure the adder handles duplications and will add it only one time
+            $job->addUser($user);
+            $job->addUser($user);
+            $this->doctrineManager->persist($user);
+        }
+
+        $this->doctrineManager->persist($job);
+        $this->doctrineManager->persist($mandate);
+        $this->doctrineManager->flush();
+
 
         // Test classic setters
+        $this->assertNotNull($job->getId());
         $this->assertEquals($data['title'], $job->getTitle());
         $this->assertEquals($data['abbreviation'], $job->getAbbreviation());
         $this->assertEquals($data['enabled'], $job->getEnabled());
-        $this->assertEquals($data['user'], $job->getUser());
-        $this->assertEquals($data['mandate'], $job->getMandate());
 
-        // Test if relations has been properly set
-        $this->assertTrue($data['user']->getJobs()->contains($job));
-        $this->assertTrue($data['mandate']->getJobs()->contains($job));
+        // Test users relationship
+        $this->assertEquals(count($data['users']), count($job->getUsers()));
+        foreach ($data['users'] as $user) {
+            /** @var User $user */
+            $this->assertTrue($job->getUsers()->contains($user));
+            $this->assertTrue($user->getJobs()->contains($job));
+        }
+
+        // Test mandate relationship
+        $this->assertEquals($mandate, $job->getMandate());
+        $this->assertTrue($mandate->getJobs()->contains($job));
+        $this->assertEquals(1, count($mandate->getJobs()));
 
         // Test if properties and relations can be reset
         $job
             ->setTitle(null)
             ->setAbbreviation(null)
             ->setEnabled(true)
-            ->setUser(null)
             ->setMandate(null)
         ;
+        foreach ($data['users'] as $user) {
+            $job->removeUser($user);
+        }
 
-        $this->assertEquals(null, $job->getTitle());
-        $this->assertEquals(null, $job->getAbbreviation());
-        $this->assertEquals(true, $job->getEnabled());
-        $this->assertEquals(null, $job->getUser());
-        $this->assertEquals(null, $job->getMandate());
+        $this->doctrineManager->flush();
 
-        $this->assertFalse($data['user']->getJobs()->contains($job));
-        $this->assertFalse($data['mandate']->getJobs()->contains($job));
 
-        // Test if resetting non existing relations does not cause any error
-        $job
-            ->setUser(null)
-            ->setMandate(null)
-        ;
-        $this->assertEquals(null, $job->getUser());
-        $this->assertEquals(null, $job->getMandate());
+        $this->assertNull($job->getTitle());
+        $this->assertNull($job->getAbbreviation());
+        $this->assertTrue($job->getEnabled());
+
+        // Test users relationship
+        $this->assertEquals(0, count($job->getUsers()));
+        foreach ($data['users'] as $user) {
+            /** @var User $user */
+            $this->assertFalse($user->getJobs()->contains($job));
+        }
+
+        // Test mandate relationship
+        $this->assertNull($job->getMandate());
+        $this->assertFalse($mandate->getJobs()->contains($job));
     }
 
     /**
-     * Provides an optimal set of data for generating a complete entity.
+     * {@inheritdoc}
+     *
+     * @dataProvider propertyAccessorProvider
+     */
+    public function testDeleteEntity(array $data = [])
+    {
+        // Instantiate Job
+        /** @var Mandate $mandate */
+        $mandate = $data['mandate'];
+
+        $job = (new Job())
+            ->setTitle($data['title'])
+            ->setAbbreviation($data['abbreviation'])
+            ->setEnabled($data['enabled'])
+            ->setMandate($mandate)
+        ;
+        foreach ($data['users'] as $user) {
+            // Is added two times to ensure the adder handles duplications and will add it only one time
+            $job->addUser($user);
+            $job->addUser($user);
+            $this->doctrineManager->persist($user);
+        }
+
+        $this->doctrineManager->persist($job);
+        $this->doctrineManager->persist($mandate);
+        $this->doctrineManager->flush();
+
+        // Actual test
+        $this->doctrineManager->remove($job);
+        $this->doctrineManager->flush();
+        foreach ($data['users'] as $user) {
+            /** @var User $user */
+            $this->assertFalse(
+                $user->getJobs()->contains($job),
+                'Expected $user instance to no longer have a reference to the job.'
+            );
+        }
+        $this->assertFalse(
+            $mandate->getJobs()->contains($job),
+            'Expected $mandate instance to no longer have a reference to the job.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function fluentDataProvider()
     {
         return [
             [
                 [
-                    'title' => 'President',
+                    'title'        => 'President',
                     'abbreviation' => 'Pres',
-                    'enabled' => true,
-                    'user' => new User(),
-                    'mandate' => new Mandate(),
+                    'enabled'      => true,
+                    'users'        => new User(),
+                    'mandate'      => new Mandate(),
                 ],
             ],
         ];
+    }
+
+    public function propertyAccessorProvider()
+    {
+        return [
+            [
+                [
+                    'title'        => 'President',
+                    'abbreviation' => 'Pres',
+                    'enabled'      => true,
+                    'users'        => [$this->getAUserInstance()],
+                    'mandate'      => $this->getAMandateInstance(),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return User
+     */
+    private function getAUserInstance()
+    {
+        $user = (new User())
+            ->setEmail('dummy@example.com')
+            ->setPassword('dummyPassword')
+            ->setUsername('dummy.username')
+        ;
+
+        return $user;
+    }
+
+    /**
+     * @return Mandate
+     */
+    private function getAMandateInstance()
+    {
+        $mandate = (new Mandate())
+            ->setName('Dummy Mandate')
+            ->setStartAt(new \DateTime())
+        ;
+
+        return $mandate;
     }
 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ApiBundle\Doctrine\ORM;
+namespace ApiBundle\Doctrine\ORM\Manager;
 
 use ApiBundle\Entity\User;
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
@@ -20,6 +20,22 @@ use FOS\UserBundle\Model\UserInterface;
  */
 class UserManager extends BaseUserManager
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteUser(UserInterface $user)
+    {
+        // Unset relations before actually removing the user
+        if ($user instanceof User) {
+            $jobs = $user->getJobs();
+            foreach ($jobs as $job) {
+                $job->removeUser($user);
+            }
+        }
+
+        parent::deleteUser($user);
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -11,7 +11,7 @@
 
 namespace ApiBundle\Tests\Doctrine\ORM;
 
-use ApiBundle\Doctrine\ORM\UserManager;
+use ApiBundle\Doctrine\ORM\Manager\UserManager;
 use ApiBundle\Entity\User;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -19,7 +19,7 @@ use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * @coversDefaultClass ApiBundle\Doctrine\ORM\UserManager
+ * @coversDefaultClass ApiBundle\Doctrine\ORM\Manager\UserManager
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
  */

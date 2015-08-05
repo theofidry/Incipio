@@ -1,3 +1,6 @@
+parameters:
+    doctrine.orm.entity_manager.class: ApiBundle\Doctrine\ORM\Manager\EntityManager
+
 services:
     api.user.roles:
         class:     ApiBundle\Utils\UserRoles
@@ -38,7 +41,7 @@ services:
 
     # FOSUserBundle manager
     fos_user.user_manager.default:
-        class: ApiBundle\Doctrine\ORM\UserManager
+        class: ApiBundle\Doctrine\ORM\Manager\UserManager
         arguments:
             -  @security.encoder_factory
             -  @fos_user.util.username_canonicalizer

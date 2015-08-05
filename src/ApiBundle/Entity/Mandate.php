@@ -49,7 +49,7 @@ class Mandate
     /**
      * @var ArrayCollection|Job[] List of jobs attached to this mandate.
      *
-     * @ORM\OneToMany(targetEntity="Job", mappedBy="mandate")
+     * @ORM\OneToMany(targetEntity="Job", mappedBy="mandate", cascade={"all"})
      *
      * TODO: validation: may have no jobs but a job requires at least one mandate
      */
@@ -119,9 +119,12 @@ class Mandate
      */
     public function addJob(Job $job)
     {
+        // Check for duplication
         if (false === $this->jobs->contains($job)) {
             $this->jobs->add($job);
         }
+
+        // Ensure the relation is bidirectional
         $job->setMandate($this);
 
         return $this;
@@ -136,8 +139,11 @@ class Mandate
      */
     public function removeJob(Job $job)
     {
-        if ($this->jobs->contains($job)) {
-            $this->jobs->removeElement($job);
+        $this->jobs->removeElement($job);
+
+        // Ensure the relation is unset for both entities
+        // The check must be done to avoid circular references
+        if (null !== $job->getMandate()) {
             $job->setMandate(null);
         }
 

@@ -42,6 +42,8 @@ class UTCDateTimeTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testbox Convert to PHP value
+     *
      * @covers ::convertToPHPValue
      * @dataProvider databaseValueProvider
      */

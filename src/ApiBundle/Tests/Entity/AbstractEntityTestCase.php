@@ -12,6 +12,8 @@
 namespace ApiBundle\Tests\Entity;
 
 use ApiBundle\Tests\FluentTestCaseInterface;
+use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\PropertyAccess\StringUtil;
 
 /**
@@ -21,45 +23,75 @@ use Symfony\Component\PropertyAccess\StringUtil;
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implements FluentTestCaseInterface
+abstract class AbstractEntityTestCase extends KernelTestCase implements FluentTestCaseInterface
 {
+    /**
+     * @var \Doctrine\Bundle\DoctrineBundle\Registry
+     */
+    protected $doctrine;
+
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected $doctrineManager;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        static::$kernel = static::createKernel();
+        static::$kernel->boot();
+        $this->doctrine = static::$kernel->getContainer()->get('doctrine');
+        $this->doctrineManager = $this->doctrine->getManager();
+
+        // Recreate a fresh database instance before each test case
+        $metadata = $this->doctrineManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool = new SchemaTool($this->doctrineManager);
+        $schemaTool->dropSchema($metadata);
+        $schemaTool->createSchema($metadata);
+    }
+
     /**
      * {@inheritdoc}
      *
-     * Note: this method looks for hasser, removers and setters. It works on most cases but it still possible to have
-     * some edge cases not handled. In this case do overwrite this method.
+     * Note: this method is greatly inspired from Symfony Property Accessor {@see \Symfony\Component\PropertyAccessor}
+     * and looks for hasser, removers and setters. It works on most cases but it still possible to have some edge cases
+     * not handled. Symfony property accessor cannot be used since the goal of this test is to test the returned value,
+     * which does no do Symfony PropertyAccessor.
      *
      * @coversNothing
      * @dataProvider fluentDataProvider
      */
     public function testFluentImplementation(array $data = [])
     {
-        $reflClass = new \ReflectionClass($this);
+        $reflClass = new \ReflectionClass($this->getEntityClassName());
         $entity = $reflClass->newInstanceArgs();
 
+        $results = [];
         foreach ($data as $property => $value) {
-            $results = [];
             $camelized = $this->camelize($property);
             $singulars = (array) StringUtil::singularify($camelized);
             $methods = $this->findAdderAndRemover($reflClass, $singulars);
 
             if (null !== $methods) {
-                $results[$methods[0]] = $entity->methods[0]($value);
-                $results[$methods[1]] = $entity->methods[1]($value);
+                $this->assertEquals(2, count($methods));
+                $results[$methods[0]] = $entity->$methods[0]($value);
+                $results[$methods[1]] = $entity->$methods[1]($value);
             } else {
                 $setter = 'set'.$camelized;
                 if ($this->isMethodAccessible($reflClass, $setter, 1)) {
                     $results[$setter] = $entity->$setter($value);
                 }
             }
+        }
 
-            foreach ($results as $method => $returnedValue) {
-                $this->assertEquals(
-                    $reflClass->name,
-                    get_class($returnedValue),
-                    sprintf('Expected %s to return a %s object.', $method, $reflClass->name)
-                );
-            }
+        foreach ($results as $method => $returnedValue) {
+            $this->assertEquals(
+                $reflClass->name,
+                get_class($returnedValue),
+                sprintf('Expected %s to return a %s object, got %s instead.', $method, $reflClass->name, get_class($returnedValue))
+            );
         }
     }
 
@@ -71,6 +103,17 @@ abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implem
      * @return
      */
     abstract public function testPropertyAccessors(array $data = []);
+
+    /**
+     * Ensure that when the entity is deleted, the relations are properly unset
+     *
+     * @coversNothing
+     *
+     * @param array $data
+     *
+     * @return
+     */
+    abstract public function testDeleteEntity(array $data = []);
 
     /**
      * Provides an optimal set of data for generating a complete entity.
@@ -143,4 +186,9 @@ abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase implem
 
         return false;
     }
+
+    /**
+     * @return string Tested entity FQCN
+     */
+    abstract public function getEntityClassName();
 }
