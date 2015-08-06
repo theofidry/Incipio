@@ -51,4 +51,13 @@ class UserMandateFilter extends AbstractResourceSearchFilter
     {
         return User::class;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription(ResourceInterface $resource)
+    {
+        // TODO: Implement getDescription() method.
+        return [];
+    }
 }

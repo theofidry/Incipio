@@ -15,19 +15,26 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Dunglas\ApiBundle\Api\IriConverterInterface;
 use Dunglas\ApiBundle\Api\ResourceInterface;
+use Dunglas\ApiBundle\Doctrine\Orm\Filter\FilterInterface;
 use Dunglas\ApiBundle\Doctrine\Orm\Filter\SearchFilter as DunglasSearchFilter;
 use Fidry\LoopBackApiBundle\Filter\FilterTrait;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Based on Dunglas' SearchFilter, its behavior is extended to apply only to
+ * Based on Dunglas' SearchFilter, its behavior is extended to apply only to specified resources.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-abstract class AbstractResourceSearchFilter extends DunglasSearchFilter
+abstract class AbstractResourceSearchFilter implements FilterInterface
 {
     use FilterTrait;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
     /**
      * @var IriConverterInterface
@@ -44,12 +51,12 @@ abstract class AbstractResourceSearchFilter extends DunglasSearchFilter
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
+        RequestStack $requestStack,
         IriConverterInterface $iriConverter,
         PropertyAccessorInterface $propertyAccessor,
         array $properties = null
     ) {
-        parent::__construct($managerRegistry, $iriConverter, $propertyAccessor, $properties);
-
+        $this->requestStack = $requestStack;
         $this->iriConverter = $iriConverter;
         $this->propertyAccessor = $propertyAccessor;
         $this->properties = (null === $properties)? $properties: array_flip($properties);
@@ -58,9 +65,11 @@ abstract class AbstractResourceSearchFilter extends DunglasSearchFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(ResourceInterface $resource, QueryBuilder $queryBuilder, Request $request)
+    public function apply(ResourceInterface $resource, QueryBuilder $queryBuilder)
     {
-        if ($this->getResourceClass() === $resource->getEntityClass()) {
+        if ($this->getResourceClass() === $resource->getEntityClass()
+            && null !== $request = $this->requestStack->getCurrentRequest()
+        ) {
             $this->applyFilter($resource, $queryBuilder, $this->extractProperties($request));
         }
     }
