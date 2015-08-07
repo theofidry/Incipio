@@ -98,6 +98,7 @@ class User extends BaseUser
      *
      * @Iri("https://schema.org/name")
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
      * @Assert\Type("string")
      * @Groups({"user"})
      *
@@ -125,14 +126,17 @@ class User extends BaseUser
      */
     private $organizationEmailCanonical;
 
+    private $phones;
+
     /**
      * {@inheritdoc}
      *
+     * @var string
+     *
+     * @Groups({"user-write"})
      * @TODO: validation for the password!
      */
-    protected $password;
-
-    private $phones;
+    protected $plainPassword;
 
     /**
      * {@inheritdoc}
@@ -164,7 +168,6 @@ class User extends BaseUser
      * {@inheritdoc}
      *
      * @Assert\Type("string")
-     * @Assert\NotBlank
      * @Groups({"user"})
      *
      * @TODO: validation for username!

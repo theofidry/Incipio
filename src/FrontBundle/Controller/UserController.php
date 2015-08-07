@@ -43,7 +43,7 @@ class UserController extends BaseController
     public function indexAction(Request $request)
     {
         $filterForm = $this->createUserFilteringForm($request);
-        $userRequest = $this->createRequest('GET', 'api_users_cget', $request);
+        $userRequest = $this->createRequest('GET', 'api_users_get_collection', $request);
 
         // Check if a request has been made to filter the list of users
         if ('POST' === $request->getMethod()) {
@@ -106,7 +106,7 @@ class UserController extends BaseController
 
             $createRequest = $this->createRequest(
                 'POST',
-                'api_users_cpost',
+                'api_users_post_collection',
                 $request,
                 [
                     'json' => $formData
@@ -117,6 +117,7 @@ class UserController extends BaseController
                 $createResponse = $this->client->send($createRequest);
 
                 // User properly created, redirect to user show view
+                $this->addFlash('success', 'L\'utilisateur bien a été créé.');
 
                 return $this->redirectToRoute('users_show', ['id' => $createResponse->json()['@id']]);
             } catch (ClientTransferException $exception) {
@@ -145,7 +146,7 @@ class UserController extends BaseController
         try {
             $response = $this->client->request(
                 'GET',
-                'api_users_get',
+                'api_users_get_item',
                 $request->getSession()->get('api_token'),
                 ['parameters' => ['id' => $id]]
             );
@@ -179,6 +180,7 @@ class UserController extends BaseController
      * @Route("/{id}/edit", name="users_edit")
      *
      * @Method("GET")
+     * @Template()
      *
      * @param Request $request
      * @param int     $id
@@ -191,7 +193,7 @@ class UserController extends BaseController
             $editResponse = $this->client->send(
                 $this->createRequest(
                     'GET',
-                    'api_users_get',
+                    'api_users_get_item',
                     $request,
                     ['parameters' => ['id' => $id]]
                 )
@@ -235,7 +237,7 @@ class UserController extends BaseController
             $getUserResponse = $this->client->send(
                 $this->createRequest(
                     'GET',
-                    'api_users_get',
+                    'api_users_get_item',
                     $request,
                     ['parameters' => ['id' => $id]]
                 )
@@ -253,7 +255,7 @@ class UserController extends BaseController
 
             if ($editForm->isValid()) {
                 $updateRequest = $this->createRequest('PUT',
-                    'api_users_put',
+                    'api_users_put_item',
                     $request,
                     [
                         'json' => $editForm->getData(),
@@ -298,7 +300,7 @@ class UserController extends BaseController
 
         if ($deleteForm->isValid()) {
             $deleteRequest = $this->createRequest('DELETE',
-                'api_users_delete',
+                'api_users_delete_item',
                 $request,
                 [
                     'parameters' => ['id' => $id]
@@ -377,7 +379,6 @@ class UserController extends BaseController
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('users_delete', ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }
@@ -392,7 +393,7 @@ class UserController extends BaseController
         $mandateFormValues = [];
         $mandates = $this->requestAndDecode(
             'GET',
-            'api_mandates_cget',
+            'api_mandates_get_collection',
             $request,
             ['query' => 'filter[order][startAt]=desc'],
             true

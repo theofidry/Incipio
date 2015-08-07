@@ -123,10 +123,8 @@
         </div>
     </div>
     <div class="row">
-        {{ form(delete_form) }}
-
-        {#{{ form_start(delete_form) }}#}
-            {#{{ macros.button_entity_delete(path('users_delete', { 'id': userId }), 'Supprimer') }}#}
-        {#{{ form_end(delete_form) }}#}
+        {{ form_start(delete_form) }}
+            {{ macros.button_icon('Supprimer', 'btn-danger pull-right', 'fa fa-trash-o fa-fw', 'id=form_submit name=form[submit] onClick=document.forms[\'form\'].submit();') }}
+        {{ form_end(delete_form) }}
     </div>
 {% endblock %}

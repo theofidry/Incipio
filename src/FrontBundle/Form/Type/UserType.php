@@ -46,10 +46,11 @@ class UserType extends AbstractType
                 'username',
                 'text',
                 [
-                    'attr'  => [
+                    'attr'     => [
                         'placeholder' => 'prenom.nom',
                     ],
-                    'label' => 'Nom d\'utilisateur :',
+                    'label'    => 'Nom d\'utilisateur :',
+                    'required' => false,
                 ])
             ->add(
                 'email',
@@ -77,7 +78,7 @@ class UserType extends AbstractType
                     'attr'     => [
                         'placeholder' => 2015,
                     ],
-                    'label' => 'Promotion :',
+                    'label'    => 'Promotion :',
                     'required' => false,
                     'scale'    => 0,
                 ])
