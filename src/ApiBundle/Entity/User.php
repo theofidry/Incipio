@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
 use FOS\UserBundle\Model\User as BaseUser;
+use FOS\UserBundle\Model\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -117,7 +118,7 @@ class User extends BaseUser
     private $organizationEmail;
 
     /**
-     * @var string Professional email lowercased for search and string comparison; cf emailCanonical & passwordCanonical
+     * @var string Professional email in lowercase for search and string comparison; cf emailCanonical & passwordCanonical
      *
      * @Iri("https://schema.org/email")
      * @ORM\Column(type="string", length=255, nullable=true)
