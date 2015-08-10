@@ -42,6 +42,7 @@ class Mandate
      * @Iri("https://schema.org/endDate")
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\Date
+     * @Assert\NotNull
      * @Groups({"job", "user"})
      */
     private $endAt;
@@ -95,7 +96,7 @@ class Mandate
      *
      * @return $this
      */
-    public function setEndAt(\DateTime $endAt = null)
+    public function setEndAt(\DateTime $endAt)
     {
         $this->endAt = $endAt;
 

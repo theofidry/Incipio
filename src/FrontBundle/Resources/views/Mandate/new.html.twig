@@ -1,0 +1,23 @@
+{% extends 'FrontBundle:CRUD:show.html.twig' %}
+
+{% form_theme new_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block page_header_title -%}
+    <h1>Nouveau mandat</h1>
+{%- endblock %}
+
+{% block page_header_button -%}
+    {{ macros.button_entity_list(path('mandates'), 'Retour') }}
+{%- endblock %}
+
+{% block sub_body -%}
+
+    <div class="container">
+        <div class="col-md-6">
+            {{ form_start(new_form) }}
+            {{ form_widget(new_form) }}
+            <input type="submit" value="Créer" class="btn btn-default pull-right" />
+            {{ form_end(new_form) }}
+        </div>
+    </div>
+{%- endblock %}
