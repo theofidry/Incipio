@@ -11,8 +11,8 @@
 
 namespace FrontBundle\Controller;
 
-use FrontBundle\Form\Type\UserFilteringType;
-use FrontBundle\Form\Type\UserType;
+use FrontBundle\Form\Type\JobFilteringType;
+use FrontBundle\Form\Type\JobType;
 use GuzzleHttp\Exception\RequestException as ClientRequestException;
 use GuzzleHttp\Exception\TransferException as ClientTransferException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -22,16 +22,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/users")
+ * @Route("/jobs")
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class UserController extends BaseController
+class JobController extends BaseController
 {
     /**
-     * Lists all User entities.
+     * Lists all Job entities.
      *
-     * @Route("/", name="users")
+     * @Route("/", name="jobs")
      *
      * @Method({"GET", "POST"})
      * @Template()
@@ -42,8 +42,8 @@ class UserController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        $filterForm = $this->createUserFilteringForm($request);
-        $userRequest = $this->createRequest('GET', 'api_users_get_collection', $request);
+        $filterForm = $this->createJobFilteringForm($request);
+        $jobRequest = $this->createRequest('GET', 'api_jobs_get_collection', $request);
 
         // Check if a request has been made to filter the list of users
         if ('POST' === $request->getMethod()) {
@@ -55,34 +55,30 @@ class UserController extends BaseController
                 $query = '';
 
                 // Update user request to filter the list of users to match the requested type
-                if (null !== $data['user_type']) {
-                    $query .= sprintf('filter[where][type]=%s', $data['user_type']);
-                }
-
                 if (null !== $data['mandate_id']) {
                     $query .= sprintf('&filter[where][mandate]=%s', $data['mandate_id']);
                 }
 
-                $userRequest->setQuery($query);
+                $jobRequest->setQuery($query);
             }
         }
-        
+
         // Retrieve users, since it's a paginated collection go through all available pages
         try {
-            $users = $this->sendAndDecode($userRequest, true);
+            $jobs = $this->sendAndDecode($jobRequest, true);
         } catch (ClientTransferException $exception) {
             $this->handleGuzzleException($exception);
-            $users = [];
+            $jobs = [];
         }
 
         return [
-            'users'       => $users,
+            'jobs'       => $jobs,
             'filter_form' => $filterForm->createView(),
         ];
     }
 
     /**
-     * @Route("/new", name="users_new")
+     * @Route("/new", name="jobs_new")
      * @Method({"GET", "POST"})
      * @Template()
      *
@@ -92,47 +88,38 @@ class UserController extends BaseController
      */
     public function newAction(Request $request)
     {
-        $newForm = $this->createNewForm();
+        $newForm = $this->createNewForm($request);
         $newForm->handleRequest($request);
-        $formData = [];
 
         if ($newForm->isSubmitted() && $newForm->isValid()) {
-            $formData = $newForm->getData();
-            if (null === $formData['studentConvention']['dateOfSignature']) {
-                unset($formData['studentConvention']);
-            }
-            // Generate random password
-            $tokenGenerator = $this->container->get('fos_user.util.token_generator');
-            $formData['plainPassword'] = substr($tokenGenerator->generateToken(), 2, 8);
-
             try {
-                $createResponse = $this->client->send(
+                $job = $this->sendAndDecode(
                     $this->createRequest(
                         'POST',
-                        'api_users_post_collection',
+                        'api_jobs_post_collection',
                         $request,
                         [
-                            'json' => $formData
+                            'json' => $newForm->getData()
                         ]
                     )
                 );
 
-                // User properly created, redirect to user show view
-                $this->addFlash('success', 'L\'utilisateur bien a été créé.');
+                // Job properly created, redirect to job show view
+                $this->addFlash('success', 'Le poste bien a été créé.');
 
-                return $this->redirectToRoute('users_show', ['id' => $createResponse->json()['@id']]);
+                return $this->redirectToRoute('jobs_show', ['id' => $job['@id']]);
             } catch (ClientTransferException $exception) {
                 $this->handleGuzzleException($exception);
             }
         }
 
-        return ['new_form' => $this->createNewForm($formData)->createView()];
+        return ['new_form' => $this->createNewForm($request, $newForm->getData())->createView()];
     }
 
     /**
-     * Finds and displays a User entity.
+     * Finds and displays a Job entity.
      *
-     * @Route("/{id}", name="users_show")
+     * @Route("/{id}", name="jobs_show")
      *
      * @Method("GET")
      * @Template()
@@ -145,10 +132,10 @@ class UserController extends BaseController
     public function showAction(Request $request, $id)
     {
         try {
-            $user = $this->sendAndDecode(
+            $job = $this->sendAndDecode(
                 $this->createRequest(
                     'GET',
-                    'api_users_get_item',
+                    'api_jobs_get_item',
                     $request,
                     ['parameters' => ['id' => $id]]
                 )
@@ -156,11 +143,11 @@ class UserController extends BaseController
 
             return [
                 'delete_form' => $this->createDeleteForm($id)->createView(),
-                'user'        => $user,
+                'job'        => $job,
             ];
         } catch (ClientRequestException $exception) {
             if (Response::HTTP_NOT_FOUND === $exception->getResponse()->getStatusCode()) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+                throw $this->createNotFoundException('Unable to find Job entity.');
             }
 
             $this->handleGuzzleException($exception);
@@ -168,13 +155,11 @@ class UserController extends BaseController
             $this->handleGuzzleException($exception);
         }
 
-        return $this->redirectToRoute('users');
+        return $this->redirectToRoute('jobs');
     }
 
     /**
-     * Displays a form to edit an existing User entity.
-     *
-     * @Route("/{id}/edit", name="users_edit")
+     * @Route("/{id}/edit", name="jobs_edit")
      *
      * @Method("GET")
      * @Template()
@@ -186,19 +171,20 @@ class UserController extends BaseController
      */
     public function editAction(Request $request, $id)
     {
+        $job = [];
         try {
-            $user = $this->sendAndDecode(
+            $job = $this->sendAndDecode(
                 $this->createRequest(
                     'GET',
-                    'api_users_get_item',
+                    'api_jobs_get_item',
                     $request,
                     ['parameters' => ['id' => $id]]
                 )
             );
 
             return [
-                'user'      => $user,
-                'edit_form' => $this->createEditForm($user)->createView(),
+                'job'       => $job,
+                'edit_form' => $this->createEditForm($job, $request)->createView(),
             ];
         } catch (ClientRequestException $exception) {
             if (Response::HTTP_NOT_FOUND === $exception->getResponse()->getStatusCode()) {
@@ -209,15 +195,17 @@ class UserController extends BaseController
         } catch (ClientTransferException $exception) {
             $this->handleGuzzleException($exception);
         }
+
+        return ['edit_form' => $this->createEditForm($job, $request)->createView()];
     }
 
     /**
-     * Edits an existing User entity.
+     * Edits an existing Job entity.
      *
-     * @Route("/{id}", name="users_update")
+     * @Route("/{id}", name="jobs_update")
      *
      * @Method("PUT")
-     * @Template("FrontBundle:User:edit.html.twig")
+     * @Template("FrontBundle:Job:edit.html.twig")
      *
      * @param Request $request
      * @param int     $id
@@ -226,41 +214,42 @@ class UserController extends BaseController
      */
     public function updateAction(Request $request, $id)
     {
-        $user = [];
+        $job = [];
 
         try {
-            // Get the user to check if exist and to retrieve its data
-            $user = $this->sendAndDecode(
+            // Get the job to check if exist and to retrieve its data
+            $job = $this->sendAndDecode(
                 $this->createRequest(
                     'GET',
-                    'api_users_get_item',
+                    'api_jobs_get_item',
                     $request,
                     ['parameters' => ['id' => $id]]
                 )
             );
 
             // Handle update request
-            $editForm = $this->createEditForm($user);
+            $editForm = $this->createEditForm($job, $request);
             $editForm->handleRequest($request);
 
             if ($editForm->isValid()) {
-                $updateRequest = $this->createRequest('PUT',
-                    'api_users_put_item',
-                    $request,
-                    [
-                        'json' => $editForm->getData(),
-                        'parameters' => ['id' => $id]
-                    ]
+                $this->client->send(
+                    $this->createRequest(
+                        'PUT',
+                        'api_jobs_put_item',
+                        $request,
+                        [
+                            'json' => $editForm->getData(),
+                            'parameters' => ['id' => $id]
+                        ]
+                    )
                 );
+                $this->addFlash('success', 'Le poste a bien été mis à jour.');
 
-                $this->client->send($updateRequest);
-                $this->addFlash('success', 'L\'utilisateur a bien été mis à jour.');
-
-                return $this->redirectToRoute('users_show', ['id' => $id]);
+                return $this->redirectToRoute('jobs_show', ['id' => $id]);
             }
         } catch (ClientRequestException $exception) {
             if (Response::HTTP_NOT_FOUND === $exception->getResponse()->getStatusCode()) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+                throw $this->createNotFoundException('Unable to find Job entity.');
             }
 
             $this->handleGuzzleException($exception);
@@ -268,13 +257,16 @@ class UserController extends BaseController
             $this->handleGuzzleException($exception);
         }
 
-        return ['user' => $user];
+        return [
+            'job'       => $job,
+            'edit_form' => $this->createEditForm($job, $request)->createView(),
+        ];
     }
 
     /**
-     * Deletes a User entity.
+     * Deletes a Job entity.
      *
-     * @Route("/{id}", name="users_delete")
+     * @Route("/{id}", name="jobs_delete")
      *
      * @Method("DELETE")
      *
@@ -293,17 +285,17 @@ class UserController extends BaseController
                 $this->client->send(
                     $this->createRequest(
                         'DELETE',
-                        'api_users_delete_item',
+                        'api_jobs_delete_item',
                         $request,
                         [
                             'parameters' => ['id' => $id]
                         ]
                     )
                 );
-                $this->addFlash('success', 'L\'utilisateur a bien été supprimé.');
+                $this->addFlash('success', 'Le poste a bien été supprimé.');
             } catch (ClientRequestException $exception) {
                 if (Response::HTTP_NOT_FOUND === $exception->getResponse()->getStatusCode()) {
-                    throw $this->createNotFoundException('Unable to find User entity.');
+                    throw $this->createNotFoundException('Unable to find Job entity.');
                 }
 
                 $this->handleGuzzleException($exception);
@@ -314,22 +306,22 @@ class UserController extends BaseController
             $this->addFlash('error', $deleteForm->getErrors());
         }
 
-        return $this->redirectToRoute('users');
+        return $this->redirectToRoute('jobs');
     }
 
     /**
-     * Creates a form to create a User entity.
+     * Creates a form to create a Job entity.
      *
-     * @param array|null $user The normalized user.
+     * @param array|null $job The normalized job.
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function createNewForm(array $user = [])
+    private function createNewForm(Request $request, array $job = [])
     {
-        $form = $this->createForm(new UserType(),
-            $user,
+        $form = $this->createForm(new JobType($this->getMandates($request)),
+            $job,
             [
-                'action' => $this->generateUrl('users_new'),
+                'action' => $this->generateUrl('jobs_new'),
                 'method' => 'POST',
             ]
         );
@@ -338,19 +330,21 @@ class UserController extends BaseController
     }
 
     /**
-     * Creates a form to edit a User entity.
+     * Creates a form to edit a Job entity.
      *
-     * @param array $user The normalized user.
+     * @param array   $job The normalized job.
+     *
+     * @param Request $request
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(array $user)
+    private function createEditForm(array $job, Request $request)
     {
         $form = $this->createForm(
-            new UserType(),
-            $user,
+            new JobType($this->getMandates($request)),
+            $job,
             [
-                'action' => $this->generateUrl('users_update', ['id' => $user['@id']]),
+                'action' => $this->generateUrl('jobs_update', ['id' => $job['@id']]),
                 'method' => 'PUT',
             ]
         );
@@ -359,7 +353,7 @@ class UserController extends BaseController
     }
 
     /**
-     * Creates a form to delete a User entity by id.
+     * Creates a form to delete a Job entity by id.
      *
      * @param int $id The entity id
      *
@@ -368,7 +362,7 @@ class UserController extends BaseController
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('users_delete', ['id' => $id]))
+            ->setAction($this->generateUrl('jobs_delete', ['id' => $id]))
             ->setMethod('DELETE')
             ->getForm()
         ;
@@ -379,7 +373,23 @@ class UserController extends BaseController
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createUserFilteringForm(Request $request)
+    private function createJobFilteringForm(Request $request)
+    {
+        return $this->createForm(new JobFilteringType($this->getMandates($request)),
+            [
+                'action' => $this->generateUrl('jobs'),
+                'method' => 'POST'
+            ])
+            ->add('submit', 'submit', ['label' => 'Filtrer'])
+        ;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getMandates(Request $request)
     {
         $mandateFormValues = [];
         $mandates = $this->requestAndDecode(
@@ -394,12 +404,6 @@ class UserController extends BaseController
             $mandateFormValues[$mandate['@id']] = $mandate['name'];
         }
 
-        return $this->createForm(new UserFilteringType($mandateFormValues),
-            [
-                'action' => $this->generateUrl('users'),
-                'method' => 'POST'
-            ])
-            ->add('submit', 'submit', ['label' => 'Filtrer'])
-        ;
+        return $mandateFormValues;
     }
 }

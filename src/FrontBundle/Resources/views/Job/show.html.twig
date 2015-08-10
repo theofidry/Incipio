@@ -1,0 +1,46 @@
+{% extends 'FrontBundle:CRUD:show.html.twig' %}
+
+{%- set jobId = job['@id']|uriId -%}
+
+{% block page_header_title -%}
+    <h1>Poste #{{ jobId }}</h1>
+{%- endblock %}
+
+{% block page_header_button -%}
+    {{ macros.button_link(path('jobs_edit', { 'id': jobId }), 'Éditer', 'btn-warning pull-right', 'fa fa-pencil fa-fw') }}
+    {{ macros.button_entity_list(path('jobs'), 'Retour à la liste', 'style=margin-right:15px') }}
+{%- endblock %}
+
+{% block sub_body -%}
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Alias</th>
+                        <td>{{ job.abbreviation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ job.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mandat</th>
+                        <td>
+                            {% if job.mandate is not null -%}
+                                {{ job.mandate.name }}
+                            {%- else -%}
+                                Aucun
+                            {%- endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        {{ form_start(delete_form) }}
+            {{ macros.button_icon('Supprimer', 'btn-danger pull-right', 'fa fa-trash-o fa-fw', 'id=form_submit name=form[submit] onClick=document.forms[\'form\'].submit();') }}
+        {{ form_end(delete_form) }}
+    </div>
+{% endblock %}
