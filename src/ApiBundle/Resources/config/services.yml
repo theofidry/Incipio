@@ -28,6 +28,15 @@ services:
               method:   onKernelView
               priority: 11
 
+    event_listener.mandate_manager:
+        class:          ApiBundle\EventListener\MandateManagerListener
+        arguments:      [ @api.entity_manager.mandate_manager ]
+        tags:
+            - name:     kernel.event_listener
+              event:    kernel.view
+              method:   onKernelView
+              priority: 11
+
 
     #
     # Faker's providers
@@ -60,9 +69,12 @@ services:
         decorates: doctrine.orm.default_entity_manager
         arguments: [ @api.entity_manager.default.inner ]
 
-
     api.entity_manager.job_manager:
-        class: ApiBundle\Doctrine\ORM\Manager\JobManager
+        class:     ApiBundle\Doctrine\ORM\Manager\JobManager
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    api.entity_manager.mandate_manager:
+        class:     ApiBundle\Doctrine\ORM\Manager\MandateManager
         arguments: [ @doctrine.orm.default_entity_manager ]
 
     api.entity_manager.user_manager:

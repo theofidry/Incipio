@@ -107,6 +107,13 @@ class MenuBuilder
                 'route' => 'jobs',
             ]
         );
+        $menu->addChild(
+            'mandates',
+            [
+                'label' => 'Liste des Mandats',
+                'route' => 'mandates',
+            ]
+        );
 
         return $menu;
     }
