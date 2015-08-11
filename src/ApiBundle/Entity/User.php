@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
 use FOS\UserBundle\Model\User as BaseUser;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,8 +26,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *
  * In this class, the term "organization" refers either to a Junior-Entreprise, Creation and such or a company.
  *
- * @Iri("https://schema.org/Person")
- * @ORM\Table
  * @ORM\Entity
  * @UniqueEntity("username")
  * @UniqueEntity("email")
@@ -36,13 +34,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class User extends BaseUser
 {
-    const TYPE_CONTRACTOR = 0;
-    const TYPE_MEMBER = 1;
-
-    /*
-     * Hook timestampable behavior: updates `createdAt` and `updatedAt fields
-     */
-    use TimestampableEntity;
+    const TYPE_CONTRACTOR = 'TYPE_CONTRACTOR';
+    const TYPE_MEMBER = 'TYPE_MEMBER';
 
     /**
      * {@inheritdoc}
@@ -56,6 +49,15 @@ class User extends BaseUser
     private $address;
 
     /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     * @Groups({"user-read"})
+     */
+    protected $createdAt;
+
+    /**
      * {@inheritdoc}
      *
      * @Iri("https://schema.org/email")
@@ -64,6 +66,16 @@ class User extends BaseUser
      * @Groups({"user"})
      */
     protected $email;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Assert\NotNull
+     * @Groups({"user"})
+     *
+     * @TODO: validation for boolean
+     */
+    protected $enabled = false;
 
     /**
      * @var int
@@ -86,6 +98,7 @@ class User extends BaseUser
      *
      * @Iri("https://schema.org/name")
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
      * @Assert\Type("string")
      * @Groups({"user"})
      *
@@ -99,7 +112,6 @@ class User extends BaseUser
      * @Iri("https://schema.org/email")
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Email
-     * @Assert\NotBlank
      * @Groups({"user"})
      */
     private $organizationEmail;
@@ -110,22 +122,21 @@ class User extends BaseUser
      * @Iri("https://schema.org/email")
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Email
-     * @Assert\NotBlank
-     * @Groups({"user"})
+     * @Groups({"user-write"})
      */
     private $organizationEmailCanonical;
+
+    private $phones;
 
     /**
      * {@inheritdoc}
      *
+     * @var string
      *
-     * @Assert\NotBlank
-     *
+     * @Groups({"user-write"})
      * @TODO: validation for the password!
      */
-    protected $password;
-
-    private $phones;
+    protected $plainPassword;
 
     /**
      * {@inheritdoc}
@@ -135,7 +146,7 @@ class User extends BaseUser
     protected $roles;
 
     /**
-     * Validated via ::validate()
+     * Validated via {@se ::validate()}
      *
      * @var array
      *
@@ -157,8 +168,7 @@ class User extends BaseUser
      * {@inheritdoc}
      *
      * @Assert\Type("string")
-     * @Assert\NotBlank
-     * @Groups({"job", "user"})
+     * @Groups({"user"})
      *
      * @TODO: validation for username!
      */
@@ -167,18 +177,47 @@ class User extends BaseUser
     /**
      * @var ArrayCollection|Job[] List of job for this user.
      *
-     * @ORM\OneToMany(targetEntity="Job", mappedBy="user")
+     * @ORM\ManyToMany(targetEntity="Job", mappedBy="users")
      * @Groups({"user"})
      *
      * @TODO: validation: may have no user
      **/
     protected $jobs;
 
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     * @Groups({"user-read"})
+     */
+    protected $updatedAt;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->jobs = new ArrayCollection();
+    }
+
+    /**
+     * @param  \DateTime $createdAt
+     *
+     * @return $this
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -230,10 +269,15 @@ class User extends BaseUser
      */
     public function addJob(Job $job)
     {
+        // Check for duplicate
         if (false === $this->jobs->contains($job)) {
             $this->jobs->add($job);
         }
-        $job->setUser($this);
+
+        // Ensure the relation is set for both entities
+        if (false === $job->getUsers()->contains($this)) {
+            $job->addUser($this);
+        }
 
         return $this;
     }
@@ -247,9 +291,12 @@ class User extends BaseUser
      */
     public function removeJob(Job $job)
     {
-        if ($this->jobs->contains($job)) {
-            $this->jobs->removeElement($job);
-            $job->setUser(null);
+        $this->jobs->removeElement($job);
+
+        // Ensure the relation is unset for both entities
+        // The check must be done to avoid circular references
+        if (true === $job->getUsers()->contains($this)) {
+            $job->removeUser($this);
         }
 
         return $this;
@@ -304,11 +351,11 @@ class User extends BaseUser
     }
 
     /**
-     * @param StudentConvention $studentConvention
+     * @param StudentConvention|null $studentConvention
      *
      * @return $this
      */
-    public function setStudentConvention(StudentConvention $studentConvention)
+    public function setStudentConvention(StudentConvention $studentConvention = null)
     {
         $this->studentConvention = $studentConvention;
 
@@ -359,6 +406,26 @@ class User extends BaseUser
     public function getTypes()
     {
         return $this->types;
+    }
+
+    /**
+     * @param  \DateTime $updatedAt
+     *
+     * @return $this
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**

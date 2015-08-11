@@ -11,6 +11,7 @@
 
 namespace ApiBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -76,13 +77,18 @@ class Job
     private $title;
 
     /**
-     * @var User
+     * @var ArrayCollection|User[]
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="jobs")
      * @ORM\JoinColumn(referencedColumnName="id")
      * @Groups({"job"})
      */
-    private $user;
+    private $users;
+
+    function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -139,9 +145,13 @@ class Job
      */
     public function setMandate(Mandate $mandate = null)
     {
-        if (null === $mandate && null !== $this->mandate) {
+        // Handle bidirectional relationship
+        // Check for the other side first
+        if (null === $mandate && null !== $this->mandate && true === $this->mandate->getJobs()->contains($this)) {
+            // Mandate was set and is being reset
+            // Since it's a bidirectional relationship, unset the other relation from the other side first
             $this->mandate->removeJob($this);
-        } elseif (null !== $mandate && !$mandate->getJobs()->contains($this)) {
+        } elseif (null !== $mandate && false === $mandate->getJobs()->contains($this)) {
             $mandate->addJob($this);
         }
 
@@ -179,29 +189,48 @@ class Job
     }
 
     /**
-     * @param User|null $user
+     * @param User $user
      *
      * @return $this
      */
-    public function setUser(User $user = null)
+    public function addUser(User $user)
     {
-        if (null === $user && null !== $this->user) {
-            $this->user->removeJob($this);
-        } elseif (null !== $user && !$user->getJobs()->contains($this)) {
-            $user->addJob($this);
+        // Check for duplication
+        if (false === $this->users->contains($user)) {
+            $this->users->add($user);
         }
 
-        $this->user = $user;
+        // Ensure the relation is bidirectional
+        if (false === $user->getJobs()->contains($this)) {
+            $user->addJob($this);
+        }
 
         return $this;
     }
 
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function removeUser(User $user)
+    {
+        $this->users->removeElement($user);
+
+        // Ensure the relation is unset for both entities
+        // The check must be done to avoid circular references
+        if (true === $user->getJobs()->contains($this)) {
+            $user->removeJob($this);
+        }
+
+        return $this;
+    }
 
     /**
-     * @return User|null
+     * @return ArrayCollection|User[]
      */
-    public function getUser()
+    public function getUsers()
     {
-        return $this->user;
+        return $this->users;
     }
 }

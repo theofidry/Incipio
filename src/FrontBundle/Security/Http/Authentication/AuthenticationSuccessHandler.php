@@ -11,13 +11,14 @@
 
 namespace FrontBundle\Security\Http\Authentication;
 
+use FOS\UserBundle\Model\UserInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
 
 /**
- * Class AuthenticationSuccessListener: class with the default authentication success handling logic.
+ * Class with the default authentication success handling logic.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
@@ -29,17 +30,11 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
     private $jwtManager;
 
     /**
-     * Set JwtManager.
-     *
      * @param JWTManager $jwtManager
-     *
-     * @return $this
      */
     public function setJwtManager(JWTManager $jwtManager)
     {
         $this->jwtManager = $jwtManager;
-
-        return $this;
     }
 
     /**
@@ -49,6 +44,11 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
+        /**
+         * @var $user UserInterface Note this will return a ApiBundle\Entity\User instance; this dependence to ApiBundle
+         *                          is due to the fact that this is the user class defined at the application
+         *                          configuration level worry here.
+         */
         $user = $token->getUser();
         $apiToken = $this->jwtManager->create($user);
 

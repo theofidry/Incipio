@@ -13,7 +13,6 @@ namespace ApiBundle\Tests\Entity;
 
 use ApiBundle\Entity\Job;
 use ApiBundle\Entity\Mandate;
-use ApiBundle\Test\Entity\AbstractEntityTestCase;
 
 /**
  * @coversDefaultClass ApiBundle\Entity\Mandate
@@ -24,73 +23,150 @@ class MandateTest extends AbstractEntityTestCase
 {
     /**
      * {@inheritdoc}
-     *
-     * @covers       ::setStartAt
-     * @covers       ::getStartAt
-     * @covers       ::setEndAt
-     * @covers       ::getEndAt
-     * @covers       ::addJob
-     * @covers       ::getJobs
-     * @dataProvider fluentDataProvider
-     *
-     * TODO: test on real database
      */
-    public function testPropertyAccessors(array $data = [])
+    public function getEntityClassName()
     {
-        $mandate = new Mandate();
-
-        $mandate
-            ->setStartAt($data['startAt'])
-            ->setEndAt($data['endAt'])
-            ->addJob($data['job'])
-        ;
-
-        // Test classic setters
-        $this->assertEquals($data['startAt']->format('Y-m-d'), $mandate->getStartAt()->format('Y-m-d'));
-        $this->assertEquals($data['endAt']->format('Y-m-d'), $mandate->getEndAt()->format('Y-m-d'));
-        $this->assertTrue($mandate->getJobs()->contains($data['job']));
-
-        // Test if relations has been properly set
-        $this->assertEquals($mandate, $data['job']->getMandate());
-
-        // Test if properties and relations can be reset
-        $mandate
-            ->setEndAt(null)
-            ->removeJob($data['job'])
-        ;
-        try {
-            $mandate->setStartAt(null);
-        } catch (\Exception $e) {
-            // Expect error thrown
-        }
-
-        $this->assertEquals(null, $mandate->getEndAt());
-        $this->assertFalse($mandate->getJobs()->contains($data['job']));
-
-        $this->assertEquals(null, $data['job']->getMandate());
-
-        // Test if resetting non existing relations does not cause any error
-        $mandate
-            ->setEndAt(null)
-            ->removeJob($data['job'])
-        ;
-        $this->assertEquals(null, $mandate->getEndAt());
-        $this->assertFalse($mandate->getJobs()->contains($data['job']));
+        return Mandate::class;
     }
 
     /**
-     * Provides an optimal set of data for generating a complete entity.
+     * {@inheritdoc}
+     *
+     * @covers ::getId
+     * @covers ::setStartAt
+     * @covers ::getStartAt
+     * @covers ::setName
+     * @covers ::getName
+     * @covers ::setEndAt
+     * @covers ::getEndAt
+     * @covers ::addJob
+     * @covers ::removeJob
+     * @covers ::getJobs
+     * @dataProvider propertyAccessorProvider
+     */
+    public function testPropertyAccessors(array $data = [])
+    {
+        $mandate = (new Mandate())
+            ->setEndAt($data['endAt'])
+            ->setName($data['name'])
+            ->setStartAt($data['startAt'])
+        ;
+        foreach ($data['jobs'] as $job) {
+            // Is added two times to ensure the adder handles duplications and will add it only one time
+            $mandate->addJob($job);
+            $mandate->addJob($job);
+        }
+
+        $this->doctrineManager->persist($mandate);
+        $this->doctrineManager->flush();
+
+
+        // Test classic setters
+        $this->assertNotNull($mandate->getId());
+        $this->assertEquals($data['name'], $mandate->getName());
+        $this->assertEquals($data['endAt']->format('Y-m-d'), $mandate->getEndAt()->format('Y-m-d'));
+        $this->assertEquals($data['startAt']->format('Y-m-d'), $mandate->getStartAt()->format('Y-m-d'));
+
+        // Test job relationship
+        $this->assertEquals(count($data['jobs']), count($mandate->getJobs()));
+        foreach ($data['jobs'] as $job) {
+            /** @var Job $job */
+            $this->assertTrue($mandate->getJobs()->contains($job));
+            $this->assertEquals($mandate, $job->getMandate());
+        }
+
+
+        // Test if properties and relations can be reset
+        $mandate
+            ->setName(null)
+            ->setEndAt(null)
+        ;
+        foreach ($data['jobs'] as $job) {
+            $mandate->removeJob($job);
+        }
+        $this->doctrineManager->flush();
+
+        $this->assertNull($mandate->getEndAt());
+        $this->assertNull($mandate->getName());
+
+        // Test job relationship
+        $this->assertEquals(0, count($mandate->getJobs()));
+        foreach ($data['jobs'] as $job) {
+            /** @var Job $job */
+            $this->assertNull($job->getMandate());
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @dataProvider propertyAccessorProvider
+     */
+    public function testDeleteEntity(array $data = [])
+    {
+        // Instantiate User
+        $mandate = (new Mandate())
+            ->setEndAt($data['endAt'])
+            ->setName($data['name'])
+            ->setStartAt($data['startAt'])
+        ;
+        foreach ($data['jobs'] as $job) {
+            // Is added two times to ensure the adder handles duplications and will add it only one time
+            $mandate->addJob($job);
+            $mandate->addJob($job);
+        }
+        $this->doctrineManager->persist($mandate);
+        $this->doctrineManager->flush();
+
+        // Actual test
+        $this->doctrineManager->remove($mandate);
+        $this->doctrineManager->flush();
+        foreach ($data['jobs'] as $job) {
+            /** @var Job $job */
+            $this->assertNull($job->getMandate(), 'Expected $job instance to no longer have a reference to the mandate.');
+        }
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function fluentDataProvider()
     {
         return [
             [
                 [
+                    'endAt'   => new \DateTime('2016-03-02'),
+                    'jobs'    => $this->getAJobInstance(),
+                    'name'    => 'Dummy Mandate',
                     'startAt' => new \DateTime('2015-03-02'),
-                    'endAt' => new \DateTime('2016-03-02'),
-                    'job' => new Job(),
                 ],
             ],
         ];
+    }
+
+    public function propertyAccessorProvider()
+    {
+        return [
+            [
+                [
+                    'endAt'   => new \DateTime('2016-03-02'),
+                    'jobs'    => [$this->getAJobInstance()],
+                    'name'    => 'Dummy Mandate',
+                    'startAt' => new \DateTime('2015-03-02'),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return Job
+     */
+    private function getAJobInstance()
+    {
+        $job = (new Job())
+            ->setTitle('Job title')
+        ;
+
+        return $job;
     }
 }

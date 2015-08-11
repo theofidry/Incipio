@@ -8,9 +8,6 @@ services:
             -  @csa_guzzle.client.local_api
             -  @router
 
-    front.security.roles.helper:
-        class: FrontBundle\Utils\RoleHierarchyHelper
-
     front.authentication.success_handler:
         class:     FrontBundle\Security\Http\Authentication\AuthenticationSuccessHandler
         arguments: [ @security.http_utils ]
@@ -34,15 +31,13 @@ services:
             -  @security.token_storage
 
     front.menu.header:
-        class:           %knp_menu_item.class%
-        factory_service: front.menu_builder
-        factory_method:  createHeaderMenu
-        arguments:       [ @request_stack, @knp_menu.factory ]
-        tags:            [ { name: knp_menu.menu, alias: header_menu } ]
+        class:     %knp_menu_item.class%
+        factory:   [ @front.menu_builder, createHeaderMenu ]
+        arguments: [ @request_stack, @knp_menu.factory ]
+        tags:      [ { name: knp_menu.menu, alias: header_menu } ]
 
     front.menu.user:
-        class:           %knp_menu_item.class%
-        factory_service: front.menu_builder
-        factory_method:  createUserMenu
-        arguments:       [ @request_stack, @knp_menu.factory ]
-        tags:            [ { name: knp_menu.menu, alias: user_menu } ]
+        class:     %knp_menu_item.class%
+        factory:   [ @front.menu_builder, createUserMenu ]
+        arguments: [ @request_stack, @knp_menu.factory ]
+        tags:      [ { name: knp_menu.menu, alias: user_menu } ]

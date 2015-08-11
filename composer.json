@@ -4,7 +4,10 @@
     "license": "GNU",
     "type": "project",
     "autoload": {
-        "psr-4": { "": "src/", "SymfonyStandard\\": "app/" }
+        "psr-4": { "": "src/", "Incipio\\": "app/" }
+    },
+    "autoload-dev": {
+      "psr-4": { "Incipio\\Tests\\Behat\\": "features/bootstrap" }
     },
     "repositories": [
         {
@@ -40,15 +43,15 @@
     "require-dev": {
         "behat/behat": "~3.0",
         "behat/mink": "~1.5",
-        "behat/mink-extension": "~2.0",
         "behat/mink-browserkit-driver": "~1.1",
+        "behat/mink-extension": "~2.0",
+        "behat/mink-goutte-driver": "*",
+        "behat/mink-selenium2-driver": "*",
         "behat/symfony2-extension": "~2.0@dev",
         "behatch/contexts": "dev-master#eef7ab39ca896796bf3ba25a0fa5a95f15276eb7",
         "bit3/faker-cli": "~1.3",
-        "codeclimate/php-test-reporter": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "~2.0",
-        "dunglas/php-schema": "~0.3",
-        "fabpot/php-cs-fixer": "~1.6",
+        "fabpot/php-cs-fixer": "dev-master",
         "matthiasnoback/symfony-dependency-injection-test": "0.7.*",
         "phpunit/phpunit": "~4.6",
         "sensio/generator-bundle": "~2.3",
@@ -61,8 +64,8 @@
         "test": "composer test:db && composer test:phpunit && composer test:behat && composer test:security",
         "test:db": "php app/console doctrine:schema:validate --ansi",
         "test:security": "php bin/security-checker security:check",
-        "test:phpunit": "php bin/phpunit -c app/ --colors=always",
-        "test:behat": "php bin/behat --colors -vvv",
+        "test:phpunit": "php bin/phpunit -c app/phpunit_travis.xml --colors=always",
+        "test:behat": "php bin/behat --colors -vvv --strict",
         "db": "composer db:drop && composer db:create && composer db:seed",
         "db:create": "php app/console doctrine:schema:create --ansi",
         "db:drop": "php app/console doctrine:schema:drop --force --ansi",

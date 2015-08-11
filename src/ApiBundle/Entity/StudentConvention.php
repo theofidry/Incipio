@@ -8,9 +8,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Convention signed between a member of the organization and the organization.
+ * Convention signed between a member of the organization and the organization. Is a weak entity of {@see
+ * ApiBundle\Entity\User}.
  *
- * @ORM\Table
  * @ORM\Entity
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
@@ -25,6 +25,9 @@ class StudentConvention
      * @Assert\Type("string")
      * @Assert\Length(min=5, max=30)
      * @ORM\GeneratedValue(strategy="NONE")
+     * @Groups({"user"})
+     * TODO: remove the group as the reference is the ID it should be unneeded; See ticket on DunglasApiBundle for solving this bug
+     * @link https://github.com/dunglas/DunglasApiBundle/issues/187
      */
     private $reference;
 

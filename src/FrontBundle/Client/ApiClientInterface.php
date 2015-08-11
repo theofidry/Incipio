@@ -11,6 +11,7 @@
 
 namespace FrontBundle\Client;
 
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Message\ResponseInterface;
 
@@ -61,7 +62,7 @@ interface ApiClientInterface
     public function createRequest($method, $url = null, $token = null, array $options = []);
 
     /**
-     * Send a GET request for the client.
+     * Send a request.
      *
      * @param string      $method  HTTP method
      * @param string|null $url     URL, URI or route name.
@@ -69,6 +70,21 @@ interface ApiClientInterface
      * @param array       $options Options applied to the request.
      *
      * @return ResponseInterface
+     *
+     * @throws \LogicException When the handler does not populate a response
+     * @throws RequestException When an error is encountered
      */
     public function request($method, $url = null, $token = null, $options = []);
+
+    /**
+     * Sends a single request
+     *
+     * @param RequestInterface $request Request to send
+     *
+     * @return \GuzzleHttp\Message\ResponseInterface
+     *
+     * @throws \LogicException When the handler does not populate a response
+     * @throws RequestException When an error is encountered
+     */
+    public function send(RequestInterface $request);
 }

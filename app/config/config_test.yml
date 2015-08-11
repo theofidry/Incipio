@@ -8,11 +8,15 @@ framework:
     profiler:
         collect:    false
 
+# If later a different database name is needed for tests, should be done here
 doctrine:
     dbal:
-        dbname:   %database_name%
+        dbname: %database_name%
 
 stof_doctrine_extensions:
+    class:
+        # Overrides Timestampable listener to set fix values for createAt and updatedAt dates to ease the testing
+        timestampable:  ApiBundle\Tests\Mocks\EventListener\TimestampableListenerMock
     orm:
         default:
             timestampable: true

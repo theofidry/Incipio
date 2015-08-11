@@ -84,8 +84,8 @@ class Address
      *
      * @return integer|null
      */
-    public function getId() {
-
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -96,8 +96,8 @@ class Address
      *
      * @return Address
      */
-    public function setComplementaryHome($complementaryHome) {
-
+    public function setComplementaryHome($complementaryHome)
+    {
         $this->complementaryHome = $complementaryHome;
 
         return $this;
@@ -108,16 +108,16 @@ class Address
      *
      * @return string|null
      */
-    public function getComplementaryHome() {
-
+    public function getComplementaryHome()
+    {
         return $this->complementaryHome;
     }
 
     /**
      * @return $this
      */
-    public function resetComplementaryHome() {
-
+    public function resetComplementaryHome()
+    {
         $this->complementaryHome = null;
 
         return $this;
@@ -130,8 +130,8 @@ class Address
      *
      * @return Address
      */
-    public function setComplementaryLocation($complementaryLocation) {
-
+    public function setComplementaryLocation($complementaryLocation)
+    {
         $this->complementaryLocation = $complementaryLocation;
 
         return $this;
@@ -142,16 +142,16 @@ class Address
      *
      * @return string|null
      */
-    public function getComplementaryLocation() {
-
+    public function getComplementaryLocation()
+    {
         return $this->complementaryLocation;
     }
 
     /**
      * @return $this
      */
-    public function resetComplementaryLocation() {
-
+    public function resetComplementaryLocation()
+    {
         $this->complementaryLocation = null;
 
         return $this;
@@ -164,8 +164,8 @@ class Address
      *
      * @return Address
      */
-    public function setStreet($street) {
-
+    public function setStreet($street)
+    {
         $this->street = $street;
 
         return $this;
@@ -176,8 +176,8 @@ class Address
      *
      * @return string|null
      */
-    public function getStreet() {
-
+    public function getStreet()
+    {
         return $this->street;
     }
 
@@ -188,8 +188,8 @@ class Address
      *
      * @return Address
      */
-    public function setComplementaryStreet($complementaryStreet) {
-
+    public function setComplementaryStreet($complementaryStreet)
+    {
         $this->complementaryStreet = $complementaryStreet;
 
         return $this;
@@ -200,16 +200,16 @@ class Address
      *
      * @return string|null
      */
-    public function getComplementaryStreet() {
-
+    public function getComplementaryStreet()
+    {
         return $this->complementaryStreet;
     }
 
     /**
      * @return $this
      */
-    public function resetComplementaryStreet() {
-
+    public function resetComplementaryStreet()
+    {
         $this->complementaryStreet = null;
 
         return $this;
@@ -222,8 +222,8 @@ class Address
      *
      * @return Address
      */
-    public function setPostal($postal) {
-
+    public function setPostal($postal)
+    {
         $this->postal = $postal;
 
         return $this;
@@ -234,8 +234,8 @@ class Address
      *
      * @return integer|null
      */
-    public function getPostal() {
-
+    public function getPostal()
+    {
         return $this->postal;
     }
 
@@ -246,8 +246,8 @@ class Address
      *
      * @return Address
      */
-    public function setCity($city) {
-
+    public function setCity($city)
+    {
         $this->city = $city;
 
         return $this;
@@ -258,16 +258,16 @@ class Address
      *
      * @return string|null
      */
-    public function getCity() {
-
+    public function getCity()
+    {
         return $this->city;
     }
 
     /**
      * @return string|null
      */
-    public function getCountry() {
-
+    public function getCountry()
+    {
         return $this->country;
     }
 
@@ -276,8 +276,8 @@ class Address
      *
      * @return $this
      */
-    public function setCountry($country) {
-
+    public function setCountry($country)
+    {
         $this->country = $country;
 
         return $this;

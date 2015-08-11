@@ -1,11 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Incipio package.
+ *
+ * (c) Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Incipio\Tests\Behat\Context;
+
+use Behat\Behat\Context\Context;
+use Sanpi\Behatch\Context\RestContext;
 use Sanpi\Behatch\HttpCall\HttpCallResultPool;
 
 /**
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class JsonLdContext extends \Sanpi\Behatch\Context\RestContext
+class JsonLdContext extends RestContext implements Context
 {
     /**
      * @var JsonContext
@@ -40,7 +53,7 @@ class JsonLdContext extends \Sanpi\Behatch\Context\RestContext
     /**
      * Check if the response is an hydra paginated collection. 
      * 
-     * @Then I get a paged collection with the context :context
+     * @Then I should get a paged collection with the context :context
      *
      * @param string $context
      */
@@ -50,15 +63,18 @@ class JsonLdContext extends \Sanpi\Behatch\Context\RestContext
         $this->jsonLdResponse();
 
         $this->jsonContext->theJsonNodeShouldBeEqualTo('@context', $context);
+        $this->jsonContext->theJsonNodeShouldExist('@id');
         $this->jsonContext->theJsonNodeShouldBeEqualTo('@type', 'hydra:PagedCollection');
         $this->jsonContext->theJsonNodeShouldExist('hydra:totalItems');
         $this->jsonContext->theJsonNodeShouldExist('hydra:itemsPerPage');
+        $this->jsonContext->theJsonNodeShouldExist('hydra:member');
+        $this->jsonContext->theJsonNodeShouldExist('hydra:search');
     }
 
     /**
      * Check if the response is an hydra resource page.
      *
-     * @Then I get a resource page with the context :context
+     * @Then I should get a resource page with the context :context
      *
      * @param string $context
      */

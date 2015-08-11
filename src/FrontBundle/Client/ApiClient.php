@@ -12,6 +12,7 @@
 namespace FrontBundle\Client;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Query;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
@@ -51,7 +52,7 @@ class ApiClient implements ApiClientInterface
         $baseUrl = $this->client->getBaseUrl();
         $lastCharacter = strlen($baseUrl) - 1;
         if ('/' === $baseUrl[$lastCharacter]) {
-            $baseUrl = substr($baseUrl, $lastCharacter);
+            $baseUrl = substr($baseUrl, 0, $lastCharacter);
         }
         $this->baseUrl = $baseUrl;
 
@@ -92,6 +93,14 @@ class ApiClient implements ApiClientInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function send(RequestInterface $request)
+    {
+        return $this->client->send($request);
+    }
+
+    /**
      * Expand a URI template and inherit from the base URL if it's relative
      *
      * @param string|null $url       URL or an array of the URI template to expand
@@ -103,7 +112,7 @@ class ApiClient implements ApiClientInterface
      */
     private function buildUrl($url = null, array $parameters = [])
     {
-        if (null === $url) {
+        if (null === $url || '' === $url) {
             return $this->baseUrl;
         }
 

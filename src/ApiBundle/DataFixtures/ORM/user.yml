@@ -1,13 +1,13 @@
 ApiBundle\Entity\User:
     user (template):
-        username:      <userName()>
-        fullname:      80%? <name()>
-        email:         <email()>
-        roles:         [ <userRole()> ]
-        plainPassword: guest
-        enabled:       true
-        jobs:          <numberBetween(0, 12)>x @job__*
-        types:         <userTypes()>
+        username (unique): <userName()>
+        fullname (unique): 80%? <name()>
+        email (unique):    <email()>
+        roles:             [ <userRole()> ]
+        plainPassword:     guest
+        enabled:           true
+        jobs:              <numberBetween(0, 12)>x @job__*
+        types:             <userTypes()>
 
     # Keep this user as the first one so that he get the ID #1.
     user_president (extends user):
@@ -17,7 +17,7 @@ ApiBundle\Entity\User:
         roles:             [ ROLE_ADMIN ]
         jobs:              [ @job_president ]
         studentConvention: @ce_president
-        types:             [ 'member' ]
+        types:             <userTypes('member')>
 
     admin_user:
         username:          admin
@@ -28,7 +28,7 @@ ApiBundle\Entity\User:
         enabled:           true
         studentConvention: @ce_admin
         superadmin:        true
-        types:             [ 'member' ]
+        types:             <userTypes('member')>
 
     ca_user:
         username:          ca
@@ -38,7 +38,7 @@ ApiBundle\Entity\User:
         enabled:           true
         roles:             [ ROLE_ADMIN ]
         studentConvention: @ce_ca
-        types:             [ 'member' ]
+        types:             <userTypes('member')>
 
     guest_user:
         username:          guest
@@ -48,7 +48,7 @@ ApiBundle\Entity\User:
         enabled:           true
         roles:             [ ROLE_USER ]
         studentConvention: @ce_guest
-        types:             [ 'member' ]
+        types:             <userTypes('member')>
 
     guest_contractor:
         username:          contractor
@@ -58,11 +58,11 @@ ApiBundle\Entity\User:
         enabled:           true
         roles:             [ ROLE_USER ]
         studentConvention: @ce_guest_contractor
-        types:             [ 'contractor' ]
+        types:             <userTypes('contractor')>
 
     user__{0..49} (extends user):
-        studentConvention: @ce_user__<current()>
+        studentConvention: 80%? @ce_user__<current()>
 
     user__{50..60} (extends user):
         enabled:           false
-        studentConvention: @ce_user__<current()>
+        studentConvention: 80%? @ce_user__<current()>

@@ -12,10 +12,13 @@
 namespace FrontBundle\Tests\Client;
 
 use FrontBundle\Client\ApiClient;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Message\Request;
 use GuzzleHttp\Message\RequestInterface;
-use GuzzleHttp\Query;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Message\ResponseInterface;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Since the client heavily relies on Guzzle client, we only tests the added functionalities which are the token
@@ -24,6 +27,8 @@ use Symfony\Component\VarDumper\VarDumper;
  * @coversDefaultClass FrontBundle\Client\ApiClient
  *
  * @author             Théo FIDRY <theo.fidry@gmail.com>
+ *
+ * TODO: set more tests for the authorization token part, somes errors have been noted while refactoring with the tests passing.
  */
 class ApiClientTest extends KernelTestCase
 {
@@ -42,15 +47,76 @@ class ApiClientTest extends KernelTestCase
     }
 
     /**
-     * @testdox Check that the overridden methods generates the expected request
+     * @dataProvider baseUrlProvider
+     */
+    public function testConstruct($baseUrl, $url)
+    {
+        $router = $this->prophesize(Router::class);
+        $router->generate('my_route', [])->willReturn('/dummy');
+
+        $guzzleClient = $this->prophesize(GuzzleClientInterface::class);
+        $guzzleClient->getBaseUrl()->willReturn($baseUrl);
+        $guzzleClient
+            ->createRequest('GET', 'http://localhost/dummy', [])
+            ->willReturn(new Request('GET', 'http://localhost/dummy'))
+        ;
+        $guzzleClient
+            ->createRequest('GET', 'http://localhost', [])
+            ->willReturn(new Request('GET', 'http://localhost'))
+        ;
+
+        $apiClient = new ApiClient($guzzleClient->reveal(), $router->reveal());
+        $request = $apiClient->createRequest('GET', $url);
+
+        if (true === empty($url)) {
+            $this->assertEquals('http://localhost', $request->getUrl());
+        } else {
+            $this->assertEquals('http://localhost/dummy', $request->getUrl());
+        }
+    }
+
+    /**
+     * @covers ::send
+     */
+    public function testSendRequest()
+    {
+        $request = new Request('GET', 'http://localhost/dummy');
+
+        $router = $this->prophesize(Router::class);
+        $guzzleClient = $this->prophesize(GuzzleClientInterface::class);
+        $guzzleClient->getBaseUrl()->willReturn('http://localhost');
+        $guzzleClient->send($request)->willReturn(new Response(200));
+
+        $apiClient = new ApiClient($guzzleClient->reveal(), $router->reveal());
+        $response = $apiClient->send($request);
+
+        $this->assertTrue($response instanceof ResponseInterface);
+    }
+
+    /**
+     * @covers ::request
+     */
+    public function testRequest()
+    {
+        $request = new Request('GET', 'http://localhost/dummy');
+
+        $router = $this->prophesize(Router::class);
+
+        $guzzleClient = $this->prophesize(GuzzleClientInterface::class);
+        $guzzleClient->getBaseUrl()->willReturn('http://localhost');
+        $guzzleClient->createRequest('GET', 'http://localhost/dummy', [])->willReturn($request);
+        $guzzleClient->send($request)->willReturn(new Response(200));
+
+        $apiClient = new ApiClient($guzzleClient->reveal(), $router->reveal());
+        $response = $apiClient->request('GET', 'http://localhost/dummy');
+
+        $this->assertTrue($response instanceof ResponseInterface);
+    }
+
+    /**
+     * @testdox      Check that the overridden methods generates the expected request
      *
-     * @covers ::get
-     * @covers ::head
-     * @covers ::delete
-     * @covers ::put
-     * @covers ::patch
-     * @covers ::post
-     * @covers ::extractHeaders
+     * @covers ::createRequest
      *
      * @dataProvider getMethodProvider
      *
@@ -61,7 +127,7 @@ class ApiClientTest extends KernelTestCase
      */
     public function testOverriddenMethod($url, $token, $options, $expectedUrl)
     {
-        $tokenValue = (true === $token) ? 'MyToken' : null;
+        $tokenValue = (true === $token)? 'MyToken': null;
 
         $requests = [
             'get'    => $this->service->createRequest('GET', $url, $tokenValue, $options),
@@ -100,6 +166,20 @@ class ApiClientTest extends KernelTestCase
         }
     }
 
+    public function baseUrlProvider()
+    {
+        return [
+            ['http://localhost', 'my_route'],
+            ['http://localhost', '/dummy'],
+            ['http://localhost', 'http://localhost/dummy'],
+            ['http://localhost/', 'my_route'],
+            ['http://localhost/', '/dummy'],
+            ['http://localhost/', 'http://localhost/dummy'],
+            ['http://localhost/', ''],
+            ['http://localhost/', null],
+        ];
+    }
+
     public function getMethodProvider()
     {
         return [
@@ -115,7 +195,7 @@ class ApiClientTest extends KernelTestCase
             // no token
             // no options
             [
-                'users_get',
+                'api_users_get',
                 false,
                 [
                     'parameters' => ['id' => 14]
@@ -126,7 +206,7 @@ class ApiClientTest extends KernelTestCase
             // no token
             // no options
             [
-                'users_cget',
+                'api_users_cget',
                 false,
                 [],
                 '/api/users',
@@ -135,7 +215,7 @@ class ApiClientTest extends KernelTestCase
             // no token
             // options
             [
-                'users_cget',
+                'api_users_cget',
                 false,
                 [
                     'query'   => ['random' => 'test'],
@@ -143,12 +223,11 @@ class ApiClientTest extends KernelTestCase
                 ],
                 '/api/users?random=test',
             ],
-
             // route name with parameters
             // token
             // no options
             [
-                'users_get',
+                'api_users_get',
                 true,
                 [
                     'parameters' => ['id' => 14]
@@ -159,7 +238,7 @@ class ApiClientTest extends KernelTestCase
             // token
             // no options
             [
-                'users_cget',
+                'api_users_cget',
                 true,
                 [],
                 '/api/users',
@@ -168,7 +247,7 @@ class ApiClientTest extends KernelTestCase
             // no token
             // no options
             [
-                'users_get',
+                'api_users_get',
                 false,
                 [
                     'query'      => ['random' => 'test'],
@@ -181,7 +260,7 @@ class ApiClientTest extends KernelTestCase
             // token
             // options
             [
-                'users_cget',
+                'api_users_cget',
                 true,
                 [
                     'query'   => ['random' => 'test'],
@@ -189,7 +268,6 @@ class ApiClientTest extends KernelTestCase
                 ],
                 '/api/users?random=test',
             ],
-
             // URI
             // no token
             // no options
@@ -211,7 +289,6 @@ class ApiClientTest extends KernelTestCase
                 ],
                 '/api/users?random=test',
             ],
-
             // URI
             // token
             // no options
@@ -233,7 +310,6 @@ class ApiClientTest extends KernelTestCase
                 ],
                 '/api/users?random=test',
             ],
-
             // URI with params
             // no token
             // no options
@@ -255,7 +331,6 @@ class ApiClientTest extends KernelTestCase
                 ],
                 '/api/users?lol&random=test',
             ],
-
             // URI with params
             // token
             // no options
@@ -290,7 +365,6 @@ class ApiClientTest extends KernelTestCase
                 ],
                 '/api/users?lol&random=test',
             ],
-
             // URL with params
             // token
             // options
@@ -298,7 +372,7 @@ class ApiClientTest extends KernelTestCase
                 'http://localhost/api/users?lol',
                 true,
                 [
-                    'query' => ['random' => 'test'],
+                    'query'   => ['random' => 'test'],
                     'headers' => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                 ],
                 '/api/users?lol&random=test',
@@ -316,7 +390,6 @@ class ApiClientTest extends KernelTestCase
                 ],
                 '/api/users?lol&random=test',
             ],
-
             // URL with params inline
             // token
             // options with ignored parameters
@@ -348,9 +421,9 @@ class ApiClientTest extends KernelTestCase
                 true,
                 [
                     'query'      => [
-                        'id' => 14,
+                        'id'                          => 14,
                         'filter[order][startAt]=desc' => null,
-                        'filter' => ['order' => ['endAt' => 'asc']]
+                        'filter'                      => ['order' => ['endAt' => 'asc']]
                     ],
                     'headers'    => ['Foo' => 'Bar', 'Baz' => 'Bam'],
                     'parameters' => ['id' => 14]

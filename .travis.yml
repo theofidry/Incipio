@@ -26,6 +26,7 @@ script:
   - composer test:db
   - composer test:security
   - composer test:phpunit
-  - composer test:behat
+  - bin/behat --suite=api_features --strict --colors
+  - bin/behat --suite=front_features --strict --colors
   - php bin/php-cs-fixer fix --no-interaction --dry-run --diff src
   - php bin/php-cs-fixer fix --no-interaction --dry-run --diff features

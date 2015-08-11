@@ -34,6 +34,8 @@ doctrine:
         user:     %database_user%
         password: %database_password%
         charset:  UTF8
+        types:
+            datetime: ApiBundle\Doctrine\DBAL\Type\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping:    true
@@ -86,15 +88,17 @@ lexik_jwt_authentication:
 # Let default configuration
 
 # Nelmio API Doc
-nelmio_api_doc:
-    sandbox:
-        accept_type:        application/json
-        body_format:
-            formats:        [ json ]
-            default_format: json
-        request_format:
-            formats:
-                json:       application/json
+# Disabled for now as it generates errors with the latest version of DunglasApiBundle
+# Current version of DunglasApiBundle: #2e6785c7ac7baf3ef14961445687987dd0667718
+#nelmio_api_doc:
+#    sandbox:
+#        accept_type:        application/json
+#        body_format:
+#            formats:        [ json ]
+#            default_format: json
+#        request_format:
+#            formats:
+#                json:       application/json
 
 # Nelmio CORS
 nelmio_cors:

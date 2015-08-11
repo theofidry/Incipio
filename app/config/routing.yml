@@ -38,6 +38,7 @@ fos_user_security_logout:
     defaults: { _controller: FOSUserBundle:Security:logout }
 
 # NelmioApiDocBundle
-NelmioApiDocBundle:
-    resource: @NelmioApiDocBundle/Resources/config/routing.yml
-    prefix:   /api-doc
+# See comment in config.yml regarding NelmioApiDocBundle
+#NelmioApiDocBundle:
+#    resource: @NelmioApiDocBundle/Resources/config/routing.yml
+#    prefix:   /api-doc

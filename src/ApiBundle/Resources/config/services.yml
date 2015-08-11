@@ -1,3 +1,6 @@
+parameters:
+    doctrine.orm.entity_manager.class: ApiBundle\Doctrine\ORM\Manager\EntityManager
+
 services:
     api.user.roles:
         class:     ApiBundle\Utils\UserRoles
@@ -27,6 +30,7 @@ services:
 
     faker.provider.student_convention:
         class:     ApiBundle\DataFixtures\Faker\Provider\StudentConventionProvider
+        arguments: [ @hautelook_alice.faker ]
         tags:      [ { name: hautelook_alice.faker.provider } ]
 
     faker.provider.user:
@@ -37,7 +41,7 @@ services:
 
     # FOSUserBundle manager
     fos_user.user_manager.default:
-        class: ApiBundle\Doctrine\UserManager
+        class: ApiBundle\Doctrine\ORM\Manager\UserManager
         arguments:
             -  @security.encoder_factory
             -  @fos_user.util.username_canonicalizer
@@ -91,6 +95,14 @@ services:
 
 
     # User resource
+    resource.user.filter.mandate_filter:
+        parent: api.filter.where_filter
+        class:  ApiBundle\Doctrine\ORM\Filter\User\UserMandateFilter
+
+    resource.user.filter.type_filter:
+        parent: api.filter.where_filter
+        class:  ApiBundle\Doctrine\ORM\Filter\User\UserTypeFilter
+
     resource.user:
         parent:    api.resource
         arguments: [ ApiBundle\Entity\User ]
@@ -100,6 +112,10 @@ services:
                 -
                     -    @api.filter.order_filter
                     -    @api.filter.where_filter
+                    -    @resource.user.filter.mandate_filter
+                    -    @resource.user.filter.type_filter
             - method:    initNormalizationContext
-              arguments: [ { groups: [ user ] } ]
+              arguments: [ { groups: [ user, user-read ] } ]
+            - method:    initDenormalizationContext
+              arguments: [ { groups: [ user, user-write ] } ]
         tags:      [ { name: api.resource } ]

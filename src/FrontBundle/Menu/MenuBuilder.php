@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
- * Class MenuBuilder: creates menu for the front layer.
+ * Class MenuBuilder: creates menus for the front-end.
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
@@ -75,7 +75,7 @@ class MenuBuilder
         ;
 
         // Association Management
-        $menu->addChild($this->createAssociationManagementMenu());
+        $menu->addChild($this->createOrganisationManagementMenu());
 
         return $menu;
     }
@@ -85,9 +85,9 @@ class MenuBuilder
      *
      * @return \Knp\Menu\ItemInterface
      */
-    private function createAssociationManagementMenu()
+    private function createOrganisationManagementMenu()
     {
-        $menu = $this->factory->createItem('association-management');
+        $menu = $this->factory->createItem('organisation-management');
         $menu
             ->setAttribute('dropdown', true)
             ->setLabel('Gestion associative')
@@ -133,10 +133,15 @@ class MenuBuilder
         // User is authenticated
         $user = $this->tokenStorage->getToken()->getUser();
 
+        $username = $user->getFullname();
+        if (true === empty($username)) {
+            $username = $user->getUsername();
+        }
+
         $menu->addChild(
             'profile',
             [
-                'label' => $user->getUsername(),
+                'label' => $username,
                 'route' => 'users',
             ]
         );

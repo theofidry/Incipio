@@ -11,8 +11,8 @@ Feature: Jobs management
 
   Scenario: It should be possible to get all the jobs.
     When I send a GET request to "/api/jobs"
-    Then I get a page collection with the context "/api/contexts/Job"
-    And the JSON node "hydra:totalItems" should be higher than 55
+    Then I should get a paged collection with the context "/api/contexts/Job"
+    And the JSON node "hydra:totalItems" should be greater than 55
 
     #TODO
 
