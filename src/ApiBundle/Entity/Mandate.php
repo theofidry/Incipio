@@ -42,7 +42,7 @@ class Mandate
      * @Iri("https://schema.org/endDate")
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\Date
-     * @Groups({"user"})
+     * @Groups({"job", "user"})
      */
     private $endAt;
 
@@ -62,7 +62,7 @@ class Mandate
      * @ORM\Column(type="string")
      * @Assert\Type("string")
      * @Assert\Length(min=5, max=30)
-     * @Groups({"user"})
+     * @Groups({"job", "user"})
      */
     private $name;
 
@@ -73,7 +73,7 @@ class Mandate
      * @ORM\Column(type="datetime")
      * @Assert\Date
      * @Assert\NotNull
-     * @Groups({"user"})
+     * @Groups({"job", "user"})
      */
     private $startAt;
 

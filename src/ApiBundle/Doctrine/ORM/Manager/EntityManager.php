@@ -13,10 +13,8 @@ namespace ApiBundle\Doctrine\ORM\Manager;
 
 use ApiBundle\Entity\Mandate;
 use Doctrine\Common\EventManager;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityManager as DoctrineEntityManager;
+use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\ORMException;
 
 /**
@@ -25,38 +23,23 @@ use Doctrine\ORM\ORMException;
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class EntityManager extends DoctrineEntityManager
+class EntityManager extends EntityManagerDecorator
 {
     /**
-     * {@inheritdoc}
+     * Factory method to create EntityManager instances.
+     *
+     * @param mixed         $conn         An array with the connection parameters or an existing Connection instance.
+     * @param Configuration $config       The Configuration instance to use.
+     * @param EventManager  $eventManager The EventManager instance to use.
+     *
+     * @return EntityManager The created EntityManager.
+     *
+     * @throws \InvalidArgumentException
+     * @throws ORMException
      */
     public static function create($conn, Configuration $config, EventManager $eventManager = null)
     {
-        // Block of the parent class
-        if ( ! $config->getMetadataDriverImpl()) {
-            throw ORMException::missingMappingDriverImpl();
-        }
-
-        switch (true) {
-            case (is_array($conn)):
-                $conn = DriverManager::getConnection(
-                    $conn, $config, ($eventManager ?: new EventManager())
-                );
-                break;
-
-            case ($conn instanceof Connection):
-                if ($eventManager !== null && $conn->getEventManager() !== $eventManager) {
-                    throw ORMException::mismatchedEventManager();
-                }
-                break;
-
-            default:
-                throw new \InvalidArgumentException("Invalid argument: " . $conn);
-        }
-        // End of block
-
-        // Overridden part: return an instance of this entity manager instead of Doctrine one
-        return new EntityManager($conn, $config, $conn->getEventManager());
+        return new self(\Doctrine\ORM\EntityManager::create($conn, $config, $eventManager));
     }
 
     /**

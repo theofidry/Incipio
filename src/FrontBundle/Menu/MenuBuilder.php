@@ -96,8 +96,15 @@ class MenuBuilder
         $menu->addChild(
             'users',
             [
-                'label' => 'Liste des membres',
+                'label' => 'Liste des Membres',
                 'route' => 'users',
+            ]
+        );
+        $menu->addChild(
+            'jobs',
+            [
+                'label' => 'Liste des Postes',
+                'route' => 'jobs',
             ]
         );
 

@@ -1,5 +1,5 @@
-parameters:
-    doctrine.orm.entity_manager.class: ApiBundle\Doctrine\ORM\Manager\EntityManager
+#parameters:
+#    doctrine.orm.entity_manager.class: ApiBundle\Doctrine\ORM\Manager\EntityManager
 
 services:
     api.user.roles:
@@ -14,6 +14,19 @@ services:
 
     api.filter.where_filter:
         parent: loopback_api.filter.where_filter
+
+
+    #
+    # Event Listeners
+    #
+    event_listener.job_manager:
+        class:          ApiBundle\EventListener\JobManagerListener
+        arguments:      [ @api.entity_manager.job_manager ]
+        tags:
+            - name:     kernel.event_listener
+              event:    kernel.view
+              method:   onKernelView
+              priority: 11
 
 
     #
@@ -39,8 +52,20 @@ services:
         tags:      [ { name: hautelook_alice.faker.provider } ]
 
 
-    # FOSUserBundle manager
-    fos_user.user_manager.default:
+    #
+    # Entity Managers
+    #
+    api.entity_manager.default:
+        class:     ApiBundle\Doctrine\ORM\Manager\EntityManager
+        decorates: doctrine.orm.default_entity_manager
+        arguments: [ @api.entity_manager.default.inner ]
+
+
+    api.entity_manager.job_manager:
+        class: ApiBundle\Doctrine\ORM\Manager\JobManager
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    api.entity_manager.user_manager:
         class: ApiBundle\Doctrine\ORM\Manager\UserManager
         arguments:
             -  @security.encoder_factory
@@ -64,7 +89,7 @@ services:
                     -    @api.filter.order_filter
                     -    @api.filter.where_filter
             - method:    initNormalizationContext
-              arguments: [ { groups: [ job, user ] } ]
+              arguments: [ { groups: [ job ] } ]
         tags:      [ { name: api.resource } ]
 
 
