@@ -10,6 +10,59 @@ Feature: User management
     Then the response status code should be 200
     And I should get a paged collection with the context "/api/contexts/User"
 
+#START -----Filter validation-----
+
+  Scenario: Filter users by type
+    When I send a GET request to "/api/users?filter[where][type]=contractor"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to 45
+    And the JSON node "types" of the objects of the JSON node "hydra:member" should contains "TYPE_CONTRACTOR"
+
+  Scenario: Filter users by mandate
+    When I send a GET request to "/api/users?filter[where][mandate]=/api/mandates/5"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to 6
+    And all the users should have a mandate with the value "/api/mandates/5"
+
+  Scenario: Filter users by job
+    When I send a GET request to "/api/users?filter[where][job]=/api/jobs/5"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to #TODO
+    And all the users should have a job with the value "/api/jobs/5"
+  #TODO
+
+  Scenario: Filter users by job to a given mandate
+    When I send a GET request to "/api/users?filter[where][job]=/api/jobs/5&[where][mandate]=/api/mandates/5"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to #TODO
+    And all the users should have a job with the value "/api/jobs/5"
+    And all the users should have a mandate with the value "/api/mandates/5"
+  #TODO
+
+  Scenario: Get all contratctors (type) for a given mandate
+    When I send a GET request to "/api/users?filter[where][mandate]=/api/mandates/5&[where][type]=contractor"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to #TODO
+    And all the users should have a mandate with the value "/api/mandates/5"
+    And the JSON node "types" of the objects of the JSON node "hydra:member" should contains "TYPE_CONTRACTOR"
+  #TODO
+
+  Scenario: Get all members (type) for a given mandate
+  #TODO
+
+#END -----Filter validation-----
+
+#START -----Crud validation-----
+
+  Scenario: Create a new user
+    When I send a POST request to "/api/users" with body:
+      | username | |
+  
   Scenario: Get a resource
     When I send a GET request to "/api/users/1"
     Then the response status code should be 200
@@ -53,26 +106,9 @@ Feature: User management
       | roles[1]                           | ROLE_USER                               |         |
       | enabled                            | true                                    | boolean |
 
-  Scenario: Create a new user
-    When I send a POST request to "/api/users" with body:
-      | username |  |
-
   Scenario: Update a resource
-
-
-  Scenario: Filter users by type
-    When I send a GET request to "/api/users?filter[where][type]=contractor"
-    Then the response status code should be 200
-    And I should get a paged collection with the context "/api/contexts/User"
-    And the JSON node "hydra:totalItems" should be equal to 45
-    And the JSON node "types" of the objects of the JSON node "hydra:member" should contains "TYPE_CONTRACTOR"
-
-  Scenario: Filter users by mandate
-    When I send a GET request to "/api/users?filter[where][mandate]=/api/mandates/5"
-    Then the response status code should be 200
-    And I should get a paged collection with the context "/api/contexts/User"
-    And the JSON node "hydra:totalItems" should be equal to 6
-    And all the users should have a mandate with the value "/api/mandates/5"
+   When I send a PUT request to "/api/users/105" with body:
+   #TODO
 
   Scenario: Delete a resource
   Delete a resource that has a Job
@@ -82,3 +118,5 @@ Feature: User management
   The method should be idempotent
     When I send a GET request to "/api/users/1"
     Then the response status code should be 404
+
+#END -----Crud validation-----
