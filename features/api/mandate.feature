@@ -12,10 +12,13 @@ Feature: Mandates management
   Scenario: If one list all the mandates, there it at least one mandate: the current one.
     #TODO
 
-
   Scenario: It should be possible to list all the mandates.
-    #TODO
+  	When I send a GET request to "/api/mandates"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/Mandate"
 
+  Scenario: It should be possible to get curent mandate
+  	#TODO
 
 #START -----Filter validation-----
   Scenario: It should be possible to list all the members of a given mandate.
@@ -29,18 +32,34 @@ Feature: Mandates management
     #TODO
 
   Scenario: It should be possible to create a new mandate
-   #TODO
+   When I send a POST request to "/api/mandes/5" with body:
+   		| name | |
+   		| startAt | |
+   		| endAT | |
+   	#TODO
 
   Scenario: It should be possible to update mandate
+  When I send a PUT request to "/api/mandates/5" with body
    #TODO
 
   Scenario: It should not be possible to delete a mandate.
+  When I send a DELETE request to "/api/mandates/5"
+  Then the response status code should be #TODO
     #TODO
 #END -----Crud validation-----
 
 #START -----Spec validation-----
 
+  Scenario: It should be possible to add user to a given mandate
+  	#TODO
+
   Scenario: A mandate may have users.
+  	When I send a GET request to "/api/mandates/5"
+  	Then the response status code should be 200
+  	And the JSON node "hydra:totalItems" should be equal to #TODO
+  	When I send #add an user
+  	Then the response status code should be 200
+  	And the JSON node "hydra:totalItems" should be equal to #TODO
     #TODO
 
   Scenario: It should not be possible to create a mandate unless it starts at the current year. The ending date
@@ -56,6 +75,18 @@ Feature: Mandates management
   Scenario: A member may be deleted from a mandate even if the mandate already ended.
    #TODO
 
-#  Scenario: Once a mandate created, the dates may change but must be of the same year.
+  Scenario: Once a mandate created, the dates may change but must be of the same year.
+  When I send a POST request to "/api/mandates/5" with body:
+   		| name | |
+   		| startAt | |
+   		| endAT | |
+  Then the response status code should be 401
+  And the JSON should be equal to:
+   """
+    {
+      "code": 401,
+      "message": "Invalid date modification"
+    }
+    """
 	#TODO
 #END -----Spec validation-----

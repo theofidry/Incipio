@@ -7,7 +7,7 @@ Incipio est un projet qui vise à bâtir un [ERP](http://fr.wikipedia.org/wiki/P
 Si vous souhaitez contribuer ou faire remonter un bug, n'hésitez pas à [nous écrire un ticket ou une demande](https://github.com/in6pio/Incipio/issues).
 
 
-## Guide Utiliateur
+## Guide Utilisateur
 
 
 ## Dev Guide
