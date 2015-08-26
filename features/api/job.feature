@@ -16,6 +16,8 @@ Feature: Jobs management
 
     #TODO
 
+#START -----Filter validation-----
+
 #  Scenario: It should be possible to get all the enabled jobs.
     #TODO
 
@@ -28,11 +30,26 @@ Feature: Jobs management
 #  Scenario: It shoud be possible to find jobs by their abbreviation (an abbreviation may have several jobs).
     #TODO
 
+#END -----Filter validation-----
+
+#START -----Crud validation-----
+
+#  Scenario: It should be possible to create a new job
+#  When I send a POST request to "/api/jobs"
+
 #  Scenario: When creating a new job, it must have at least one mandate. By default is for the ongoing mandate.
     #TODO
 
+#  Scenario: It shoud be possible to see job's informations
+#  When I send a POST request to "/api/jobs/5"
+    #TODO
+
 #  Scenario: It should be possible to update a job.
+#  When I send a PUT request to "/api/jobs/5" with body:
     #TODO
 
 #  Scenario: It should be possible to delete a job.
+#  When I send a DELETE request to "/api/jobs/5"
     #TODO
+
+#END -----Crud validation-----
