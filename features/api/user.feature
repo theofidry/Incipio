@@ -55,6 +55,17 @@ Feature: User management
   Scenario: Get all members (type) for a given mandate
   #TODO
 
+  Scenario: Find user with a username or fullname
+  #TODO
+
+  Scenario: Get all user for a ending_school_year
+  #TODO
+
+  Scenario: Get all user contrators for a given ending_school_year
+  #TODO
+
+  Scenario: Get user for a given student convention
+
 #END -----Filter validation-----
 
 #START -----Crud validation-----
