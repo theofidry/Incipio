@@ -1,6 +1,7 @@
 
 Feature: Student-convention
   this refere to an offial document 
+  a user may have a student convention
 
 
   Background:
@@ -22,7 +23,7 @@ Feature: Student-convention
 
 #START -----Crud validation-----
 
-  Scenario: I should be able to access to a student  convention
+  Scenario: I should be able to access to a student convention
 #    When I send a GET request to "/api/student-conventions/1"
 #    Then I get a resource page with the context "api/contexts/StudentConvention"
 #    Then the JSON node ("[^"]+"|'[^']+'|\w+([.,]\w+)) should be equal to ("[^"]+"|'[^']+'|\w+([.,]\w+))
@@ -33,6 +34,12 @@ Feature: Student-convention
 
   Scenario: It should be possible edit student convention
   When I send a PUT request to "/api/student-convention/ADMNIM20130112" with body:
+  
+  Then the response status code should be 202
+  When I send a GET request to "/api/student-convention/ADMNIM20130112"
+  Then the response status code should be 400
+  And The JSON should have the following nodes:
+
   #TODO
 
   Scenario: It should be possible to delete student convention

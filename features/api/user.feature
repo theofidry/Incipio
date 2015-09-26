@@ -49,7 +49,7 @@ Feature: User management
     And I should get a paged collection with the context "/api/contexts/User"
     And the JSON node "hydra:totalItems" should be equal to #TODO
     And all the users should have a mandate with the value "/api/mandates/5"
-    And the JSON node "types" of the objects of the JSON node "hydra:member" should contains "TYPE_CONTRACTOR"
+    And the users returned must be have the type "TYPE_CONTRACTOR"
   #TODO
 
   Scenario: Get all members (type) for a given mandate

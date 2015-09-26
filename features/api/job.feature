@@ -55,26 +55,96 @@ Feature: Jobs management
 
 #START -----Crud validation-----
 
-  Scenario: It should be possible to create a new job
+  Scenario: It should be possible to create a new job (1)-With valid values but no mandate
   When I send a POST request to "/api/jobs" with body:
-    | | |
+    | title        | |
+    | abbreviation | |
+  Then the response status code should be 200
+  When I send a POST request to "/api/jobs"
+  Then The last job should have the following nodes:
+    | title        | |
+    | abbreviation | |
     #TODO
 
-  Scenario: When creating a new job, it must have at least one mandate. By default is for the ongoing mandate.
+  Scenario: It should be possible to create a new job (2)-With valid values and a mandate
+  When I send a POST request to "/api/jobs" with body:
+    | title        | |
+    | abbreviation | |
+    | mandate      | |
+  Then the response status code should be 200
+  When I send a POST request to "/api/jobs"
+  Then The last job should have the following nodes:
+    | title        | |
+    | abbreviation | |
+    | mandate      | |
     #TODO
+
+  Scenario: It should be possible to create a new job (3)-With valid values but non existing mandate
+  When I send a POST request to "/api/jobs" with body:
+    | title        | |
+    | abbreviation | |
+    | mandate      | |
+  Then the response status code should be 422
+
+  Scenario: It should be possible to create a new job (4)-With invalid values
+  When I send a POST request to "/api/jobs" with body:
+    | title        | |
+    | abbreviation | |
+    | mandate      | |
+  Then the response status code should be 422
 
   Scenario: It shoud be possible to see job's informations
   When I send a GET request to "/api/jobs/5"
   Then the response status code should be 200
+  And The job should have the following nodes:
+    | title        | |
+    | abbreviation | |
+    | mandate      | |
     #TODO
 
-  Scenario: It should be possible to update a job.
+  Scenario: It should be possible to update a job. (1)-Title or abbreviation
+  When I send a PUT request to "/api/jobs/5" with body:
+    | title        | |
+    | abbreviation | |
+    #TODO
+  When I send a POST request to "/api/jobs/5"
+  And The job should have the following nodes:
+    | title        | |
+    | abbreviation | |
+    | mandate      | |
+    #TODO
+
+  Scenario: It should be possible to update a job. (2)-Mandate
+  When I send a PUT request to "/api/jobs/5" with body:
+    | title        | |
+    | abbreviation | |
+    #TODO
+  When I send a POST request to "/api/jobs/5"
+  And The job should have the following nodes:
+    | mandate      | |
+    #TODO
+  When I send a POST request to "/api/jobs/5"
+  And The job should have the following nodes:
+    | title        | |
+    | abbreviation | |
+    | mandate      | |
+    #TODO
+
+  Scenario: It should be possible to update a job. (1)-Title or abbreviation
   When I send a PUT request to "/api/jobs/5" with body:
     #TODO
 
   Scenario: It should be possible to delete a job.
   When I send a DELETE request to "/api/jobs/5"
   Then the response status code should be 202
+            check that the deleting of a job does not destroy the user or the mandate
+            check that the deletion of a job is reflected in the mandate and user
+  When I send a GET request to "/api/users/??" #TODO
+  Then the response status code should be 202
+  When I send a GET request to "/api/mandates/??" #TODO
+  Then the response status code should be 202
+
+
     #TODO
 
 #END -----Crud validation-----
