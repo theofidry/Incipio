@@ -5,11 +5,6 @@ Feature: User management
   Background:
     Given I authenticate myself as admin
 
-  Scenario: Get a collection
-    When I send a GET request to "/api/users"
-    Then the response status code should be 200
-    And I should get a paged collection with the context "/api/contexts/User"
-
 #START -----Filter validation-----
 
   Scenario: Filter users by type
@@ -43,42 +38,51 @@ Feature: User management
     And all the users should have a mandate with the value "/api/mandates/5"
   #TODO
 
-  Scenario: Get all contratctors (type) for a given mandate
-    When I send a GET request to "/api/users?filter[where][mandate]=/api/mandates/5&filter[where][type]=contractor"
-    Then the response status code should be 200
-    And I should get a paged collection with the context "/api/contexts/User"
-    And the JSON node "hydra:totalItems" should be equal to #TODO
-    And all the users should have a mandate with the value "/api/mandates/5"
-    And the users returned must be have the type "TYPE_CONTRACTOR"
-  #TODO
-
-  Scenario: Get all members (type) for a given mandate
-  #TODO
-
   Scenario: Find user with a username or fullname
   #TODO
 
   Scenario: Get all user for a ending_school_year
+    When I send a GET request to "/api/users?filter[where][endingSchoolYear]=??" #TODO
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to 45
+    And all the users should have an endingSchoolYear with the value "??" #TODO
   #TODO
 
-  Scenario: Get all user contrators for a given ending_school_year
+  Scenario: Get all user contrators (special Job) for a given ending_school_year
+    When I send a GET request to "/api/users?filter[where][job]=/api/jobs/5&filter[where][endingSchoolYear]=??"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+    And the JSON node "hydra:totalItems" should be equal to #TODO
+    And all the users should have a job with the value "/api/jobs/5"
+    And all the users should have an endingSchoolYear with the value "??" #TODO
   #TODO
 
   Scenario: Get user for a given student convention
+   When I send a GET request to "/api/users?filter[where][studentConvention]=??" #TODO
+   Then the response status code should be 200
+   And I should get a paged collection with the context "/api/contexts/User"
+   And the JSON node "hydra:totalItems" should be equal to 1
+   And the user should have an studentConvention equale to "??" #TODO
 
 #END -----Filter validation-----
 
 #START -----Crud validation-----
 
+  Scenario: Get a collection
+    When I send a GET request to "/api/users"
+    Then the response status code should be 200
+    And I should get a paged collection with the context "/api/contexts/User"
+
   Scenario: Create a new user
-    Only fullname & emailn & username fields are required #TODO 
+    Only fullname & email & username fields are required
     A default password is automatiqualy generated
     When I send a POST request to "/api/users" with body:
       | fullname     | |
       | username     | |
       | email        | |
-    Then the response status code should be #TODO
-    When I send a GET request to "/api/users/1" #TODO
+    Then the response status code should be 201
+    When I send a GET request to "/api/users/??" #TODO
     Then the response status code should be 200
   
   Scenario: Get a resource
@@ -129,8 +133,8 @@ Feature: User management
       | username     | |
       | email        | |
       | password     | |
-   Then the response status code should be 200
-  The method should be idempotent
+   Then the response status code should be 202
+   The method should be idempotent
     When I send a GET request to "/api/users/105"
     Then the response status code should be 200
     Then the JSON response should should have the following nodes:
@@ -139,11 +143,11 @@ Feature: User management
       | password     | |
 
   Scenario: Delete a resource
-  Delete a resource that has a Job
-  Delete a resource that has a student convention
+   Delete a resource that has a Job
+   Delete a resource that has a student convention
     When I send a DELETE request to "/api/users/1"
     Then the response status code should be 204
-  The method should be idempotent
+   The method should be idempotent
     When I send a HEAD request to "/api/users/1"
     Then the response status code should be 404
 
