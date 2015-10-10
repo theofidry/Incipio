@@ -10,8 +10,6 @@ Feature: Mandates management
   A user may have one or several mandate, with or without a job.
 
 #START -----Filter validation-----
-  Scenario: It should be possible to list all the members of a given mandate.
-    #TODO
 
 #END -----Filter validation-----
 
@@ -90,10 +88,6 @@ Feature: Mandates management
     When I send #add an user
     Then the response status code should be 200
     And the JSON node "hydra:totalItems" should be equal to #TODO
-    #TODO
-
-  Scenario: It should not be possible to create a mandate unless it starts at the current year. The ending date
-  should then be during the next year and may be omitted.
     #TODO
 
   Scenario: If not ending date is given for a mandate, it ends at the end of the next year.
